@@ -4,9 +4,17 @@
     "rootDir": ".",
     "baseUrl": "src",
     "outDir": "build",
+    "allowJs": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
     "paths": {
       "@/*": ["*"]
     }
   },
-  "include": ["src/**/*"]
+  "files": ["next-env.d.ts"],
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
