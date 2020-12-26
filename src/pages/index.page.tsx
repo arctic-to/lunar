@@ -8,6 +8,11 @@ export default function Index() {
       <Head>
         <title>Lunar</title>
         <link rel="icon" href="/favicon.ico" />
+        {/* https://www.electronjs.org/docs/tutorial/security#csp-meta-tag */}
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="script-src 'self';"
+        ></meta>
       </Head>
 
       <Home />
