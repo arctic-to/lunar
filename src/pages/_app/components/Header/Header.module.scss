@@ -1,0 +1,42 @@
+@use '~@/style/color';
+
+.head {
+  height: 40px;
+  background-color: color.$green;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  -webkit-app-region: drag;
+
+  > * {
+    -webkit-app-region: no-drag;
+  }
+}
+
+.logo {
+  margin-left: 8px;
+  width: 24px;
+  vertical-align: top;
+}
+
+.menu {
+  height: 100%;
+
+  button {
+    height: 100%;
+    padding: 0 16px;
+
+    &.minimize,
+    &.maximize {
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+
+    &.close {
+      &:hover {
+        background-color: rgba(255, 128, 128, 0.9);
+      }
+    }
+  }
+}

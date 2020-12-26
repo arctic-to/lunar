@@ -1,12 +1,18 @@
 import { app, BrowserWindow } from 'electron'
+import debug = require('electron-debug')
+
+debug()
 
 let win: BrowserWindow | null = null
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1600,
+    height: 800,
+    frame: false,
+    icon: 'public/favicon.ico',
     webPreferences: {
       nodeIntegration: true,
+      enableRemoteModule: true,
     },
   })
 
