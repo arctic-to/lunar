@@ -19,24 +19,8 @@
   vertical-align: top;
 }
 
-.menu {
+.right {
+  display: flex;
+  align-items: center;
   height: 100%;
-
-  button {
-    height: 100%;
-    padding: 0 16px;
-
-    &.minimize,
-    &.maximize {
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
-      }
-    }
-
-    &.close {
-      &:hover {
-        background-color: rgba(255, 128, 128, 0.9);
-      }
-    }
-  }
 }

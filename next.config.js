@@ -3,9 +3,8 @@ module.exports = {
   pageExtensions: ['page.tsx'],
   webpack: (config) => {
     // Fixes npm packages that depend on `fs` module
-    Object.assign(config, {
-      target: 'electron-renderer',
-    })
+    config.target = 'electron-renderer'
+
     return config
   },
 }

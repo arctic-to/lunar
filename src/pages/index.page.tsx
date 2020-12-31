@@ -10,7 +10,7 @@ export default function Index() {
         <link rel="icon" href="/favicon.ico" />
         {/* https://www.electronjs.org/docs/tutorial/security#csp-meta-tag */}
         <meta
-          http-equiv="Content-Security-Policy"
+          httpEquiv="Content-Security-Policy"
           content="script-src 'self';"
         ></meta>
       </Head>
