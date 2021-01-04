@@ -1,0 +1,6 @@
+@use '~@/style/color';
+
+.play-panel {
+  height: 80px;
+  background-color: color.$green-light;
+}

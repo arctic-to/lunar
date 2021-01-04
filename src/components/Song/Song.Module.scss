@@ -1,0 +1,10 @@
+.song {
+  display: flex;
+  &:hover {
+    background-color: grey;
+  }
+
+  & > * {
+    flex: 1;
+  }
+}

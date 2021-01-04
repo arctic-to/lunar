@@ -1,6 +1,6 @@
 import { Modal } from '@/components'
+import { useUser } from '@/data'
 import { useBoolean } from '@/hooks'
-import { useUser } from '@/models'
 
 import Login from '../Login'
 

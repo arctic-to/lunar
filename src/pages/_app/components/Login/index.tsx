@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-import { useUser, LoginSchema, login } from '@/models'
+import { useUser, LoginSchema, login } from '@/data'
 
 const schema = yup.object().shape({
   phone: yup.string().required(),
