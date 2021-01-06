@@ -1,5 +1,6 @@
 import { Song } from '@/components'
 import { useDailySongs } from '@/data'
+import { SongSnapshot } from '@/models'
 
 import styles from './DailySongs.module.scss'
 
@@ -10,7 +11,7 @@ export const DailySongs: React.VFC = () => {
 
   return (
     <div className={styles['daily-songs']}>
-      {dailySongs?.map((song: Song) => (
+      {dailySongs?.map((song: SongSnapshot) => (
         <Song key={song.id} song={song} />
       ))}
     </div>

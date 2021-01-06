@@ -1,0 +1,13 @@
+.song-card {
+  display: flex;
+  align-items: center;
+
+  .album-cover {
+    width: 48px;
+    border-radius: 6px;
+    margin-right: 16px;
+  }
+
+  .song-info {
+  }
+}

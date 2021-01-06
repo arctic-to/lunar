@@ -1,0 +1,18 @@
+@use '~@/style/color';
+
+.container {
+  svg {
+    font-size: 20px;
+    cursor: pointer;
+  }
+}
+
+.playOrder {
+  .active {
+    color: color.$green;
+  }
+}
+
+.buttons {
+  display: flex;
+}
