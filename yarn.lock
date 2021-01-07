@@ -8239,6 +8239,11 @@ unique-string@^2.0.0:
   dependencies:
     crypto-random-string "^2.0.0"
 
+unit-of-time@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npm.taobao.org/unit-of-time/download/unit-of-time-0.1.2.tgz#c933d7379e24a1444dc1b30fd9d35fc1117ab431"
+  integrity sha1-yTPXN54koURNwbMP2dNfwRF6tDE=
+
 universalify@^0.1.0:
   version "0.1.2"
   resolved "https://registry.npmjs.org/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"

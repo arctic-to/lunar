@@ -1,10 +1,29 @@
-import { types, Instance, onSnapshot, applySnapshot } from 'mobx-state-tree'
+import {
+  types,
+  Instance,
+  onSnapshot,
+  applySnapshot,
+  SnapshotIn,
+} from 'mobx-state-tree'
 import { useContext, createContext } from 'react'
 
 import { Player, player } from './Player'
 
-export const RootStore = types.model({
+const RawRootStore = types.model({
   player: Player,
+})
+
+type RawRootStoreSnapshot = SnapshotIn<typeof RawRootStore>
+
+export const RootStore = types.snapshotProcessor(RawRootStore, {
+  preProcessor(snapshot: RawRootStoreSnapshot) {
+    snapshot.player.tracks?.forEach((track) => {
+      track.playing = false
+      track.currentTimeSetTimes = 0
+    })
+
+    return snapshot
+  },
 })
 
 export const defaultSnapshot = {
@@ -38,8 +57,8 @@ export function observeRootStore() {
   })
 }
 
-export type RootInstance = Instance<typeof RootStore>
-export const RootStoreContext = createContext<null | RootInstance>(null)
+export type RootStoreInstance = Instance<typeof RootStore>
+export const RootStoreContext = createContext<null | RootStoreInstance>(null)
 
 export function useStore() {
   const store = useContext(RootStoreContext)

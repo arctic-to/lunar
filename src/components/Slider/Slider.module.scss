@@ -1,0 +1,29 @@
+@use '~@/style/color';
+
+.track {
+  background-color: lightgray;
+
+  &:hover .slider {
+    display: unset;
+  }
+}
+
+.fill {
+  height: 100%;
+  background-color: lightsteelblue;
+  position: relative;
+}
+
+.slider {
+  display: none;
+  height: 100%;
+  width: 8px;
+  position: absolute;
+  right: 0;
+  transform: translateX(50%);
+  background-color: #96a5b9;
+
+  &:active {
+    display: unset;
+  }
+}

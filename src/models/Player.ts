@@ -1,42 +1,13 @@
-import { types, flow, SnapshotIn } from 'mobx-state-tree'
+import { types } from 'mobx-state-tree'
 
-import { fetcher } from '@/data'
-
-import { Song } from './Song'
-
-const Track = types
-  .model({
-    song: Song,
-    playing: false,
-    songUrl: '',
-  })
-  .actions((self) => ({
-    fetchSongUrl: flow(function* () {
-      const id = self.song.id
-      const {
-        data: [song],
-      } = yield fetcher(`/song/url?id=${id}`)
-
-      self.songUrl = song.url
-    }),
-    play() {
-      self.playing = true
-    },
-    pause() {
-      self.playing = false
-    },
-  }))
-
-type TrackSnapshot = SnapshotIn<typeof Track>
+import { Track, TrackSnapshot } from './Track'
 
 export const Player = types
   .model('Player', { tracks: types.array(Track) })
   // base actions
   .actions((self) => ({
     addTrack(trackSnapshot: TrackSnapshot) {
-      const track = Track.create(trackSnapshot)
-      track.fetchSongUrl()
-      self.tracks.push(track)
+      self.tracks.push(trackSnapshot)
     },
     clearTracks() {
       self.tracks.clear()

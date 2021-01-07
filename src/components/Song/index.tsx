@@ -17,6 +17,7 @@ export const Song: React.VFC<SongProps> = ({ song }) => {
   const handleDoubleClick = useCallback(() => {
     player.replaceTrack({
       song,
+      playing: true,
     })
   }, [player, song])
 

@@ -13,6 +13,7 @@ import {
 import { useCurrentTrack } from '../hooks'
 
 import styles from './CentralController.module.scss'
+import ProgressSlider from './ProgressSlider'
 
 export const CentralController: React.VFC = observer(() => {
   const ref = useRef<HTMLAudioElement>(null)
@@ -24,10 +25,28 @@ export const CentralController: React.VFC = observer(() => {
   }, [])
 
   useEffect(() => {
-    if (currentTrack) {
-      currentTrack.playing ? ref.current?.play() : ref.current?.pause()
+    if (currentTrack && ref.current) {
+      ref.current.currentTime = currentTrack.currentTimeInSecond
     }
-  }, [currentTrack, currentTrack?.playing])
+  }, [currentTrack, currentTrack?.currentTimeSetTimes])
+
+  useEffect(() => {
+    if (currentTrack && ref.current) {
+      ref.current.volume = currentTrack.volume
+    }
+  }, [currentTrack, currentTrack?.volume])
+
+  useEffect(() => {
+    if (!(currentTrack && currentTrack.songUrl && ref.current)) return
+
+    if (currentTrack.playing) {
+      ref.current.play()
+      currentTrack.observeCurrentTime()
+    } else {
+      ref.current.pause()
+      currentTrack.unobserveCurrentTime()
+    }
+  }, [currentTrack, currentTrack?.playing, currentTrack?.songUrl])
 
   const play = useCallback(() => {
     currentTrack?.play()
@@ -55,9 +74,10 @@ export const CentralController: React.VFC = observer(() => {
           <RiSkipForwardFill />
         </div>
       </div>
-      <div></div>
 
-      <audio src={currentTrack?.songUrl} ref={ref} />
+      <ProgressSlider />
+
+      {currentTrack?.songUrl && <audio src={currentTrack.songUrl} ref={ref} />}
     </div>
   )
 })

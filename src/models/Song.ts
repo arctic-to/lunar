@@ -73,7 +73,7 @@ export const Song = types.model({
   dt: types.number,
   h: HML,
   m: HML,
-  l: HML,
+  l: types.maybeNull(HML),
   a: types.null,
   cd: types.string,
   no: types.number,

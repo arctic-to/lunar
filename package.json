@@ -29,6 +29,7 @@
     "react-use": "^15.3.4",
     "sass": "^1.30.0",
     "swr": "^0.3.11",
+    "unit-of-time": "^0.1.2",
     "yup": "^0.32.8"
   },
   "main": "build/main.js",
