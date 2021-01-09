@@ -7,8 +7,10 @@ let win: BrowserWindow | null = null
 function createWindow() {
   win = new BrowserWindow({
     width: 1600,
+    minWidth: 1000,
     height: 800,
     frame: false,
+    opacity: 220 / 255,
     icon: 'public/favicon.ico',
     webPreferences: {
       nodeIntegration: true,

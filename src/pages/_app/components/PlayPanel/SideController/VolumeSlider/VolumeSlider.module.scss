@@ -3,6 +3,8 @@
 .container {
   display: flex;
   align-items: center;
+  float: right;
+  margin-right: 32px;
 
   svg {
     margin-right: 15px;

@@ -20,7 +20,7 @@ export const Slider: React.VFC<SliderProps> = ({
   const handleChange = useCallback(
     (e: React.MouseEvent<HTMLDivElement> | MouseEvent) => {
       if (!ref.current) return
-      const sliderX = ref.current.offsetLeft
+      const sliderX = ref.current.getBoundingClientRect().left
       const clickedX = e.clientX
       const diffX = clickedX - sliderX
       const percentage = Math.min(diffX / width, 1)
@@ -43,11 +43,11 @@ export const Slider: React.VFC<SliderProps> = ({
     <div
       className={styles.track}
       style={{ width, height }}
-      onMouseDown={handleChange}
       ref={ref}
+      onMouseDown={handleMouseDown}
     >
       <div className={styles.fill} style={{ width: `${percentage * 100}%` }}>
-        <div className={styles.slider} onMouseDown={handleMouseDown}></div>
+        <div className={styles.slider} />
       </div>
     </div>
   )

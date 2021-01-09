@@ -2,7 +2,7 @@
 
 .container {
   width: 48px;
-  background-color: color.$actionbar;
+  background-color: color.$shortcutbar;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -10,11 +10,11 @@
   svg {
     padding: 12px;
     font-size: 48px;
-    color: color.$actionbar-icon;
+    color: color.$shortcutbar-icon;
     cursor: pointer;
 
     &:hover {
-      color: color.$actionbar-active-icon;
+      color: color.$shortcutbar-active-icon;
     }
   }
 }

@@ -4,7 +4,13 @@ import { useEffect } from 'react'
 import { RootStoreContext, initRootStore, rootStore } from '@/models'
 
 import styles from './App.module.scss'
-import { Header, PlayPanel, Sidebar, Actionbar, Statusbar } from './components'
+import {
+  Header,
+  PlayPanel,
+  Sidebar,
+  Shortcutbar,
+  Statusbar,
+} from './components'
 import './globals.scss'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -20,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </div>
         <Sidebar />
-        <Actionbar />
+        <Shortcutbar />
       </div>
       <PlayPanel />
       <Statusbar />

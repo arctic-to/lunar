@@ -1,9 +1,9 @@
 import { RiHeart3Line, RiPlayListFill } from 'react-icons/ri'
 import { VscSearch } from 'react-icons/vsc'
 
-import styles from './Actionbar.module.scss'
+import styles from './Shortcutbar.module.scss'
 
-export const Actionbar: React.VFC = () => {
+export const Shortcutbar: React.VFC = () => {
   return (
     <div className={styles.container}>
       <VscSearch />
@@ -13,4 +13,4 @@ export const Actionbar: React.VFC = () => {
   )
 }
 
-export default Actionbar
+export default Shortcutbar
