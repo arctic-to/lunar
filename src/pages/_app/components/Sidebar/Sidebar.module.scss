@@ -1,0 +1,7 @@
+@use '~@/style/color';
+
+.container {
+  width: 252px;
+  background-color: color.$sidebar;
+  overflow: auto;
+}

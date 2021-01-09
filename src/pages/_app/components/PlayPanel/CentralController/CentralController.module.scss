@@ -1,18 +1,5 @@
-@use '~@/style/color';
+@use '~@/style/mixin';
 
 .container {
-  svg {
-    font-size: 20px;
-    cursor: pointer;
-  }
-}
-
-.playOrder {
-  .active {
-    color: color.$green;
-  }
-}
-
-.buttons {
-  display: flex;
+  @include mixin.central;
 }

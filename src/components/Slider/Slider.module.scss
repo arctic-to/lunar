@@ -1,7 +1,7 @@
 @use '~@/style/color';
 
 .track {
-  background-color: lightgray;
+  background-color: color.$slider-track;
 
   &:hover .slider {
     display: unset;
@@ -10,7 +10,7 @@
 
 .fill {
   height: 100%;
-  background-color: lightsteelblue;
+  background-color: color.$slider-fill;
   position: relative;
 }
 
@@ -21,7 +21,7 @@
   position: absolute;
   right: 0;
   transform: translateX(50%);
-  background-color: #96a5b9;
+  background-color: color.$slider-slider;
 
   &:active {
     display: unset;

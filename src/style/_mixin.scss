@@ -5,3 +5,16 @@
     -webkit-app-region: no-drag;
   }
 }
+
+@mixin central {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin ellipsis {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

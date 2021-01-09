@@ -1,0 +1,12 @@
+@use '~@/style/color';
+
+.container {
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-right: 15px;
+    color: color.$grey6;
+    font-size: 20px;
+  }
+}

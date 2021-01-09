@@ -1,0 +1,27 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.song-card {
+  display: flex;
+  align-items: center;
+
+  .album-cover {
+    width: 48px;
+    margin-right: 16px;
+  }
+
+  .song-info {
+    max-width: 136px;
+
+    .name,
+    .author {
+      @include mixin.ellipsis;
+    }
+    .name {
+      color: color.$song-name;
+    }
+    .author {
+      color: color.$song-author;
+    }
+  }
+}

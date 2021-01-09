@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { RootStoreContext, initRootStore, rootStore } from '@/models'
 
 import styles from './App.module.scss'
-import { Header, PlayPanel } from './components'
+import { Header, PlayPanel, Sidebar, Actionbar, Statusbar } from './components'
 import './globals.scss'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -15,10 +15,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RootStoreContext.Provider value={rootStore}>
       <Header />
-      <div className={styles.component}>
-        <Component {...pageProps} />
+      <div className={styles.main}>
+        <div className={styles.component}>
+          <Component {...pageProps} />
+        </div>
+        <Sidebar />
+        <Actionbar />
       </div>
       <PlayPanel />
+      <Statusbar />
     </RootStoreContext.Provider>
   )
 }

@@ -1,13 +1,10 @@
-import { RiVolumeDownLine, RiPlayListFill } from 'react-icons/ri'
-
+import style from './SideController.module.scss'
 import VolumeSlider from './VolumeSlider'
 
 export const SideController: React.VFC = () => {
   return (
-    <div>
-      <RiVolumeDownLine />
+    <div className={style.container}>
       <VolumeSlider />
-      <RiPlayListFill />
     </div>
   )
 }

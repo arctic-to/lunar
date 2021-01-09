@@ -10,7 +10,7 @@ const schema = yup.object().shape({
   password: yup.string().required(),
 })
 
-export const Login: React.VFC = () => {
+export const LoginForm: React.VFC = () => {
   const { mutate } = useUser()
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
@@ -34,4 +34,4 @@ export const Login: React.VFC = () => {
   )
 }
 
-export default Login
+export default LoginForm

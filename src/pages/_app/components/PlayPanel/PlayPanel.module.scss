@@ -3,10 +3,11 @@
 
 .play-panel {
   height: 80px;
-  background-color: color.$green-light;
+  background-color: color.$playpanel;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px;
+  position: relative;
   @include mixin.draggable;
 }

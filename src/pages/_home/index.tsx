@@ -3,7 +3,7 @@ import { DailySongs } from './components'
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <main className={styles.container}>
       <DailySongs />
     </main>
   )

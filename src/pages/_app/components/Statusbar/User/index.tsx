@@ -1,24 +1,25 @@
+import { VscAccount } from 'react-icons/vsc'
+
 import { Modal } from '@/components'
 import { useUser } from '@/data'
 import { useBoolean } from '@/hooks'
 
-import Login from '../Login'
+import LoginForm from './LoginForm'
+import styles from './User.module.scss'
 
-import styles from './Menu.module.scss'
-
-export default function Menu() {
+export default function User() {
   const [opened, openModal, closeModal] = useBoolean(false)
   const { data } = useUser()
 
   return (
-    <div className={styles.menu}>
+    <div className={styles.container}>
       {data ? (
         <img src={data.profile.avatarUrl} className={styles.avatar} />
       ) : (
         <>
-          <button onClick={openModal}>登录</button>
+          <VscAccount onClick={openModal} className={styles.avatar} />
           <Modal opened={opened} close={closeModal}>
-            <Login />
+            <LoginForm />
           </Modal>
         </>
       )}

@@ -1,0 +1,36 @@
+@use 'base' as *;
+
+/* BACKGROUND COLORS */
+$header: $grey2;
+
+$component: $grey3;
+$sidebar: $grey2;
+$sidebar-title: $grey4;
+$actionbar: $grey1;
+
+$playpanel: $grey3;
+
+$footer: $grey2;
+
+/* Slider */
+$slider-track: $grey5;
+$slider-fill: $green2;
+$slider-slider: $green1;
+
+/* Scrollbar */
+$scrollbar: rgba(255, 255, 255, 0.08);
+$scrollbar--hover: rgba(255, 255, 255, 0.16);
+
+/* FOREGROUND COLORS */
+/* Actionbar */
+$actionbar-icon: $grey5;
+$actionbar-active-icon: $grey7;
+
+/* PlayPanel */
+/* SongCard */
+$song-name: $grey7;
+$song-author: $grey6;
+/* CentralController */
+$button: $grey6;
+$play-button: $grey7;
+$active-button: $green1;

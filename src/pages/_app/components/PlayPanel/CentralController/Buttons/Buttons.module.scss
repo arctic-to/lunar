@@ -1,0 +1,37 @@
+@use '~@/style/color';
+
+.container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  margin-left: 93px;
+
+  svg {
+    font-size: 16px;
+    color: color.$button;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+
+  & > * {
+    display: flex;
+  }
+
+  .left {
+    .active {
+      color: color.$green1;
+    }
+  }
+
+  .middle {
+    align-items: center;
+    .play,
+    .pause {
+      font-size: 24px;
+      color: color.$play-button;
+    }
+  }
+
+  .right {
+  }
+}

@@ -2,8 +2,9 @@ import { observer } from 'mobx-react-lite'
 
 import { Authors } from '@/components'
 
+import { useCurrentTrack } from '../hooks'
+
 import styles from './SongCard.module.scss'
-import { useCurrentTrack } from './hooks'
 
 export const SongCard: React.FC = observer(() => {
   const { song } = useCurrentTrack() ?? {}
@@ -19,8 +20,8 @@ export const SongCard: React.FC = observer(() => {
       />
 
       <div className={styles['song-info']}>
-        <div>{song.name}</div>
-        <Authors song={song} />
+        <div className={styles.name}>{song.name}</div>
+        <Authors className={styles.author} song={song} />
       </div>
     </div>
   )

@@ -1,21 +1,24 @@
+@use '~@/style/color';
+
 .window-operations {
   height: 100%;
   margin-left: 10px;
 
   button {
     height: 100%;
-    padding: 0 16px;
+    padding: 0 15px;
+    color: color.$grey7;
 
     &.minimize,
     &.maximize {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.05);
+        background-color: color.$grey5;
       }
     }
 
     &.close {
       &:hover {
-        background-color: rgba(255, 128, 128, 0.9);
+        background-color: red;
       }
     }
   }
