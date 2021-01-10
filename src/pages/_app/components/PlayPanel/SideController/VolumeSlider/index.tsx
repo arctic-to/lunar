@@ -2,8 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { RiVolumeDownLine } from 'react-icons/ri'
 
 import { Slider } from '@/components'
-
-import { useCurrentTrack } from '../../hooks'
+import { useCurrentTrack } from '@/models'
 
 import styles from './VolumeSlider.module.scss'
 

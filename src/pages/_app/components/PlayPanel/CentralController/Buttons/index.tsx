@@ -11,8 +11,7 @@ import {
 } from 'react-icons/ri'
 
 import { Lyric } from '@/icons'
-
-import { useCurrentTrack } from '../../hooks'
+import { useCurrentTrack } from '@/models'
 
 import styles from './Buttons.module.scss'
 

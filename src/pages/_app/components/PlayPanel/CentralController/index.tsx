@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
-import { useCurrentTrack } from '../hooks'
+import { useCurrentTrack } from '@/models'
 
 import Buttons from './Buttons'
 import styles from './CentralController.module.scss'

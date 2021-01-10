@@ -6,7 +6,7 @@ import styles from './Authors.module.scss'
 
 export type AuthorsProps = {
   song: SongSnapshot
-  className: string
+  className?: string
 }
 
 export const Authors: React.FC<AuthorsProps> = ({ song, className }) => {

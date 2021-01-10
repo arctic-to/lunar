@@ -16,5 +16,9 @@
     &:hover {
       color: color.$shortcutbar-active-icon;
     }
+    &.active {
+      color: color.$shortcutbar-active-icon;
+      box-shadow: inset -2px 0 color.$shortcutbar-active-icon;
+    }
   }
 }

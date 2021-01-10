@@ -20,4 +20,4 @@ export const Player = types
     },
   }))
 
-export const player = Player.create({})
+export const player = Player.create()

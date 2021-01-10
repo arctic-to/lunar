@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Slider } from '@/components'
-
-import { useCurrentTrack } from '../../hooks'
+import { useCurrentTrack } from '@/models'
 
 export const ProgressSlider: React.VFC = observer(() => {
   const currentTrack = useCurrentTrack()

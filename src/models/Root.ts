@@ -5,12 +5,13 @@ import {
   applySnapshot,
   SnapshotIn,
 } from 'mobx-state-tree'
-import { useContext, createContext } from 'react'
 
 import { Player, player } from './Player'
+import { View, view } from './View'
 
 const RawRootStore = types.model({
   player: Player,
+  view: View,
 })
 
 type RawRootStoreSnapshot = SnapshotIn<typeof RawRootStore>
@@ -28,6 +29,7 @@ export const RootStore = types.snapshotProcessor(RawRootStore, {
 
 export const defaultSnapshot = {
   player,
+  view,
 }
 
 let initialized = false
@@ -58,12 +60,3 @@ export function observeRootStore() {
 }
 
 export type RootStoreInstance = Instance<typeof RootStore>
-export const RootStoreContext = createContext<null | RootStoreInstance>(null)
-
-export function useStore() {
-  const store = useContext(RootStoreContext)
-  if (store === null) {
-    throw new Error('Store cannot be null, please add a context provider')
-  }
-  return store
-}

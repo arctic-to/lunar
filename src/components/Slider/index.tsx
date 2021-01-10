@@ -34,10 +34,14 @@ export const Slider: React.VFC<SliderProps> = ({
     document.removeEventListener('mouseup', handleMouseUp)
   }, [handleChange])
 
-  const handleMouseDown = useCallback(() => {
-    document.addEventListener('mousemove', handleChange)
-    document.addEventListener('mouseup', handleMouseUp)
-  }, [handleChange, handleMouseUp])
+  const handleMouseDown = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      handleChange(e)
+      document.addEventListener('mousemove', handleChange)
+      document.addEventListener('mouseup', handleMouseUp)
+    },
+    [handleChange, handleMouseUp],
+  )
 
   return (
     <div

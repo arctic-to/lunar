@@ -1,4 +1,4 @@
-import { useStore } from '@/models'
+import { useStore } from './useStrore'
 
 export function useCurrentTrack() {
   const { player } = useStore()
@@ -6,5 +6,3 @@ export function useCurrentTrack() {
 
   return currentTrack
 }
-
-export default useCurrentTrack

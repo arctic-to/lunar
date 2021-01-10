@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { Authors } from '@/components'
-
-import { useCurrentTrack } from '../hooks'
+import { useCurrentTrack } from '@/models'
 
 import styles from './SongCard.module.scss'
 
