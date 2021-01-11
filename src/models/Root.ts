@@ -6,12 +6,14 @@ import {
   SnapshotIn,
 } from 'mobx-state-tree'
 
+import { Platform, platform } from './Platform'
 import { Player, player } from './Player'
 import { View, view } from './View'
 
 const RawRootStore = types.model({
   player: Player,
   view: View,
+  platform: Platform,
 })
 
 type RawRootStoreSnapshot = SnapshotIn<typeof RawRootStore>
@@ -30,6 +32,7 @@ export const RootStore = types.snapshotProcessor(RawRootStore, {
 export const defaultSnapshot = {
   player,
   view,
+  platform,
 }
 
 let initialized = false

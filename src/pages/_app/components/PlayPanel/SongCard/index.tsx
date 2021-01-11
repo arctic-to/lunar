@@ -8,20 +8,22 @@ import styles from './SongCard.module.scss'
 export const SongCard: React.FC = observer(() => {
   const { song } = useCurrentTrack() ?? {}
 
-  if (!song) return null
-
   return (
     <div className={styles['song-card']}>
-      <img
-        className={styles['album-cover']}
-        src={song.al.picUrl ?? ''}
-        alt="The album cover"
-      />
+      {song && (
+        <img
+          className={styles['album-cover']}
+          src={song.al.picUrl ?? ''}
+          alt="The album cover"
+        />
+      )}
 
-      <div className={styles['song-info']}>
-        <div className={styles.name}>{song.name}</div>
-        <Authors className={styles.author} song={song} />
-      </div>
+      {song && (
+        <div className={styles['song-info']}>
+          <div className={styles.name}>{song.name}</div>
+          <Authors className={styles.author} song={song} />
+        </div>
+      )}
     </div>
   )
 })

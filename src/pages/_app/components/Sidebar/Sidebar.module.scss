@@ -5,3 +5,13 @@
   background-color: color.$sidebar;
   overflow: auto;
 }
+
+.title {
+  font-size: 11px;
+  line-height: 35px;
+  color: color.$sidebar-title;
+  margin-left: 20px;
+}
+
+.panes {
+}

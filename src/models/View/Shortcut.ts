@@ -1,18 +1,14 @@
 import { types } from 'mobx-state-tree'
 
 export enum ShortcutEnum {
-  PlayQueue,
-  Playlists,
-  Search,
+  PlayQueue = 'PlayQueue',
+  Playlists = 'Playlists',
+  Search = 'Search',
 }
-
-export const shortcutTypes = Object.values(ShortcutEnum).filter(
-  (v) => typeof v === 'number',
-) as ShortcutEnum[]
 
 export const Shortcut = types
   .model('Shortcut', {
-    type: types.number,
+    type: types.enumeration('Type', Object.values(ShortcutEnum)),
     active: false,
   })
   .actions((self) => ({
@@ -24,6 +20,6 @@ export const Shortcut = types
     },
   }))
 
-export const shortcuts = shortcutTypes.map((shortcutType) =>
+export const shortcuts = Object.values(ShortcutEnum).map((shortcutType) =>
   Shortcut.create({ type: shortcutType }),
 )

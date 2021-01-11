@@ -5,7 +5,7 @@ $header: $grey2;
 
 $component: $grey3;
 $sidebar: $grey2;
-$sidebar-title: $grey4;
+$pane-header-bg: $grey4;
 $shortcutbar: $grey1;
 
 $playpanel: $grey3;
@@ -25,6 +25,9 @@ $scrollbar--hover: rgba(255, 255, 255, 0.16);
 /* Shortcutbar */
 $shortcutbar-icon: $grey5;
 $shortcutbar-active-icon: $grey7;
+/* Sidebar */
+$sidebar-title: $grey6;
+$pane-header-fg: $grey6;
 
 /* PlayPanel */
 /* SongCard */

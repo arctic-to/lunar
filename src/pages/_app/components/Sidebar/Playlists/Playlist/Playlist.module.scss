@@ -1,0 +1,15 @@
+@use '~@/style/color';
+
+.container {
+  font-size: 11px;
+  line-height: 22px;
+  color: color.$grey6;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  svg {
+    font-size: 16px;
+    margin-right: 2px;
+  }
+}

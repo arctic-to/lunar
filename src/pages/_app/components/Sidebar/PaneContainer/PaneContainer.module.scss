@@ -1,0 +1,20 @@
+@use '~@/style/color';
+
+.container {
+}
+
+.header {
+  font-size: 11px;
+  line-height: 22px;
+  font-weight: bold;
+  color: color.$pane-header-fg;
+  background-color: color.$pane-header-bg;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  svg {
+    font-size: 16px;
+    margin: 0 2px;
+  }
+}
