@@ -1,6 +1,14 @@
 @use '~@/style/color';
+@use '~@/style/mixin';
 
 .container {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+
+  > div:last-of-type {
+    @include mixin.scrollbar(10);
+  }
 }
 
 .header {

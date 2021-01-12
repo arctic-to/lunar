@@ -11,7 +11,7 @@ interface PaneProps {
 }
 
 export const PaneContainer: React.VFC<PaneProps> = observer(({ Pane }) => {
-  const [folded, toggle] = useToggle(false)
+  const [folded, toggle] = useToggle(true)
 
   return (
     <div className={styles.container}>
@@ -19,7 +19,7 @@ export const PaneContainer: React.VFC<PaneProps> = observer(({ Pane }) => {
         {folded ? <VscChevronRight /> : <VscChevronDown />}
         {Pane.title}
       </div>
-      <Pane />
+      {folded || <Pane />}
     </div>
   )
 })

@@ -1,7 +1,9 @@
 @use '~@/style/color';
 
 .container {
-  padding-left: 15px;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
 
 .playlist {

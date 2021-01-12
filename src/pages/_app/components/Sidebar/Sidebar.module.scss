@@ -3,7 +3,8 @@
 .container {
   width: 252px;
   background-color: color.$sidebar;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
@@ -14,4 +15,7 @@
 }
 
 .panes {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }
