@@ -82,6 +82,9 @@ export const Track = types
     },
     beforeDestroy() {
       self.pause()
+      // Must unobserve. After `beforeDestroy` executed,
+      // the track can never be referenced.
+      self.unobserveCurrentTime()
     },
   }))
 

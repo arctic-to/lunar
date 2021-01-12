@@ -9,16 +9,20 @@ import styles from './Song.module.scss'
 
 dayjs.extend(duration)
 
-export type SongProps = { song: SongSnapshot }
+export type SongProps = {
+  song: SongSnapshot
+  sourcePlaylist: SongSnapshot[]
+}
 
-export const Song: React.VFC<SongProps> = ({ song }) => {
+export const Song: React.VFC<SongProps> = ({ song, sourcePlaylist }) => {
   const { player } = useStore()
   const handleDoubleClick = useCallback(() => {
     player.replaceTrack({
       song,
       playing: true,
     })
-  }, [player, song])
+    player.replaceQueue(sourcePlaylist)
+  }, [player, song, sourcePlaylist])
 
   return (
     <div className={styles.container} onDoubleClick={handleDoubleClick}>

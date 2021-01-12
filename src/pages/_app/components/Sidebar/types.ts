@@ -1,15 +1,13 @@
-import { isValidElement } from 'react'
-
 export interface Pane extends React.VFC {
   title?: string
 }
 
 export type SidebarComponentWithoutPanes = React.VFC & {
-  name: string
+  title?: string
 }
 
 export type SidebarComponentWithPanes = {
-  name: string
+  title: string
   Panes: Pane[]
 }
 
@@ -20,5 +18,5 @@ export type SidebarComponent =
 export function isSidebarComponentWithPanes(
   component: SidebarComponent,
 ): component is SidebarComponentWithPanes {
-  return !isValidElement(component)
+  return 'Panes' in component
 }

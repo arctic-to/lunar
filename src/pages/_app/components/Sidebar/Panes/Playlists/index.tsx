@@ -1,6 +1,6 @@
 import { useUserPlaylist } from '@/data'
 
-import { SidebarComponent, Pane } from '../types'
+import { SidebarComponent, Pane } from '../../types'
 
 import Playlist from './Playlist'
 import styles from './Playlists.module.scss'
@@ -22,7 +22,7 @@ const NeteaseCloudMusicPane: Pane = () => {
 NeteaseCloudMusicPane.title = '网易云音乐'
 
 export const Playlists: SidebarComponent = {
-  name: 'Playlists',
+  title: 'Playlists',
   Panes: [NeteaseCloudMusicPane],
 }
 

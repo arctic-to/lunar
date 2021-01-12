@@ -41,7 +41,7 @@ export const CentralController: React.VFC = observer(() => {
       <Buttons />
       <ProgressSlider />
 
-      {currentTrack?.songUrl && <audio src={currentTrack.songUrl} ref={ref} />}
+      <audio src={currentTrack?.songUrl} ref={ref} />
     </div>
   )
 })

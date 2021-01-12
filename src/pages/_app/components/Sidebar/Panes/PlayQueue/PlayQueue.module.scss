@@ -1,0 +1,6 @@
+@use '~@/style/mixin';
+
+.container {
+  overflow: auto;
+  @include mixin.scrollbar(10);
+}

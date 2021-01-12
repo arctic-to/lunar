@@ -17,7 +17,7 @@ export const DailySong = types.model('DailySong', {
   rt: types.maybeNull(types.string),
   fee: types.number,
   v: types.number,
-  crbt: types.null,
+  crbt: types.maybeNull(types.string),
   cf: types.string,
   al: Album,
   dt: types.number,

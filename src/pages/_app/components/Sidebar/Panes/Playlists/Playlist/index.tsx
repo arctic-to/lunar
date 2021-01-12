@@ -23,7 +23,11 @@ export const Playlist: React.VFC<PlaylistProps> = ({ playlist }) => {
       </div>
       <div className={styles.songs}>
         {data?.playlist.tracks.map((track) => (
-          <Song key={track.id} song={track} />
+          <Song
+            key={track.id}
+            song={track}
+            sourcePlaylist={data.playlist.tracks}
+          />
         ))}
       </div>
     </div>
