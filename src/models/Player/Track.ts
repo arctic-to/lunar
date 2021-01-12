@@ -12,7 +12,7 @@ export const Track = types
     songUrl: '',
     currentTime: 0, // ms
     currentTimeSetTimes: 0,
-    volume: 1, // [0, 1]
+    volume: 1, // Independent volume for every track
   })
   .views((self) => ({
     get percentage() {

@@ -2,20 +2,20 @@ import { observer } from 'mobx-react-lite'
 import { RiVolumeDownLine } from 'react-icons/ri'
 
 import { Slider } from '@/components'
-import { useCurrentTrack } from '@/models'
+import { usePlayer } from '@/models'
 
 import styles from './VolumeSlider.module.scss'
 
 export const VolumeSlider: React.VFC = observer(() => {
-  const currentTrack = useCurrentTrack()
+  const player = usePlayer()
 
   return (
     <div className={styles.container}>
       <RiVolumeDownLine />
       <Slider
         width={80}
-        percentage={currentTrack?.volume}
-        onChange={currentTrack?.setVolume}
+        percentage={player?.volume}
+        onChange={player?.setVolume}
       />
     </div>
   )

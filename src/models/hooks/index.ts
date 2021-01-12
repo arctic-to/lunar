@@ -1,4 +1,5 @@
 export * from './useCurrentTrack'
 export * from './usePlatform'
+export * from './usePlayer'
 export * from './useStrore'
 export * from './useView'

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useEffect, useRef } from 'react'
 
-import { useCurrentTrack } from '@/models'
+import { useCurrentTrack, usePlayer } from '@/models'
 
 import Buttons from './Buttons'
 import styles from './CentralController.module.scss'
@@ -9,6 +9,7 @@ import ProgressSlider from './ProgressSlider'
 
 export const CentralController: React.VFC = observer(() => {
   const ref = useRef<HTMLAudioElement>(null)
+  const player = usePlayer()
   const currentTrack = useCurrentTrack()
 
   useEffect(() => {
@@ -19,9 +20,9 @@ export const CentralController: React.VFC = observer(() => {
 
   useEffect(() => {
     if (currentTrack && ref.current) {
-      ref.current.volume = currentTrack.volume
+      ref.current.volume = player.volume * currentTrack.volume
     }
-  }, [currentTrack, currentTrack?.volume])
+  }, [currentTrack, currentTrack?.volume, player.volume])
 
   useEffect(() => {
     if (!(currentTrack && currentTrack.songUrl && ref.current)) return
