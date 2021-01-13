@@ -8,7 +8,7 @@ import { SidebarComponent } from '../../types'
 import styles from './PlayQueue.module.scss'
 import Song from './Song'
 
-export const PlayQueue: SidebarComponent = observer(function PlayQueue() {
+export const PlayQueue: SidebarComponent = observer(() => {
   const player = usePlayer()
   return (
     <div className={styles.container}>

@@ -3,6 +3,8 @@ import { types } from 'mobx-state-tree'
 import { Album } from './Album'
 import { Author } from './Author'
 import { HML } from './HML'
+import { NoCopyrightRcmd } from './NoCopyrightRcmd'
+import { OriginSongSimpleData } from './OriginSongSimpleData'
 
 export const Track = types.model('Track', {
   name: types.string,
@@ -34,9 +36,9 @@ export const Track = types.model('Track', {
   s_id: types.number,
   mark: types.number,
   originCoverType: types.number,
-  originSongSimpleData: types.null,
+  originSongSimpleData: types.maybeNull(OriginSongSimpleData),
   single: types.number,
-  noCopyrightRcmd: types.null,
+  noCopyrightRcmd: types.maybeNull(NoCopyrightRcmd),
   mst: types.number,
   cp: types.number,
   mv: types.number,

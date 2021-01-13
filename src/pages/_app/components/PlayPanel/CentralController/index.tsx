@@ -14,8 +14,21 @@ export const CentralController: React.VFC = observer(() => {
 
   useEffect(() => {
     if (currentTrack && ref.current) {
+      ref.current.addEventListener('ended', player.handleEnded)
+      // Should replace previous event handler
+      ref.current.onplay = currentTrack.observeCurrentTime
+      ref.current.onpause = currentTrack.unobserveCurrentTime
+    }
+  }, [currentTrack, player.handleEnded])
+
+  useEffect(() => {
+    if (currentTrack && ref.current) {
       ref.current.currentTime = currentTrack.currentTimeInSecond
     }
+    /**
+     * Ignore the updates of `currentTimeInSecond`, cause it is
+     * updated continually if audio is playing.
+     */
   }, [currentTrack, currentTrack?.currentTimeSetTimes])
 
   useEffect(() => {
@@ -29,10 +42,8 @@ export const CentralController: React.VFC = observer(() => {
 
     if (currentTrack.playing) {
       ref.current.play()
-      currentTrack.observeCurrentTime()
     } else {
       ref.current.pause()
-      currentTrack.unobserveCurrentTime()
     }
   }, [currentTrack, currentTrack?.playing, currentTrack?.songUrl])
 

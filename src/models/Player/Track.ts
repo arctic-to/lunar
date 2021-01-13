@@ -11,7 +11,7 @@ export const Track = types
     playing: false,
     songUrl: '',
     currentTime: 0, // ms
-    currentTimeSetTimes: 0,
+    currentTimeSetTimes: 0, // Times of setting current time manually
     volume: 1, // Independent volume for every track
   })
   .views((self) => ({
@@ -31,17 +31,10 @@ export const Track = types
     },
   }))
   .actions((self) => ({
-    increaseCurrentTime() {
-      const nextTime = self.currentTime + SECOND
-      const overflow = nextTime > self.song.dt
-      if (overflow) {
-        self.currentTime = 0
-        self.pause()
-      } else {
-        self.currentTime = nextTime
-      }
+    setCurrentTime(currentTime: number) {
+      self.currentTime = currentTime
     },
-    setCurrentTime(percentage: number) {
+    setCurrentTimeByPercentage(percentage: number) {
       self.currentTime = percentage * self.song.dt
       self.currentTimeSetTimes++
     },
@@ -62,10 +55,12 @@ export const Track = types
     timeoutID: null as null | NodeJS.Timeout,
   }))
   .actions((self) => ({
-    observeCurrentTime() {
+    observeCurrentTime(e: Event) {
       if (self.timeoutID) return
+
       self.timeoutID = setInterval(() => {
-        self.increaseCurrentTime()
+        if (!(e.target instanceof HTMLAudioElement)) return
+        self.setCurrentTime(e.target?.currentTime * SECOND)
       }, SECOND)
     },
     unobserveCurrentTime() {
@@ -82,8 +77,10 @@ export const Track = types
     },
     beforeDestroy() {
       self.pause()
-      // Must unobserve. After `beforeDestroy` executed,
-      // the track can never be referenced.
+      /**
+       * Must unobserve. After `beforeDestroy` executed,
+       * the track can never be referenced.
+       */
       self.unobserveCurrentTime()
     },
   }))
