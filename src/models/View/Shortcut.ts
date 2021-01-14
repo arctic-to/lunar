@@ -3,6 +3,7 @@ import { types } from 'mobx-state-tree'
 export enum ShortcutEnum {
   PlayQueue = 'PlayQueue',
   Playlists = 'Playlists',
+  History = 'History',
   Search = 'Search',
 }
 

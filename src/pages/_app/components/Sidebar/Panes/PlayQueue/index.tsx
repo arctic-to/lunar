@@ -12,9 +12,12 @@ export const PlayQueue: SidebarComponent = observer(() => {
   const player = usePlayer()
   return (
     <div className={styles.container}>
-      {player.queue.map((song) => (
-        <Song key={song.id} song={getSnapshot(song)} />
-      ))}
+      <div className={styles.header}>{player.queue.name}</div>
+      <div className={styles.songs}>
+        {player.queue.songs.map((song) => (
+          <Song key={song.id} song={getSnapshot(song)} />
+        ))}
+      </div>
     </div>
   )
 })

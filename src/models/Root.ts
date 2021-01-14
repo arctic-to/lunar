@@ -10,7 +10,7 @@ import { Platform, platform } from './Platform'
 import { Player, player } from './Player'
 import { View, view } from './View'
 
-const RawRootStore = types.model({
+const RawRootStore = types.model('RawRootStore', {
   player: Player,
   view: View,
   platform: Platform,

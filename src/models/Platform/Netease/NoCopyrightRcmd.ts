@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree'
 
-export const NoCopyrightRcmd = types.model({
+export const NoCopyrightRcmd = types.model('NoCopyrightRcmd', {
   type: types.number,
   typeDesc: types.string,
-  songId: types.null,
+  songId: types.maybeNull(types.string),
 })

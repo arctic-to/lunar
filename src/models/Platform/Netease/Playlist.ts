@@ -2,7 +2,7 @@ import { types } from 'mobx-state-tree'
 
 import { Creator } from './Creator'
 
-export const Playlist = types.model({
+export const Playlist = types.model('Playlist', {
   subscribers: types.array(types.frozen()),
   subscribed: types.boolean,
   creator: Creator,

@@ -1,4 +1,4 @@
-import { SnapshotOut, types } from 'mobx-state-tree'
+import { SnapshotIn, types } from 'mobx-state-tree'
 import useSWR from 'swr'
 
 import { usePlatform } from '@/models'
@@ -20,7 +20,7 @@ export function useUserPlaylist() {
   }
 }
 
-type UserPlaylistResponseSnapshot = SnapshotOut<typeof UserPlaylistResponse>
+type UserPlaylistResponseSnapshot = SnapshotIn<typeof UserPlaylistResponse>
 const UserPlaylistResponse = types.model('UserPlaylistResponse', {
   version: types.string,
   more: types.boolean,

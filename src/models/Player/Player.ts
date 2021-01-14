@@ -1,6 +1,7 @@
-import { getSnapshot, types } from 'mobx-state-tree'
+import { applySnapshot, getSnapshot, types } from 'mobx-state-tree'
 
-import { Song, SongSnapshot } from './Song'
+import { History, history } from './History'
+import { Queue, queue, QueueSnapshotIn } from './Queue'
 import { Track, TrackSnapshot } from './Track'
 
 export enum OrderEnum {
@@ -12,7 +13,8 @@ export enum OrderEnum {
 export const Player = types
   .model('Player', {
     tracks: types.array(Track),
-    queue: types.array(Song),
+    queue: Queue,
+    history: History,
     volume: 1, // [0, 1]
     order: types.optional(
       types.enumeration('Order', Object.values(OrderEnum)),
@@ -27,13 +29,16 @@ export const Player = types
   }))
   .views((self) => ({
     get currTrackIndex() {
-      return self.queue.findIndex((song) => song.id === self.currTrack?.song.id)
+      return self.queue.songs.findIndex(
+        (song) => song.id === self.currTrack?.song.id,
+      )
     },
   }))
   // base actions
   .actions((self) => ({
     addTrack(trackSnapshot: TrackSnapshot) {
       self.tracks.push(trackSnapshot)
+      self.history.push(trackSnapshot.song)
     },
     clearTracks() {
       self.tracks.clear()
@@ -41,9 +46,8 @@ export const Player = types
     setVolume(percentage: number) {
       self.volume = percentage * 1
     },
-    replaceQueue(songSnapshots: SongSnapshot[]) {
-      self.queue.clear()
-      self.queue.push(...songSnapshots)
+    replaceQueue(queueSnapshot: QueueSnapshotIn) {
+      applySnapshot(self.queue, queueSnapshot)
     },
   }))
   .actions((self) => ({
@@ -61,9 +65,9 @@ export const Player = types
     },
     playNth(nth: number) {
       const mod = (n: number, m: number) => ((n % m) + m) % m
-      const index = mod(nth, self.queue.length)
+      const index = mod(nth, self.queue.songs.length)
       self.replaceTrack({
-        song: getSnapshot(self.queue[index]),
+        song: getSnapshot(self.queue.songs[index]),
         playing: true,
       })
     },
@@ -84,7 +88,7 @@ export const Player = types
           break
         }
         case OrderEnum.Shuffle: {
-          self.playNth(Math.floor(Math.random() * self.queue.length))
+          self.playNth(Math.floor(Math.random() * self.queue.songs.length))
           break
         }
         case OrderEnum.RepeatOne: {
@@ -100,7 +104,7 @@ export const Player = types
           break
         }
         case OrderEnum.Shuffle: {
-          self.playNth(Math.floor(Math.random() * self.queue.length))
+          self.playNth(Math.floor(Math.random() * self.queue.songs.length))
           break
         }
       }
@@ -113,7 +117,7 @@ export const Player = types
           break
         }
         case OrderEnum.Shuffle: {
-          self.playNth(Math.floor(Math.random() * self.queue.length))
+          self.playNth(Math.floor(Math.random() * self.queue.songs.length))
           break
         }
       }
@@ -131,4 +135,7 @@ export const Player = types
     },
   }))
 
-export const player = Player.create()
+export const player = Player.create({
+  queue,
+  history,
+})

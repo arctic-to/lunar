@@ -12,7 +12,7 @@ const NeteaseCloudMusicPane: Pane = () => {
   const { playlist: playlists } = data
   return (
     <div className={styles.container}>
-      {playlists.map((playlist) => (
+      {playlists?.map((playlist) => (
         <Playlist key={playlist.id} playlist={playlist} />
       ))}
     </div>

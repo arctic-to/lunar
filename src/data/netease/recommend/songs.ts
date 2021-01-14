@@ -1,4 +1,4 @@
-import { SnapshotOut, types } from 'mobx-state-tree'
+import { SnapshotIn, types } from 'mobx-state-tree'
 import useSWR from 'swr'
 
 import { DailySong } from '@/models/Platform/Netease'
@@ -18,7 +18,7 @@ export function useRecommedSongs() {
   }
 }
 
-type RecommedSongsResponseSnapshot = SnapshotOut<typeof RecommedSongsResponse>
+type RecommedSongsResponseSnapshot = SnapshotIn<typeof RecommedSongsResponse>
 const RecommedSongsResponse = types.model('RecommedSongsResponse', {
   code: types.number,
   data: types.model({

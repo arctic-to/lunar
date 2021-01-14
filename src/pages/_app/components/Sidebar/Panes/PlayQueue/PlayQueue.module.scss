@@ -1,6 +1,23 @@
+@use '~@/style/color';
 @use '~@/style/mixin';
 
 .container {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  font-size: 11px;
+  line-height: 22px;
+  font-weight: bold;
+  color: color.$pane-header-fg;
+  background-color: color.$pane-header-bg;
+  cursor: pointer;
+  padding-left: 20px;
+}
+
+.songs {
   overflow: auto;
   @include mixin.scrollbar(10);
 }

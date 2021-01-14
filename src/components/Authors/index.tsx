@@ -13,7 +13,7 @@ export const Authors: React.FC<AuthorsProps> = ({ song, className }) => {
   return (
     <div className={c(styles.container, className)}>
       {song.ar
-        .map((author) => <span>{author.name}</span>)
+        ?.map((author) => <span>{author.name}</span>)
         .reduce((acc, cur) => {
           return (
             <>

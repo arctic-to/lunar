@@ -1,4 +1,4 @@
-import { SnapshotOut, types } from 'mobx-state-tree'
+import { SnapshotIn, types } from 'mobx-state-tree'
 import useSWR from 'swr'
 
 import { PlaylistDetail, Privilege } from '@/models/Platform/Netease'
@@ -18,8 +18,8 @@ export function usePlaylistDetail(id: number | null) {
   }
 }
 
-type PlaylistDetailResponseSnapshot = SnapshotOut<typeof PlaylistDetailResponse>
-const PlaylistDetailResponse = types.model({
+type PlaylistDetailResponseSnapshot = SnapshotIn<typeof PlaylistDetailResponse>
+const PlaylistDetailResponse = types.model('PlaylistDetailResponse', {
   code: types.number,
   relatedVideos: types.null,
   playlist: PlaylistDetail,

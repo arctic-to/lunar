@@ -11,18 +11,18 @@ dayjs.extend(duration)
 
 export type SongProps = {
   song: SongSnapshot
-  sourcePlaylist: SongSnapshot[]
+  onDoubleClick: () => void
 }
 
-export const Song: React.VFC<SongProps> = ({ song, sourcePlaylist }) => {
+export const Song: React.VFC<SongProps> = ({ song, onDoubleClick }) => {
   const { player } = useStore()
   const handleDoubleClick = useCallback(() => {
     player.replaceTrack({
       song,
       playing: true,
     })
-    player.replaceQueue(sourcePlaylist)
-  }, [player, song, sourcePlaylist])
+    onDoubleClick()
+  }, [onDoubleClick, player, song])
 
   return (
     <div className={styles.container} onDoubleClick={handleDoubleClick}>
