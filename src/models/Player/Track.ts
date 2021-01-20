@@ -61,7 +61,7 @@ export const Track = types
       self.timeoutID = setInterval(() => {
         if (!(e.target instanceof HTMLAudioElement)) return
         self.setCurrentTime(e.target?.currentTime * SECOND)
-      }, SECOND)
+      }, SECOND / 10)
     },
     unobserveCurrentTime() {
       if (self.timeoutID) {

@@ -1,6 +1,7 @@
 import { applySnapshot, getSnapshot, types } from 'mobx-state-tree'
 
 import { History, history } from './History'
+import { Lyric, lyric } from './Lyric'
 import { Queue, queue, QueueSnapshotIn } from './Queue'
 import { Track, TrackSnapshot } from './Track'
 
@@ -16,6 +17,7 @@ export const Player = types
     queue: Queue,
     history: History,
     volume: 1, // [0, 1]
+    lyric: Lyric,
     order: types.optional(
       types.enumeration('Order', Object.values(OrderEnum)),
       OrderEnum.Repeat,
@@ -138,4 +140,5 @@ export const Player = types
 export const player = Player.create({
   queue,
   history,
+  lyric,
 })

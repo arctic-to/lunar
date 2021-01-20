@@ -7,5 +7,5 @@
   display: flex;
   align-items: center;
   padding: 16px;
-  @include mixin.draggable;
+  @include mixin.self-draggable;
 }

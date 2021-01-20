@@ -18,9 +18,6 @@
   }
 
   .left {
-    .active {
-      color: color.$green1;
-    }
   }
 
   .middle {
@@ -33,5 +30,9 @@
   }
 
   .right {
+  }
+
+  .active {
+    color: color.$green1;
   }
 }

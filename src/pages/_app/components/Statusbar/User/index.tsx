@@ -17,7 +17,7 @@ export default function User() {
 
   return (
     <div className={styles.container}>
-      {data ? (
+      {data?.profile ? (
         <img src={data.profile.avatarUrl} className={styles.avatar} />
       ) : (
         <>

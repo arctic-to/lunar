@@ -1,0 +1,26 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  font-size: 36vh;
+  line-height: 48vh;
+  @include mixin.draggable;
+}
+
+/** draggable element and all mouse event (include :hover) conflict */
+.hover {
+  background-color: color.$highlight8;
+}
+
+.curr_sentence,
+.next_sentence {
+  text-align: center;
+}
+
+.curr_sentence {
+  color: color.$green1;
+}
+
+.next_sentence {
+  color: color.$grey5;
+}

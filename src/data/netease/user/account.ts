@@ -1,4 +1,4 @@
-import { SnapshotIn, types } from 'mobx-state-tree'
+import { SnapshotOut, types } from 'mobx-state-tree'
 import useSWR from 'swr'
 
 import { Account, Profile } from '@/models/Platform/Netease'
@@ -19,9 +19,9 @@ export function useUserAccount() {
   }
 }
 
-type UserAccountResponseSnapshot = SnapshotIn<typeof UserAccountResponse>
+type UserAccountResponseSnapshot = SnapshotOut<typeof UserAccountResponse>
 const UserAccountResponse = types.model('UserAccountResponse', {
   code: types.number,
-  account: Account,
-  profile: Profile,
+  account: types.maybeNull(Account),
+  profile: types.maybeNull(Profile),
 })

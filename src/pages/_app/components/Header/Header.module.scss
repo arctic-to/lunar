@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  @include mixin.draggable;
+  @include mixin.self-draggable;
 }
 
 .logo {

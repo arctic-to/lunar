@@ -11,7 +11,7 @@ import {
   RiSkipForwardFill,
 } from 'react-icons/ri'
 
-import { Lyric } from '@/icons'
+import { IconLyric } from '@/icons'
 import { OrderEnum, useCurrentTrack, usePlayer } from '@/models'
 
 import styles from './Buttons.module.scss'
@@ -27,6 +27,7 @@ export const Buttons: React.VFC = observer(() => {
     repeat,
     shuffle,
     repeatOne,
+    lyric,
   } = usePlayer()
 
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -60,7 +61,10 @@ export const Buttons: React.VFC = observer(() => {
         <RiSkipForwardFill onClick={playNext} />
       </div>
       <div className={styles.right}>
-        <Lyric />
+        <IconLyric
+          className={c({ [styles.active]: lyric.opened })}
+          onClick={lyric.toggle}
+        />
       </div>
     </div>
   )
