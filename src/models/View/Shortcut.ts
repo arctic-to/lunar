@@ -5,6 +5,7 @@ export enum ShortcutEnum {
   Playlists = 'Playlists',
   History = 'History',
   Search = 'Search',
+  Daily = 'Daily',
 }
 
 export const Shortcut = types

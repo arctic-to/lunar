@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useView, ShortcutEnum } from '@/models'
 
 import PaneContainer from './PaneContainer'
-import { Playlists, PlayQueue, History } from './Panes'
+import { Playlists, PlayQueue, History, Daily } from './Panes'
 import styles from './Sidebar.module.scss'
 import { isSidebarComponentWithPanes } from './types'
 
@@ -12,6 +12,7 @@ const shortcutMap = {
   [ShortcutEnum.Playlists]: Playlists,
   [ShortcutEnum.History]: History,
   [ShortcutEnum.Search]: Playlists,
+  [ShortcutEnum.Daily]: Daily,
 }
 
 export const Sidebar: React.VFC = observer(() => {

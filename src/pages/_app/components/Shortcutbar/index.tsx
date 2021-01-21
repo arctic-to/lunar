@@ -1,8 +1,9 @@
 import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { useCallback } from 'react'
-import { RiHeart3Line, RiPlayListFill } from 'react-icons/ri'
-import { VscHistory, VscSearch } from 'react-icons/vsc'
+import { IoCalendarOutline } from 'react-icons/io5'
+import { RiPlayListFill } from 'react-icons/ri'
+import { VscHistory, VscRepo, VscSearch } from 'react-icons/vsc'
 
 import { useView, ShortcutEnum } from '@/models'
 
@@ -15,7 +16,7 @@ const Shortcuts = [
   },
   {
     type: ShortcutEnum.Playlists,
-    icon: RiHeart3Line,
+    icon: VscRepo,
   },
   {
     type: ShortcutEnum.PlayQueue,
@@ -24,6 +25,10 @@ const Shortcuts = [
   {
     type: ShortcutEnum.History,
     icon: VscHistory,
+  },
+  {
+    type: ShortcutEnum.Daily,
+    icon: IoCalendarOutline,
   },
 ]
 

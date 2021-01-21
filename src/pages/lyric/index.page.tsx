@@ -4,7 +4,7 @@ import { ipcRenderer, remote } from 'electron'
 import { compact, inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { applyAction, applySnapshot } from 'mobx-state-tree'
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useLyric } from '@/data'
 import { useCurrentTrack, usePlayer, PlayerSnapshotOut } from '@/models'
@@ -113,7 +113,7 @@ export const Lyric: React.VFC = observer(() => {
     })
   }, [hovering])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const container = ref.current
     const currSentenceElem = container?.firstElementChild
     if (!(container && currSentenceElem instanceof HTMLDivElement)) return
