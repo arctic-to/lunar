@@ -3,25 +3,41 @@ import dayjs from 'dayjs'
 import { ipcRenderer, remote } from 'electron'
 import { compact, inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { applyPatch } from 'mobx-state-tree'
+import { applyAction, applySnapshot } from 'mobx-state-tree'
 import { useEffect, useMemo, useState } from 'react'
 
 import { useLyric } from '@/data'
-import { useCurrentTrack, useStore } from '@/models'
+import { useCurrentTrack, usePlayer, PlayerSnapshotOut } from '@/models'
 
 import styles from './Lyric.module.scss'
 
 export const Lyric: React.VFC = observer(() => {
   const [hovering, setHovering] = useState(false)
+  const player = usePlayer()
   const currentTrack = useCurrentTrack()
-  const rootStore = useStore()
   const { data } = useLyric(currentTrack?.song.id ?? null)
 
   useEffect(() => {
-    ipcRenderer.on('patch', (event, patch) => {
-      applyPatch(rootStore, patch)
+    ipcRenderer.on(
+      'store:player:init',
+      (event, playerSnapshot: PlayerSnapshotOut) => {
+        applySnapshot(player, playerSnapshot)
+      },
+    )
+  }, [player])
+
+  useEffect(() => {
+    ipcRenderer.on('store:player:action', (event, action) => {
+      applyAction(player, action)
     })
-  }, [rootStore])
+  }, [player])
+
+  useEffect(() => {
+    if (!currentTrack) return
+    currentTrack.playing
+      ? currentTrack.currentTimeObserver(100)()
+      : currentTrack.unobserveCurrentTime()
+  }, [currentTrack, currentTrack?.playing])
 
   const lyric = useMemo(() => compact(data?.lrc?.lyric.split('\n')), [
     data?.lrc?.lyric,
@@ -29,21 +45,23 @@ export const Lyric: React.VFC = observer(() => {
 
   const parsedLyric = useMemo(
     () =>
-      lyric?.map((rawSentence) => {
-        const matches = rawSentence.match(
-          /\[(?<minute>\d+):(?<second>\d+).(?<millisecond>\d+)\](?<content>.*)/,
-        )
-        return {
-          begin: dayjs
-            .duration({
-              minutes: matches?.groups?.minute,
-              seconds: matches?.groups?.second,
-              milliseconds: matches?.groups?.millisecond,
-            })
-            .asMilliseconds(),
-          content: matches?.groups?.content,
-        }
-      }),
+      lyric
+        ?.map((rawSentence) => {
+          const matches = rawSentence.match(
+            /\[(?<minute>\d+):(?<second>\d+).(?<millisecond>\d+)\](?<content>.*)/,
+          )
+          return {
+            begin: dayjs
+              .duration({
+                minutes: matches?.groups?.minute,
+                seconds: matches?.groups?.second,
+                milliseconds: matches?.groups?.millisecond,
+              })
+              .asMilliseconds(),
+            content: matches?.groups?.content,
+          }
+        })
+        .sort((sentence1, sentence2) => sentence1.begin - sentence2.begin),
     [lyric],
   )
 

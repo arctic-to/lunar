@@ -16,7 +16,7 @@ export const CentralController: React.VFC = observer(() => {
     if (currentTrack && ref.current) {
       ref.current.addEventListener('ended', player.handleEnded)
       // Should replace previous event handler
-      ref.current.onplay = currentTrack.observeCurrentTime
+      ref.current.onplay = currentTrack.currentTimeObserver()
       ref.current.onpause = currentTrack.unobserveCurrentTime
     }
   }, [currentTrack, player.handleEnded])

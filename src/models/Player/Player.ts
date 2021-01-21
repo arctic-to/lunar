@@ -1,4 +1,4 @@
-import { applySnapshot, getSnapshot, types } from 'mobx-state-tree'
+import { applySnapshot, getSnapshot, SnapshotOut, types } from 'mobx-state-tree'
 
 import { History, history } from './History'
 import { Lyric, lyric } from './Lyric'
@@ -136,6 +136,8 @@ export const Player = types
       self.order = OrderEnum.RepeatOne
     },
   }))
+
+export type PlayerSnapshotOut = SnapshotOut<typeof Player>
 
 export const player = Player.create({
   queue,

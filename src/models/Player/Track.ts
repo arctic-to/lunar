@@ -55,13 +55,25 @@ export const Track = types
     timeoutID: null as null | NodeJS.Timeout,
   }))
   .actions((self) => ({
-    observeCurrentTime(e: Event) {
-      if (self.timeoutID) return
-
-      self.timeoutID = setInterval(() => {
-        if (!(e.target instanceof HTMLAudioElement)) return
-        self.setCurrentTime(e.target?.currentTime * SECOND)
-      }, SECOND / 10)
+    setTimeoutID(timeoutID: NodeJS.Timeout) {
+      self.timeoutID = timeoutID
+    },
+  }))
+  .actions((self) => ({
+    currentTimeObserver(interval: number = SECOND) {
+      return (e?: Event) => {
+        if (self.timeoutID) return
+        self.setTimeoutID(
+          setInterval(() => {
+            if (e) {
+              if (!(e.target instanceof HTMLAudioElement)) return
+              self.setCurrentTime(e.target?.currentTime * SECOND)
+            } else {
+              self.setCurrentTime(self.currentTime + interval)
+            }
+          }, interval),
+        )
+      }
     },
     unobserveCurrentTime() {
       if (self.timeoutID) {

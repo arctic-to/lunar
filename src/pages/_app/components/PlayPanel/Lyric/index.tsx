@@ -1,14 +1,18 @@
 import { remote } from 'electron'
 import { observer } from 'mobx-react-lite'
-import { onPatch } from 'mobx-state-tree'
-import { useState, useEffect } from 'react'
+import { getSnapshot, onAction } from 'mobx-state-tree'
+import { useState, useEffect, useCallback } from 'react'
 
-import { usePlayer, useStore } from '@/models'
+import { usePlayer } from '@/models'
 
 export const Lyric: React.VFC = observer(() => {
   const [win, setWin] = useState<Electron.BrowserWindow | null>(null)
-  const rootStore = useStore()
+  const player = usePlayer()
   const { lyric } = usePlayer()
+
+  const updateBounds = useCallback(() => {
+    if (win) lyric.setBounds(win.getBounds())
+  }, [lyric, win])
 
   useEffect(() => {
     if (!lyric.opened) return
@@ -36,15 +40,34 @@ export const Lyric: React.VFC = observer(() => {
 
   useEffect(() => {
     win?.loadURL('http://localhost:3000/lyric')
+  }, [win])
 
-    win?.on('moved', () => {
-      if (win) lyric.setBounds(win.getBounds())
-    })
+  useEffect(() => {
+    win?.on('moved', updateBounds)
+    win?.on('resized', updateBounds)
+  }, [updateBounds, win])
 
-    return onPatch(rootStore, (patch) => {
-      win?.webContents.send('patch', patch)
+  useEffect(() => {
+    /**
+     * The window who is not ready to show will not receive messages.
+     */
+    win?.on('ready-to-show', () => {
+      win?.webContents.send('store:player:init', getSnapshot(player))
     })
-  }, [lyric, rootStore, win])
+  }, [player, win?.webContents, win])
+
+  useEffect(() => {
+    return onAction(player, (action) => {
+      /**
+       * Variables store time (like `currentTime`) should be calculated by other
+       * variables, instead of sync them.
+       */
+      const excludedActions = ['setCurrentTime', 'setTimeoutID']
+      if (!excludedActions.includes(action.name)) {
+        win?.webContents.send('store:player:action', action)
+      }
+    })
+  }, [player, win?.webContents])
 
   return null
 })

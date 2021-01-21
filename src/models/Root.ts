@@ -56,8 +56,6 @@ export function initRootStore() {
 
 export function observeRootStore() {
   onSnapshot(rootStore, (snapshot) => {
-    // eslint-disable-next-line no-console
-    console.log('Snapshot: ', snapshot)
     localStorage.setItem('rootStore', JSON.stringify(snapshot))
   })
 }
