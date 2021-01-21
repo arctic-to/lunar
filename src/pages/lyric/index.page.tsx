@@ -4,7 +4,7 @@ import { ipcRenderer, remote } from 'electron'
 import { compact, inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { applyAction, applySnapshot } from 'mobx-state-tree'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 import { useLyric } from '@/data'
 import { useCurrentTrack, usePlayer, PlayerSnapshotOut } from '@/models'
@@ -12,6 +12,7 @@ import { useCurrentTrack, usePlayer, PlayerSnapshotOut } from '@/models'
 import styles from './Lyric.module.scss'
 
 export const Lyric: React.VFC = observer(() => {
+  const ref = useRef<HTMLDivElement>(null)
   const [hovering, setHovering] = useState(false)
   const player = usePlayer()
   const currentTrack = useCurrentTrack()
@@ -61,7 +62,14 @@ export const Lyric: React.VFC = observer(() => {
             content: matches?.groups?.content,
           }
         })
-        .sort((sentence1, sentence2) => sentence1.begin - sentence2.begin),
+        .sort((sentence1, sentence2) => sentence1.begin - sentence2.begin)
+        .map((sentence, index, parsedLyric) => {
+          const nextSentence = parsedLyric[index + 1]
+          return {
+            ...sentence,
+            duration: nextSentence ? nextSentence.begin - sentence.begin : 0,
+          }
+        }),
     [lyric],
   )
 
@@ -100,16 +108,52 @@ export const Lyric: React.VFC = observer(() => {
   }, [])
 
   useEffect(() => {
-    window.document.body.className = c(styles.container, {
+    window.document.body.className = c(styles.body, {
       [styles.hover]: hovering,
     })
   }, [hovering])
 
+  useLayoutEffect(() => {
+    const container = ref.current
+    const currSentenceElem = container?.firstElementChild
+    if (!(container && currSentenceElem instanceof HTMLDivElement)) return
+
+    /**
+     * Reset position.
+     */
+    currSentenceElem.style.transform = ''
+
+    const { width: containerWidth } = container.getBoundingClientRect()
+    const {
+      width: currSentenceWidth,
+    } = currSentenceElem.getBoundingClientRect()
+    const currSentenceOverflowWidth = currSentenceWidth - containerWidth
+    const start = Date.now()
+
+    window.requestAnimationFrame(function step() {
+      if (!(currSentence && currSentenceElem instanceof HTMLDivElement)) return
+      const percentage = (Date.now() - start) / currSentence.duration
+
+      const BEGIN_PERCENTAGE = 0.3
+      const END_PERCENTAGE = 0.8
+      const MOVEMENT_SPEED = 1 / (END_PERCENTAGE - BEGIN_PERCENTAGE)
+
+      if (percentage > BEGIN_PERCENTAGE) {
+        currSentenceElem.style.transform = `translateX(-${
+          MOVEMENT_SPEED *
+          (percentage - BEGIN_PERCENTAGE) *
+          currSentenceOverflowWidth
+        }px)`
+      }
+      if (percentage < END_PERCENTAGE) window.requestAnimationFrame(step)
+    })
+  }, [currSentence, player.lyric.bounds.width, player.lyric.bounds.height])
+
   return (
-    <>
+    <div className={styles.container} ref={ref}>
       <div className={styles.curr_sentence}>{currSentence?.content}</div>
       <div className={styles.next_sentence}>{nextSentence?.content}</div>
-    </>
+    </div>
   )
 })
 

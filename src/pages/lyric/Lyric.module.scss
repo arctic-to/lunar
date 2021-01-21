@@ -1,23 +1,33 @@
 @use '~@/style/color';
 @use '~@/style/mixin';
 
-.container {
-  font-size: 36vh;
-  line-height: 48vh;
-  @include mixin.draggable;
+.body {
 }
 
 /** draggable element and all mouse event (include :hover) conflict */
 .hover {
-  background-color: color.$highlight8;
+  background-color: color.$overlay1;
+}
+
+.container {
+  margin: 2vh;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  @include mixin.draggable;
 }
 
 .curr_sentence,
 .next_sentence {
-  text-align: center;
+  font-size: 32vh;
+  line-height: 48vh;
+  height: 48vh;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .curr_sentence {
+  display: inline-block;
   color: color.$green1;
 }
 
