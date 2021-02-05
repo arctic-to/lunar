@@ -1,0 +1,35 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.input_container {
+  display: flex;
+}
+
+.input {
+  flex: 1;
+  margin: 2px 10px 2px 20px;
+  height: 24px;
+  background-color: color.$input;
+  color: color.$input-text;
+  padding: 4px;
+  font-size: 12px;
+
+  &::placeholder {
+    color: color.$input-placeholder;
+  }
+
+  &:focus {
+    outline: 1px solid color.$input-border;
+  }
+}
+
+.songs {
+  overflow: auto;
+  @include mixin.scrollbar(10);
+}

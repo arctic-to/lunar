@@ -35,6 +35,14 @@ button {
   }
 }
 
+input {
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 ::-webkit-scrollbar-thumb {
   border-left: 2px solid transparent;
   background-color: transparent;
