@@ -1,5 +1,7 @@
 export * from './cloudsearch'
 export * from './fetcher'
+export * from './like'
+export * from './likelist'
 export * from './login'
 export * from './lyric'
 export * from './playlist'

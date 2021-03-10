@@ -9,7 +9,7 @@ import { fetcher } from '../fetcher'
 export function useUserPlaylist() {
   const { netease } = usePlatform()
   const { data, error } = useSWR<UserPlaylistResponseSnapshot>(
-    `/user/playlist?uid=${netease?.profile.userId}`,
+    `/user/playlist?uid=${netease?.profile?.userId}`,
     fetcher,
   )
 

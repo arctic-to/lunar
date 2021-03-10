@@ -10,10 +10,14 @@ import styles from './User.module.scss'
 
 export default function User() {
   const [opened, openModal, closeModal] = useBoolean(false)
-  const platform = usePlatform()
+  const { netease } = usePlatform()
+
   const { data } = useUserAccount()
 
-  if (data) platform.updateNetease(data)
+  if (data) {
+    netease?.setAccount(data.account)
+    netease?.setProfile(data.profile)
+  }
 
   return (
     <div className={styles.container}>

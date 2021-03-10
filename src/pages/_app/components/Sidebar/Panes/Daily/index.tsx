@@ -3,8 +3,8 @@ import { xor } from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useCallback, useEffect, useMemo } from 'react'
 
-import { useRecommedSongs, useUserAccount } from '@/data'
-import { usePlayer } from '@/models'
+import { useRecommedSongs } from '@/data'
+import { usePlatform, usePlayer } from '@/models'
 import {
   trackNeteaseCloudMusicRecommendedSongs,
   useNeteaseCloudMusicRecommendedSongs,
@@ -20,7 +20,7 @@ export const Daily: SidebarComponent = observer(() => {
 
   const player = usePlayer()
   const { data } = useRecommedSongs()
-  const { data: userAccountData } = useUserAccount()
+  const { netease } = usePlatform()
   const {
     data: neteaseCloudMusicRecommendedSongsData,
     mutate,
@@ -30,10 +30,10 @@ export const Daily: SidebarComponent = observer(() => {
   ])
 
   useEffect(() => {
-    if (userAccountData?.account && neteaseCloudMusicRecommendedSongsData) {
+    if (netease?.profile && neteaseCloudMusicRecommendedSongsData) {
       const trackedDailySongs = {
         songIds: dailySongs.map((song) => song.id),
-        userId: userAccountData.account.id,
+        userId: netease.profile.userId,
       }
       const [
         lastNeteaseCloudMusicRecommendedSongs = undefined,
@@ -53,7 +53,7 @@ export const Daily: SidebarComponent = observer(() => {
     dailySongs,
     mutate,
     neteaseCloudMusicRecommendedSongsData,
-    userAccountData?.account,
+    netease?.profile,
   ])
 
   const updatePlayQueue = useCallback(() => {

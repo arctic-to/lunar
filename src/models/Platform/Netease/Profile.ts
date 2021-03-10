@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { SnapshotIn, types } from 'mobx-state-tree'
 
 export const Profile = types.model('Profile', {
   userId: types.number,
@@ -39,3 +39,5 @@ export const Profile = types.model('Profile', {
   avatarDetail: types.null,
   anchor: types.boolean,
 })
+
+export type ProfileSnapshotIn = SnapshotIn<typeof Profile>

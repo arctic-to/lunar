@@ -1,11 +1,26 @@
-import { SnapshotOut, types } from 'mobx-state-tree'
+import { cast, SnapshotOut, types } from 'mobx-state-tree'
 
-import { Account } from './Account'
-import { Profile } from './Profile'
+import { Account, AccountSnapshotIn } from './Account'
+import { Likelist, LikelistSnapshotOut } from './Likelist'
+import { Profile, ProfileSnapshotIn } from './Profile'
 
-export const Netease = types.model('Netease', {
-  account: types.maybeNull(Account),
-  profile: types.maybeNull(Profile),
-})
+export const Netease = types
+  .model('Netease', {
+    account: types.maybeNull(Account),
+    profile: types.maybeNull(Profile),
+    likelist: types.maybeNull(Likelist),
+  })
+  .actions((self) => ({
+    setAccount(account: AccountSnapshotIn | null) {
+      self.account = account
+    },
+    setProfile(profile: ProfileSnapshotIn | null) {
+      self.profile = profile
+    },
+    setLikelist(likelist: LikelistSnapshotOut) {
+      self.likelist = cast(likelist)
+    },
+  }))
 
+export const netease = Netease.create()
 export type NeteaseSnapshot = SnapshotOut<typeof Netease>

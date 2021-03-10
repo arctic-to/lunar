@@ -2,7 +2,7 @@ import { SnapshotIn, types } from 'mobx-state-tree'
 import qs from 'qs'
 import useSWR from 'swr'
 
-import { Track, Privilege } from '@/models/Platform'
+import { Track, Privilege } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 

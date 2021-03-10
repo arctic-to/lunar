@@ -1,8 +1,10 @@
 import _axios from 'axios'
 
 export const axios = _axios.create({
-  baseURL: 'http://101.32.178.46:1230',
+  baseURL: process.env.NEXT_PUBLIC_NETEASE_CLOUD_MUSIC_API,
   withCredentials: true,
 })
 
-export const fetcher = (url: string) => axios.get(url).then((res) => res.data)
+export function fetcher<T>(url: string) {
+  return axios.get<T>(url).then((res) => res.data)
+}

@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { SnapshotIn, types } from 'mobx-state-tree'
 
 export const Account = types.model('Account', {
   id: types.number,
@@ -15,3 +15,5 @@ export const Account = types.model('Account', {
   anonimousUser: types.boolean,
   paidFee: types.boolean,
 })
+
+export type AccountSnapshotIn = SnapshotIn<typeof Account>
