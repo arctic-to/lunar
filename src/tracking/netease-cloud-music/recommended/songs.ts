@@ -5,7 +5,7 @@ import { usePlatform } from '@/models'
 
 import { fetcher, axios } from '../fetcher'
 
-const PATH = '/netease-cloud-music/recommended/songs'
+const PATH = '/recommended/songs'
 
 export function useNeteaseCloudMusicRecommendedSongs() {
   const { netease } = usePlatform()
