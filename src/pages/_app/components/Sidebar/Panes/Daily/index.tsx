@@ -1,14 +1,9 @@
 import dayjs from 'dayjs'
-import { xor } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useRecommedSongs } from '@/data'
-import { usePlatform, usePlayer } from '@/models'
-import {
-  trackNeteaseCloudMusicRecommendedSongs,
-  useNeteaseCloudMusicRecommendedSongs,
-} from '@/tracking'
+import { usePlayer } from '@/models'
 
 import { SidebarComponent } from '../../types'
 
@@ -20,40 +15,8 @@ export const Daily: SidebarComponent = observer(() => {
 
   const player = usePlayer()
   const { data } = useRecommedSongs()
-  const { netease } = usePlatform()
-  const {
-    data: neteaseCloudMusicRecommendedSongsData,
-    mutate,
-  } = useNeteaseCloudMusicRecommendedSongs()
   const dailySongs = useMemo(() => data?.data.dailySongs ?? [], [
     data?.data.dailySongs,
-  ])
-
-  useEffect(() => {
-    if (netease?.profile && neteaseCloudMusicRecommendedSongsData) {
-      const trackedDailySongs = {
-        songIds: dailySongs.map((song) => song.id),
-        userId: netease.profile.userId,
-      }
-      const [
-        lastNeteaseCloudMusicRecommendedSongs = undefined,
-      ] = neteaseCloudMusicRecommendedSongsData.slice(-1)
-
-      const tracked =
-        xor(
-          lastNeteaseCloudMusicRecommendedSongs?.songIds,
-          trackedDailySongs.songIds,
-        ).length === 0
-
-      if (!tracked) {
-        mutate(trackNeteaseCloudMusicRecommendedSongs(trackedDailySongs))
-      }
-    }
-  }, [
-    dailySongs,
-    mutate,
-    neteaseCloudMusicRecommendedSongsData,
-    netease?.profile,
   ])
 
   const updatePlayQueue = useCallback(() => {
