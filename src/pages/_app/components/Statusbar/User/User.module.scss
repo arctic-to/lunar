@@ -1,8 +1,13 @@
-.container {
-}
+@use '~@/style/color';
 
-.avatar {
-  width: 16px;
-  border-radius: 50%;
-  vertical-align: top;
+.container {
+  svg {
+    display: block;
+    font-size: 14px;
+    color: color.$grey6;
+  }
+
+  .logged {
+    color: color.$green1;
+  }
 }

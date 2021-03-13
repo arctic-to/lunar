@@ -1,4 +1,4 @@
-import { VscAccount } from 'react-icons/vsc'
+import { RiUserFollowLine, RiUserLine } from 'react-icons/ri'
 
 import { Modal } from '@/components'
 import { useUserAccount } from '@/data'
@@ -22,10 +22,10 @@ export default function User() {
   return (
     <div className={styles.container}>
       {data?.profile ? (
-        <img src={data.profile.avatarUrl} className={styles.avatar} />
+        <RiUserFollowLine className={styles.logged} />
       ) : (
         <>
-          <VscAccount onClick={openModal} className={styles.avatar} />
+          <RiUserLine onClick={openModal} />
           <Modal opened={opened} close={closeModal}>
             <LoginForm />
           </Modal>
