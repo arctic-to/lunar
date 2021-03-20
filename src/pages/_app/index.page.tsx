@@ -1,7 +1,8 @@
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
+import { Sash, SashContainer } from '@/components'
 import { RootStoreContext, initRootStore, rootStore } from '@/models'
 
 import styles from './App.module.scss'
@@ -12,11 +13,15 @@ import {
   Shortcutbar,
   Statusbar,
 } from './components'
+
 import './globals.scss'
 
 const pagesWithoutLayout = ['/lyric']
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [pane1, setPane1] = useState<HTMLDivElement | null>(null)
+  const [pane2, setPane2] = useState<HTMLDivElement | null>(null)
+
   const { pathname } = useRouter()
   const withoutLayout = pagesWithoutLayout.includes(pathname)
 
@@ -32,11 +37,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <>
           <Header />
           <div className={styles.main}>
-            <div className={styles.component}>
-              <Component {...pageProps} />
+            <SashContainer>
+              <Sash pane1={pane1} pane2={pane2} min={[400, 240]} />
+            </SashContainer>
+            <div className={styles.view_container}>
+              <div className={styles.component} ref={setPane1}>
+                <Component {...pageProps} />
+              </div>
+              <Sidebar ref={setPane2} />
+              <Shortcutbar />
             </div>
-            <Sidebar />
-            <Shortcutbar />
           </div>
           <PlayPanel />
           <Statusbar />

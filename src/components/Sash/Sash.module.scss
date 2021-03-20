@@ -1,0 +1,12 @@
+.sash {
+  height: 100%;
+  cursor: ew-resize;
+  position: absolute;
+  z-index: 1;
+
+  transition: background-color 0.1s ease-out;
+  &:hover,
+  &.hover {
+    background-color: #9bd3b2;
+  }
+}

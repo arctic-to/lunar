@@ -1,4 +1,5 @@
 export * from './Authors'
 export * from './Modal'
+export * from './Sash'
 export * from './Song'
 export * from './Slider'

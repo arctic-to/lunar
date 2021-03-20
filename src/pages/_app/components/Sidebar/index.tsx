@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import React from 'react'
 
 import { useView, ShortcutEnum } from '@/models'
 
@@ -15,28 +16,34 @@ const shortcutMap = {
   [ShortcutEnum.Daily]: Daily,
 }
 
-export const Sidebar: React.VFC = observer(() => {
-  const view = useView()
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface SidebarProps {}
 
-  if (!view.currShortcut) return null
+export const Sidebar = observer<SidebarProps, HTMLDivElement>(
+  (_, ref) => {
+    const view = useView()
 
-  const Component = shortcutMap[view.currShortcut.type]
-  const title = Component.title
+    if (!view.currShortcut) return null
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.title}>{title?.toUpperCase()}</div>
-      {isSidebarComponentWithPanes(Component) ? (
-        <div className={styles.panes}>
-          {Component.Panes?.map((Pane) => (
-            <PaneContainer key={Pane.title} Pane={Pane} />
-          ))}
-        </div>
-      ) : (
-        <Component />
-      )}
-    </div>
-  )
-})
+    const Component = shortcutMap[view.currShortcut.type]
+    const title = Component.title
+
+    return (
+      <div className={styles.container} ref={ref}>
+        <div className={styles.title}>{title?.toUpperCase()}</div>
+        {isSidebarComponentWithPanes(Component) ? (
+          <div className={styles.panes}>
+            {Component.Panes?.map((Pane) => (
+              <PaneContainer key={Pane.title} Pane={Pane} />
+            ))}
+          </div>
+        ) : (
+          <Component />
+        )}
+      </div>
+    )
+  },
+  { forwardRef: true },
+)
 
 export default Sidebar
