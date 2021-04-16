@@ -1,0 +1,7 @@
+@use '~@/style/color';
+
+.container {
+  width: 252px;
+  position: absolute;
+  background-color: color.$grey3;
+}

@@ -18,6 +18,8 @@ export const Privilege = types.model('Privilege', {
   preSell: types.boolean,
   playMaxbr: types.number,
   downloadMaxbr: types.number,
+  /** Add for `/song/detail` */
+  rscl: types.maybe(types.number),
   freeTrialPrivilege: types.model({
     resConsumable: types.boolean,
     userConsumable: types.boolean,

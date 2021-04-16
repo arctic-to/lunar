@@ -13,8 +13,22 @@
   font-weight: bold;
   color: color.$pane-header-fg;
   background-color: color.$pane-header-bg;
-  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
   padding-left: 20px;
+  padding-right: 10px;
+  .left,
+  .right {
+    display: flex;
+    align-items: center;
+    svg {
+      font-size: 16px;
+      cursor: pointer;
+      &.active {
+        color: color.$green1;
+      }
+    }
+  }
 }
 
 .songs {

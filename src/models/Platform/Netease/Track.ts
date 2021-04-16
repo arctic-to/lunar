@@ -37,6 +37,8 @@ export const Track = types.model('Track', {
   mark: types.number,
   originCoverType: types.number,
   originSongSimpleData: types.maybeNull(OriginSongSimpleData),
+  /** Add for `/song/detail` */
+  resourceState: types.maybe(types.boolean),
   single: types.number,
   noCopyrightRcmd: types.maybeNull(NoCopyrightRcmd),
   mst: types.number,
