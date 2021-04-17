@@ -13,11 +13,13 @@ dayjs.extend(duration)
 
 export type SongProps = {
   song: SongSnapshot
+  active: boolean
+  onClick: (e: React.MouseEvent) => void
   onDoubleClick: () => void
 }
 
 export const Song: React.VFC<SongProps> = observer(
-  ({ song, onDoubleClick }) => {
+  ({ song, active, onClick, onDoubleClick }) => {
     const player = usePlayer()
     const currentTrack = useCurrentTrack()
     const playing = currentTrack?.song.id === song.id
@@ -34,7 +36,11 @@ export const Song: React.VFC<SongProps> = observer(
 
     return (
       <div
-        className={c(styles.container, { [styles.playing]: playing })}
+        className={c(styles.container, {
+          [styles.playing]: playing,
+          [styles.active]: active,
+        })}
+        onClick={onClick}
         onDoubleClick={handleDoubleClick}
       >
         <div className={styles.name}>{song.name}</div>

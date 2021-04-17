@@ -1,5 +1,6 @@
 @use '~@/style/color';
 @use '~@/style/mixin';
+@use '../../common';
 
 .container {
   overflow: auto;
@@ -8,13 +9,7 @@
 }
 
 .header {
-  font-size: 11px;
-  line-height: 22px;
-  font-weight: bold;
-  color: color.$pane-header-fg;
-  background-color: color.$pane-header-bg;
-  cursor: pointer;
-  padding-left: 20px;
+  @include common.header-without-icon;
 }
 
 .songs {

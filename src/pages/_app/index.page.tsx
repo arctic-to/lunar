@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Header />
           <div className={styles.main}>
             <SashContainer>
-              <Sash pane1={pane1} pane2={pane2} min={[400, 240]} />
+              <Sash pane1={pane1} pane2={pane2} min={[400, 296]} />
             </SashContainer>
             <div className={styles.view_container}>
               <div className={styles.component} ref={setPane1}>

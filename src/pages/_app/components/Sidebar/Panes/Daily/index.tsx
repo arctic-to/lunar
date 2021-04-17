@@ -1,5 +1,6 @@
 import c from 'classnames'
 import dayjs from 'dayjs'
+import { range } from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
 import { useState } from 'react'
@@ -17,6 +18,7 @@ import styles from './Daily.module.scss'
 import Song from './Song'
 
 export const Daily: SidebarComponent = observer(() => {
+  const [activeSongIndexes, setActiveSongIndexes] = useState<number[]>([])
   const [date, setDate] = useState(dayjs())
   const [datePickerActive, toggleDatePickerActive] = useToggle(false)
   const title = `每日推荐 ${date.format('YYYY-MM-DD')}`
@@ -47,11 +49,25 @@ export const Daily: SidebarComponent = observer(() => {
     })
   }, [dailySongs, player, title])
 
+  const resetActiveSongIndexes = useCallback(
+    (index: number) => (e: React.MouseEvent) => {
+      if (e.shiftKey) {
+        setActiveSongIndexes([
+          ...range(activeSongIndexes[0] ?? 0, index),
+          index,
+        ])
+      } else {
+        setActiveSongIndexes([index])
+      }
+    },
+    [activeSongIndexes],
+  )
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.left}>{title}</div>
-        <div className={styles.right}>
+        <div>{title}</div>
+        <div className={styles.buttons}>
           <CgCalendar
             className={c({ [styles.active]: datePickerActive })}
             onClick={toggleDatePickerActive}
@@ -60,9 +76,22 @@ export const Daily: SidebarComponent = observer(() => {
       </div>
 
       <div className={styles.songs}>
-        {datePickerActive && <DatePicker date={date} onChange={handleChange} />}
-        {dailySongs?.map((song) => (
-          <Song key={song.id} song={song} onDoubleClick={updatePlayQueue} />
+        {datePickerActive && (
+          <DatePicker
+            className={styles.date_picker}
+            date={date}
+            onChange={handleChange}
+          />
+        )}
+
+        {dailySongs?.map((song, index) => (
+          <Song
+            key={song.id}
+            song={song}
+            active={activeSongIndexes.includes(index)}
+            onClick={resetActiveSongIndexes(index)}
+            onDoubleClick={updatePlayQueue}
+          />
         ))}
       </div>
     </div>

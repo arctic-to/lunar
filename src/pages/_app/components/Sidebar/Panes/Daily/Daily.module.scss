@@ -1,37 +1,23 @@
 @use '~@/style/color';
 @use '~@/style/mixin';
+@use '../../common';
 
 .container {
   overflow: auto;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .header {
-  font-size: 11px;
-  line-height: 22px;
-  font-weight: bold;
-  color: color.$pane-header-fg;
-  background-color: color.$pane-header-bg;
-  display: flex;
-  justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 10px;
-  .left,
-  .right {
-    display: flex;
-    align-items: center;
-    svg {
-      font-size: 16px;
-      cursor: pointer;
-      &.active {
-        color: color.$green1;
-      }
-    }
-  }
+  @include common.header-with-button;
 }
 
 .songs {
   overflow: auto;
   @include mixin.scrollbar(10);
+}
+
+.date_picker {
+  right: 0;
 }

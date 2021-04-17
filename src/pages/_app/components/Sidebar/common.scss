@@ -1,0 +1,43 @@
+@use '~@/style/color';
+
+@mixin _header {
+  font-size: 13px;
+  line-height: 30px;
+  font-weight: bold;
+  color: color.$pane-header-fg;
+  background-color: color.$pane-header-bg;
+  display: flex;
+  align-items: center;
+}
+
+@mixin header-with-icon {
+  @include _header;
+  cursor: pointer;
+  svg {
+    font-size: 20px;
+    margin: 0 2px;
+  }
+}
+
+@mixin header-without-icon {
+  @include _header;
+  padding-left: 24px;
+}
+
+@mixin header-with-button {
+  @include _header;
+  justify-content: space-between;
+  padding-left: 24px;
+  padding-right: 8px;
+  .buttons {
+    display: flex;
+    align-items: center;
+    svg {
+      font-size: 20px;
+      cursor: pointer;
+      &.active {
+        color: color.$green1;
+      }
+    }
+  }
+}
