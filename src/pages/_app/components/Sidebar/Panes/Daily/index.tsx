@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { CgCalendar } from 'react-icons/cg'
 import { useToggle } from 'react-use'
 
-import DatePicker from '@/components/DatePicker'
+import { DatePicker } from '@/components'
 import { useSongDetail } from '@/data'
 import { usePlayer } from '@/models'
 import { useNeteaseCloudMusicRecommendedSongs } from '@/tracking'
