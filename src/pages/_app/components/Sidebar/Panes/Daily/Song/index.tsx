@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { useCallback } from 'react'
 
 import { Authors } from '@/components'
+import { useLiked } from '@/hooks'
 import { usePlayer, SongSnapshot, useCurrentTrack } from '@/models'
 
 import styles from './Song.module.scss'
@@ -20,6 +21,7 @@ export type SongProps = {
 
 export const Song: React.VFC<SongProps> = observer(
   ({ song, active, onClick, onDoubleClick }) => {
+    const liked = useLiked(song.id)
     const player = usePlayer()
     const currentTrack = useCurrentTrack()
     const playing = currentTrack?.song.id === song.id
@@ -39,6 +41,7 @@ export const Song: React.VFC<SongProps> = observer(
         className={c(styles.container, {
           [styles.playing]: playing,
           [styles.active]: active,
+          [styles.liked]: liked,
         })}
         onClick={onClick}
         onDoubleClick={handleDoubleClick}

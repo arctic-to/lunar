@@ -1,7 +1,7 @@
 import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { IoMdHeartEmpty, IoMdHeart } from 'react-icons/io'
+import { RiHeart3Line, RiHeart3Fill } from 'react-icons/ri'
 import {
   RiRepeat2Line,
   RiShuffleLine,
@@ -68,9 +68,9 @@ export const Buttons: React.VFC = observer(() => {
           onClick={lyric.toggle}
         />
         {liked ? (
-          <IoMdHeart className={styles.fav} onClick={unlike} />
+          <RiHeart3Fill className={styles.fav} onClick={unlike} />
         ) : (
-          <IoMdHeartEmpty onClick={like} />
+          <RiHeart3Line onClick={like} />
         )}
       </div>
     </div>

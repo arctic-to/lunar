@@ -15,7 +15,7 @@
 
 .songs {
   overflow: auto;
-  @include mixin.scrollbar(10);
+  @include mixin.scrollbar(0);
 }
 
 .date_picker {
