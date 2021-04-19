@@ -4,11 +4,12 @@ import { range } from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
 import { useState } from 'react'
-import { CgCalendar } from 'react-icons/cg'
+import { CgCalendar, CgCalendarToday } from 'react-icons/cg'
 import { useToggle } from 'react-use'
 
 import { DatePicker } from '@/components'
-import { useSongDetail } from '@/data'
+import { useRecommedSongs, useSongDetail } from '@/data'
+import { useBoolean } from '@/hooks'
 import { usePlayer } from '@/models'
 import { useNeteaseCloudMusicRecommendedSongs } from '@/tracking'
 
@@ -18,28 +19,38 @@ import styles from './Daily.module.scss'
 import Song from './Song'
 
 export const Daily: SidebarComponent = observer(() => {
+  const [isLatest, setIsLatestToTrue, setIsLatestToFalse] = useBoolean(true)
   const [activeSongIndexes, setActiveSongIndexes] = useState<number[]>([])
   const [date, setDate] = useState(dayjs())
   const [datePickerActive, toggleDatePickerActive] = useToggle(false)
-  const title = `每日推荐 ${date.format('YYYY-MM-DD')}`
+  const title = isLatest ? '每日推荐' : `每日推荐 ${date.format('YYYY-MM-DD')}`
 
   const player = usePlayer()
+
   const { data } = useNeteaseCloudMusicRecommendedSongs()
   const dailySongIds = useMemo(
     () => data?.find((item) => date.isSame(item.createdAt, 'date'))?.songIds,
     [data, date],
   )
   const songDetail = useSongDetail(dailySongIds)
-  const dailySongs = useMemo(() => songDetail.data?.songs, [
+  const specificDailySongs = useMemo(() => songDetail.data?.songs, [
     songDetail.data?.songs,
   ])
+
+  const latestDailySongs = useRecommedSongs().data?.data.dailySongs
+
+  const dailySongs = useMemo(
+    () => (isLatest ? latestDailySongs : specificDailySongs),
+    [isLatest, latestDailySongs, specificDailySongs],
+  )
 
   const handleChange = useCallback(
     (date: dayjs.Dayjs) => {
       setDate(date)
       toggleDatePickerActive(false)
+      setIsLatestToFalse()
     },
-    [toggleDatePickerActive],
+    [setIsLatestToFalse, toggleDatePickerActive],
   )
 
   const updatePlayQueue = useCallback(() => {
@@ -71,6 +82,10 @@ export const Daily: SidebarComponent = observer(() => {
           <CgCalendar
             className={c({ [styles.active]: datePickerActive })}
             onClick={toggleDatePickerActive}
+          />
+          <CgCalendarToday
+            className={c({ [styles.active]: isLatest })}
+            onClick={setIsLatestToTrue}
           />
         </div>
       </div>

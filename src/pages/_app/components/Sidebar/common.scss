@@ -28,10 +28,11 @@
   @include _header;
   justify-content: space-between;
   padding-left: 24px;
-  padding-right: 8px;
+  padding-right: 10px;
   .buttons {
     display: flex;
     align-items: center;
+    gap: 8px;
     svg {
       font-size: 20px;
       cursor: pointer;
