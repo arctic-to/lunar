@@ -4,7 +4,6 @@ export enum ShortcutEnum {
   PlayQueue = 'PlayQueue',
   Playlists = 'Playlists',
   History = 'History',
-  Search = 'Search',
   Daily = 'Daily',
 }
 

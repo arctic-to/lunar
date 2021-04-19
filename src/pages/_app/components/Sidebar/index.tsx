@@ -4,7 +4,7 @@ import React from 'react'
 import { useView, ShortcutEnum } from '@/models'
 
 import PaneContainer from './PaneContainer'
-import { Playlists, PlayQueue, History, Daily, Search } from './Panes'
+import { Playlists, PlayQueue, History, Daily } from './Panes'
 import styles from './Sidebar.module.scss'
 import { isSidebarComponentWithPanes } from './types'
 
@@ -12,7 +12,6 @@ const shortcutMap = {
   [ShortcutEnum.PlayQueue]: PlayQueue,
   [ShortcutEnum.Playlists]: Playlists,
   [ShortcutEnum.History]: History,
-  [ShortcutEnum.Search]: Search,
   [ShortcutEnum.Daily]: Daily,
 }
 
