@@ -1,26 +1,16 @@
-@use '~@/style/color';
+@use '../../../common';
 
 .container {
 }
 
 .header {
-  font-size: 11px;
-  line-height: 22px;
-  color: color.$grey6;
-  cursor: pointer;
-  display: flex;
+  @include common.header-with-icon;
+  background-color: unset;
+  font-weight: unset;
   align-items: center;
-  padding-left: 15px;
-
-  svg {
-    font-size: 16px;
-    margin-right: 2px;
-  }
-
-  &:hover {
-    background-color: color.$highlight1;
-  }
+  padding-left: 8px;
 }
 
-.songs {
+.songlist {
+  @include common.songlist;
 }

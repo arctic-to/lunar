@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
-import { useCallback } from 'react'
+import { MouseEventHandler, useCallback } from 'react'
 
 import { Authors } from '@/components'
 import { usePlayer, AggregatedSong as AggregatedSongType } from '@/models'
@@ -14,11 +14,13 @@ dayjs.extend(duration)
 
 export type AggregatedSongProps = {
   aggregatedSong: AggregatedSongType
-  playing?: boolean
+  playing: boolean
+  active: boolean
+  onClick: MouseEventHandler
 }
 
 export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
-  ({ aggregatedSong, playing }) => {
+  ({ aggregatedSong, playing, active, onClick }) => {
     const player = usePlayer()
     const [historySong] = aggregatedSong.songs
 
@@ -41,12 +43,18 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
 
     return (
       <div
-        className={c(styles.container, { [styles.playing]: playing })}
+        className={c(styles.container, {
+          [styles.playing]: playing,
+          [styles.active]: active,
+        })}
+        onClick={onClick}
         onDoubleClick={handleDoubleClick}
       >
-        {aggregatedSong.songs.length > 1 && (
-          <div className={styles.count}>{aggregatedSong.songs.length}</div>
-        )}
+        <div className={styles.prefix}>
+          {aggregatedSong.songs.length > 1 && (
+            <div className={styles.count}>{aggregatedSong.songs.length}</div>
+          )}
+        </div>
         <div className={styles.name}>{historySong.name}</div>
         <Authors className={styles.authors} song={historySong} />
       </div>

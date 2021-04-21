@@ -3,6 +3,7 @@ import { VscChevronDown, VscChevronRight } from 'react-icons/vsc'
 import { useToggle } from 'react-use'
 
 import { usePlaylistDetail } from '@/data'
+import { useSonglist } from '@/hooks'
 import { PlaylistSnapshot, usePlayer } from '@/models'
 
 import styles from './Playlist.module.scss'
@@ -14,6 +15,7 @@ interface PlaylistProps {
 
 export const Playlist: React.VFC<PlaylistProps> = ({ playlist }) => {
   const [folded, toggle] = useToggle(true)
+  const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
   const player = usePlayer()
   const { data } = usePlaylistDetail(folded ? null : playlist.id)
 
@@ -30,9 +32,15 @@ export const Playlist: React.VFC<PlaylistProps> = ({ playlist }) => {
         {folded ? <VscChevronRight /> : <VscChevronDown />}
         {playlist.name}
       </div>
-      <div className={styles.songs}>
-        {data?.playlist.tracks?.map((track) => (
-          <Song key={track.id} song={track} onDoubleClick={updatePlayQueue} />
+      <div className={styles.songlist}>
+        {data?.playlist.tracks?.map((track, index) => (
+          <Song
+            key={track.id}
+            song={track}
+            active={activeSongIndexes.includes(index)}
+            onClick={resetActiveSongIndexes(index)}
+            onDoubleClick={updatePlayQueue}
+          />
         ))}
       </div>
     </div>

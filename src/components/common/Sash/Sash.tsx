@@ -1,4 +1,4 @@
-import { MouseEventHandler, useCallback, useLayoutEffect, useRef } from 'react'
+import { MouseEventHandler, useCallback, useEffect, useRef } from 'react'
 
 import styles from './Sash.module.scss'
 
@@ -23,7 +23,7 @@ export const Sash: React.VFC<SashProps> = ({ pane1, pane2, min }) => {
     HALF_WIDTH,
   ])
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (sashRef.current && pane1 && shouldRender) {
       sashRef.current.style.left = `${correctSashLeft(pane1.clientWidth)}px`
     }

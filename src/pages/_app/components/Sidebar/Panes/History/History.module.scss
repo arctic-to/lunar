@@ -1,6 +1,5 @@
-@use '~@/style/mixin';
+@use '../../common';
 
 .container {
-  overflow: auto;
-  @include mixin.scrollbar(10);
+  @include common.songlist;
 }

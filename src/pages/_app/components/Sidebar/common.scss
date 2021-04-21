@@ -1,4 +1,5 @@
 @use '~@/style/color';
+@use '~@/style/mixin';
 
 @mixin _header {
   font-size: 13px;
@@ -41,4 +42,53 @@
       }
     }
   }
+}
+
+@mixin song {
+  display: flex;
+  font-size: 11px;
+  line-height: 30px;
+  gap: 4px;
+  padding: 0 4px;
+
+  &:hover {
+    background-color: color.$highlight1;
+  }
+  &.active {
+    background-color: color.$highlight2;
+  }
+  &.liked {
+  }
+  &.playing {
+    .name {
+      color: color.$green1;
+    }
+  }
+
+  .prefix {
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .name {
+    flex: 2;
+    color: color.$grey6;
+  }
+
+  .authors {
+    flex: 1;
+    color: color.$grey5;
+  }
+
+  .name,
+  .authors {
+    @include mixin.ellipsis;
+  }
+}
+
+@mixin songlist {
+  overflow: auto;
+  @include mixin.scrollbar(0);
 }

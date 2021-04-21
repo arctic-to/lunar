@@ -2,10 +2,11 @@ import c from 'classnames'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import { observer } from 'mobx-react-lite'
-import { useCallback } from 'react'
+import { MouseEventHandler, useCallback } from 'react'
 
 import { Authors } from '@/components'
-import { useStore, SongSnapshot, useCurrentTrack } from '@/models'
+import { usePlaying } from '@/hooks'
+import { useStore, SongSnapshot } from '@/models'
 
 import styles from './Song.module.scss'
 
@@ -13,31 +14,39 @@ dayjs.extend(duration)
 
 export type SongProps = {
   song: SongSnapshot
+  active: boolean
+  onClick: MouseEventHandler
 }
 
-export const Song: React.VFC<SongProps> = observer(({ song }) => {
-  const { player } = useStore()
-  const currentTrack = useCurrentTrack()
-  const playing = currentTrack?.song.id === song.id
+export const Song: React.VFC<SongProps> = observer(
+  ({ song, active, onClick }) => {
+    const { player } = useStore()
+    const playing = usePlaying(song)
 
-  const handleDoubleClick = useCallback(() => {
-    if (playing) return
+    const handleDoubleClick = useCallback(() => {
+      if (playing) return
 
-    player.replaceTrack({
-      song,
-      playing: true,
-    })
-  }, [player, playing, song])
+      player.replaceTrack({
+        song,
+        playing: true,
+      })
+    }, [player, playing, song])
 
-  return (
-    <div
-      className={c(styles.container, { [styles.playing]: playing })}
-      onDoubleClick={handleDoubleClick}
-    >
-      <div className={styles.name}>{song.name}</div>
-      <Authors className={styles.authors} song={song} />
-    </div>
-  )
-})
+    return (
+      <div
+        className={c(styles.container, {
+          [styles.playing]: playing,
+          [styles.active]: active,
+        })}
+        onClick={onClick}
+        onDoubleClick={handleDoubleClick}
+      >
+        <div className={styles.prefix}></div>
+        <div className={styles.name}>{song.name}</div>
+        <Authors className={styles.authors} song={song} />
+      </div>
+    )
+  },
+)
 
 export default Song

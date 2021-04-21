@@ -1,6 +1,5 @@
 import c from 'classnames'
 import dayjs from 'dayjs'
-import { range } from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
 import { useState } from 'react'
@@ -9,7 +8,7 @@ import { useToggle } from 'react-use'
 
 import { DatePicker } from '@/components'
 import { useRecommedSongs, useSongDetail } from '@/data'
-import { useBoolean } from '@/hooks'
+import { useBoolean, useSonglist } from '@/hooks'
 import { usePlayer } from '@/models'
 import { useNeteaseCloudMusicRecommendedSongs } from '@/tracking'
 
@@ -20,11 +19,11 @@ import Song from './Song'
 
 export const Daily: SidebarComponent = observer(() => {
   const [isLatest, setIsLatestToTrue, setIsLatestToFalse] = useBoolean(true)
-  const [activeSongIndexes, setActiveSongIndexes] = useState<number[]>([])
   const [date, setDate] = useState(dayjs())
   const [datePickerActive, toggleDatePickerActive] = useToggle(false)
   const title = isLatest ? '每日推荐' : `每日推荐 ${date.format('YYYY-MM-DD')}`
 
+  const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
   const player = usePlayer()
 
   const { data } = useNeteaseCloudMusicRecommendedSongs()
@@ -44,15 +43,6 @@ export const Daily: SidebarComponent = observer(() => {
     [isLatest, latestDailySongs, specificDailySongs],
   )
 
-  const handleChange = useCallback(
-    (date: dayjs.Dayjs) => {
-      setDate(date)
-      toggleDatePickerActive(false)
-      setIsLatestToFalse()
-    },
-    [setIsLatestToFalse, toggleDatePickerActive],
-  )
-
   const updatePlayQueue = useCallback(() => {
     player.replaceQueue({
       name: title,
@@ -60,18 +50,13 @@ export const Daily: SidebarComponent = observer(() => {
     })
   }, [dailySongs, player, title])
 
-  const resetActiveSongIndexes = useCallback(
-    (index: number) => (e: React.MouseEvent) => {
-      if (e.shiftKey) {
-        setActiveSongIndexes([
-          ...range(activeSongIndexes[0] ?? 0, index),
-          index,
-        ])
-      } else {
-        setActiveSongIndexes([index])
-      }
+  const handleChange = useCallback(
+    (date: dayjs.Dayjs) => {
+      setDate(date)
+      toggleDatePickerActive(false)
+      setIsLatestToFalse()
     },
-    [activeSongIndexes],
+    [setIsLatestToFalse, toggleDatePickerActive],
   )
 
   return (
@@ -90,7 +75,7 @@ export const Daily: SidebarComponent = observer(() => {
         </div>
       </div>
 
-      <div className={styles.songs}>
+      <div className={styles.songlist}>
         {datePickerActive && (
           <DatePicker
             className={styles.date_picker}

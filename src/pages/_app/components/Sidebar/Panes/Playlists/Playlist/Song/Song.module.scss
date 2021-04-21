@@ -1,26 +1,5 @@
-@use '~@/style/color';
+@use '../../../../common';
 
 .container {
-  padding-left: 40px;
-  display: flex;
-  white-space: nowrap;
-  align-items: baseline;
-  overflow-x: hidden;
-  cursor: pointer;
-
-  &:hover {
-    background-color: color.$highlight1;
-  }
-}
-
-.name {
-  font-size: 11px;
-  line-height: 22px;
-  color: color.$grey6;
-}
-
-.authors {
-  font-size: 10px;
-  color: color.$grey5;
-  margin-left: 4px;
+  @include common.song;
 }

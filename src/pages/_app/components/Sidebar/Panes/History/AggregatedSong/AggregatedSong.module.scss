@@ -1,43 +1,17 @@
 @use '~@/style/color';
+@use '../../../common';
 
 .container {
-  padding-left: 20px;
-  display: flex;
-  white-space: nowrap;
-  align-items: baseline;
-  overflow-x: hidden;
-  cursor: pointer;
-  position: relative;
-
-  &:hover {
-    background-color: color.$highlight1;
+  @include common.song;
+  .count {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: 1px solid color.$green1;
+    font-size: 10px;
+    color: color.$green1;
   }
-
-  &.playing {
-    background-color: color.$highlight2;
-  }
-}
-
-.count {
-  position: absolute;
-  background-color: color.$green1;
-  font-size: 12px;
-  line-height: 22px;
-  font-weight: 500;
-  left: 0;
-  width: 16px;
-  display: flex;
-  justify-content: center;
-}
-
-.name {
-  font-size: 11px;
-  line-height: 22px;
-  color: color.$grey6;
-}
-
-.authors {
-  font-size: 10px;
-  color: color.$grey5;
-  margin-left: 4px;
 }

@@ -1,5 +1,3 @@
-@use '~@/style/color';
-@use '~@/style/mixin';
 @use '../../common';
 
 .container {
@@ -13,9 +11,8 @@
   @include common.header-with-button;
 }
 
-.songs {
-  overflow: auto;
-  @include mixin.scrollbar(0);
+.songlist {
+  @include common.songlist;
 }
 
 .date_picker {

@@ -1,5 +1,3 @@
-@use '~@/style/color';
-@use '~@/style/mixin';
 @use '../../common';
 
 .container {
@@ -12,7 +10,6 @@
   @include common.header-without-icon;
 }
 
-.songs {
-  overflow: auto;
-  @include mixin.scrollbar(10);
+.songlist {
+  @include common.songlist;
 }
