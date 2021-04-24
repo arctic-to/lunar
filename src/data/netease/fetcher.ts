@@ -5,6 +5,8 @@ export const axios = _axios.create({
   withCredentials: true,
 })
 
-export function fetcher<T>(url: string) {
-  return axios.get<T>(url).then((res) => res.data)
+export function fetcher<T>(url: string, withCredentials = true) {
+  return axios
+    .get<T>(url, { withCredentials })
+    .then((res) => res.data)
 }

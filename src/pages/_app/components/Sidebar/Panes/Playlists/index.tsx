@@ -1,6 +1,9 @@
 import { useUserPlaylist } from '@/data'
+import { useIsCurrShortcut } from '@/hooks'
+import { ShortcutEnum } from '@/models'
 
-import { SidebarComponent, Pane } from '../../types'
+import PaneContainer from '../../PaneContainer'
+import { Pane } from '../../types'
 
 import Playlist from './Playlist'
 import styles from './Playlists.module.scss'
@@ -21,9 +24,21 @@ const NeteaseCloudMusicPane: Pane = () => {
 
 NeteaseCloudMusicPane.title = '网易云音乐'
 
-export const Playlists: SidebarComponent = {
-  title: 'Playlists',
-  Panes: [NeteaseCloudMusicPane],
+const panes = [NeteaseCloudMusicPane]
+
+export const Playlists: React.VFC = () => {
+  const isCurrShortcut = useIsCurrShortcut(ShortcutEnum.Playlists)
+
+  return (
+    <div
+      className={styles.container}
+      style={isCurrShortcut ? undefined : { display: 'none' }}
+    >
+      {panes.map((Pane) => (
+        <PaneContainer key={Pane.title} Pane={Pane} />
+      ))}
+    </div>
+  )
 }
 
 export default Playlists

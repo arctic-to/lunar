@@ -1,19 +1,22 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSonglist } from '@/hooks'
-import { usePlayer } from '@/models'
-
-import { SidebarComponent } from '../../types'
+import { useIsCurrShortcut } from '@/hooks'
+import { ShortcutEnum, usePlayer } from '@/models'
 
 import { AggregatedSong } from './AggregatedSong'
 import styles from './History.module.scss'
 
-export const History: SidebarComponent = observer(() => {
+export const History: React.VFC = observer(() => {
   const { history } = usePlayer()
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
+  const isCurrShortcut = useIsCurrShortcut(ShortcutEnum.History)
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={isCurrShortcut ? undefined : { display: 'none' }}
+    >
       {history.aggregatedSongs.map((aggregatedSong, index) => (
         <AggregatedSong
           key={Number(aggregatedSong.songs[0].played)}
@@ -26,7 +29,5 @@ export const History: SidebarComponent = observer(() => {
     </div>
   )
 })
-
-History.title = 'History'
 
 export default History

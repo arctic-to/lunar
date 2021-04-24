@@ -2,19 +2,22 @@ import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
 
 import { useSonglist } from '@/hooks'
-import { usePlayer } from '@/models'
-
-import { SidebarComponent } from '../../types'
+import { useIsCurrShortcut } from '@/hooks'
+import { ShortcutEnum, usePlayer } from '@/models'
 
 import styles from './PlayQueue.module.scss'
 import Song from './Song'
 
-export const PlayQueue: SidebarComponent = observer(() => {
+export const PlayQueue: React.VFC = observer(() => {
   const player = usePlayer()
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
+  const isCurrShortcut = useIsCurrShortcut(ShortcutEnum.PlayQueue)
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={isCurrShortcut ? undefined : { display: 'none' }}
+    >
       <div className={styles.header}>{player.queue.name}</div>
       <div className={styles.songlist}>
         {player.queue.songs.map((song, index) => (
@@ -29,7 +32,5 @@ export const PlayQueue: SidebarComponent = observer(() => {
     </div>
   )
 })
-
-PlayQueue.title = 'PlayQueue'
 
 export default PlayQueue

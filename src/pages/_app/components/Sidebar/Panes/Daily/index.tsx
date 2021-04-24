@@ -9,15 +9,15 @@ import { useToggle } from 'react-use'
 import { DatePicker } from '@/components'
 import { useRecommedSongs, useSongDetail } from '@/data'
 import { useBoolean, useSonglist } from '@/hooks'
-import { usePlayer } from '@/models'
+import { useIsCurrShortcut } from '@/hooks'
+import { ShortcutEnum, usePlayer } from '@/models'
 import { useNeteaseCloudMusicRecommendedSongs } from '@/tracking'
-
-import { SidebarComponent } from '../../types'
 
 import styles from './Daily.module.scss'
 import Song from './Song'
 
-export const Daily: SidebarComponent = observer(() => {
+export const Daily: React.VFC = observer(() => {
+  const isCurrShortcut = useIsCurrShortcut(ShortcutEnum.Daily)
   const [isLatest, setIsLatestToTrue, setIsLatestToFalse] = useBoolean(true)
   const [date, setDate] = useState(dayjs())
   const [datePickerActive, toggleDatePickerActive] = useToggle(false)
@@ -60,7 +60,10 @@ export const Daily: SidebarComponent = observer(() => {
   )
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={isCurrShortcut ? undefined : { display: 'none' }}
+    >
       <div className={styles.header}>
         <div>{title}</div>
         <div className={styles.buttons}>
@@ -97,7 +100,5 @@ export const Daily: SidebarComponent = observer(() => {
     </div>
   )
 })
-
-Daily.title = 'Daily'
 
 export default Daily
