@@ -1,4 +1,4 @@
-import { types } from 'mobx-state-tree'
+import { SnapshotIn, types } from 'mobx-state-tree'
 
 export const Privilege = types.model('Privilege', {
   id: types.number,
@@ -33,3 +33,5 @@ export const Privilege = types.model('Privilege', {
     }),
   ),
 })
+
+export type PrivilegeSnapshot = SnapshotIn<typeof Privilege>

@@ -7,6 +7,7 @@ import { MouseEventHandler, useCallback } from 'react'
 import { Authors } from '@/components'
 import { useLiked, usePlaying } from '@/hooks'
 import { usePlayer, SongSnapshot } from '@/models'
+import { PrivilegeSnapshot } from '@/models/Platform/Netease'
 
 import styles from './Song.module.scss'
 
@@ -14,17 +15,18 @@ dayjs.extend(duration)
 
 export type SongProps = {
   song: SongSnapshot
+  privilege?: PrivilegeSnapshot
   active: boolean
   onClick: MouseEventHandler
   onDoubleClick?: () => void
 }
 
 export const Song: React.VFC<SongProps> = observer(
-  ({ song, active, onClick, onDoubleClick }) => {
+  ({ song, privilege, active, onClick, onDoubleClick }) => {
     const liked = useLiked(song.id)
     const player = usePlayer()
     const playing = usePlaying(song)
-    const unavailable = song.noCopyrightRcmd
+    const unavailable = !(privilege?.cp ?? true)
 
     const handleDoubleClick = useCallback(() => {
       if (playing) return

@@ -23,9 +23,11 @@ export const Playlist: React.VFC<PlaylistProps> = ({ playlist }) => {
   const updatePlayQueue = useCallback(() => {
     player.replaceQueue({
       name: playlist.name,
-      songs: data?.playlist.tracks,
+      songs: data?.playlist.tracks?.filter(
+        (_, index) => data.privileges?.[index].cp,
+      ),
     })
-  }, [data?.playlist.tracks, player, playlist.name])
+  }, [data?.playlist.tracks, data?.privileges, player, playlist.name])
 
   return (
     <div className={styles.container}>
@@ -38,6 +40,7 @@ export const Playlist: React.VFC<PlaylistProps> = ({ playlist }) => {
           <Song
             key={track.id}
             song={track}
+            privilege={data.privileges?.[index]}
             active={activeSongIndexes.includes(index)}
             onClick={resetActiveSongIndexes(index)}
             onDoubleClick={updatePlayQueue}
