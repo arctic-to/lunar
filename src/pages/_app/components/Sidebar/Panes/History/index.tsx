@@ -4,7 +4,8 @@ import { useSonglist } from '@/hooks'
 import { useIsCurrShortcut } from '@/hooks'
 import { ShortcutEnum, usePlayer } from '@/models'
 
-import { AggregatedSong } from './AggregatedSong'
+import { AggregatedSong } from '../../components'
+
 import styles from './History.module.scss'
 
 export const History: React.VFC = observer(() => {

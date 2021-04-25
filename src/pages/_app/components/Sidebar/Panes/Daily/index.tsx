@@ -13,8 +13,9 @@ import { useIsCurrShortcut } from '@/hooks'
 import { ShortcutEnum, usePlayer } from '@/models'
 import { useNeteaseCloudMusicRecommendedSongs } from '@/tracking'
 
+import { Song } from '../../components'
+
 import styles from './Daily.module.scss'
-import Song from './Song'
 
 export const Daily: React.VFC = observer(() => {
   const isCurrShortcut = useIsCurrShortcut(ShortcutEnum.Daily)

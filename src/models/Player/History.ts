@@ -15,6 +15,12 @@ export interface AggregatedSong {
   songs: HistorySongInstance[]
 }
 
+export function isAggregatedSong(
+  song: SongSnapshot | AggregatedSong,
+): song is AggregatedSong {
+  return Array.isArray(song)
+}
+
 export const History = types
   .model({
     songs: types.array(HistorySong),

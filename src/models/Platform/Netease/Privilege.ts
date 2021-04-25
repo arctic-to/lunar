@@ -8,7 +8,7 @@ export const Privilege = types.model('Privilege', {
   pl: types.number,
   dl: types.number,
   sp: types.number,
-  cp: types.number,
+  cp: types.number, //copywrite
   subp: types.number,
   cs: types.boolean,
   maxbr: types.number,

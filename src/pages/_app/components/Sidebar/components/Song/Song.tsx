@@ -16,7 +16,7 @@ export type SongProps = {
   song: SongSnapshot
   active: boolean
   onClick: MouseEventHandler
-  onDoubleClick: () => void
+  onDoubleClick?: () => void
 }
 
 export const Song: React.VFC<SongProps> = observer(
@@ -24,16 +24,18 @@ export const Song: React.VFC<SongProps> = observer(
     const liked = useLiked(song.id)
     const player = usePlayer()
     const playing = usePlaying(song)
+    const unavailable = song.noCopyrightRcmd
 
     const handleDoubleClick = useCallback(() => {
       if (playing) return
+      if (unavailable) return
 
       player.replaceTrack({
         song,
         playing: true,
       })
-      onDoubleClick()
-    }, [onDoubleClick, player, playing, song])
+      onDoubleClick?.()
+    }, [onDoubleClick, player, playing, song, unavailable])
 
     return (
       <div
@@ -41,6 +43,7 @@ export const Song: React.VFC<SongProps> = observer(
           [styles.playing]: playing,
           [styles.active]: active,
           [styles.liked]: liked,
+          [styles.unavailable]: unavailable,
         })}
         onClick={onClick}
         onDoubleClick={handleDoubleClick}

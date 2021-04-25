@@ -6,8 +6,9 @@ import { usePlaylistDetail } from '@/data'
 import { useSonglist } from '@/hooks'
 import { PlaylistSnapshot, usePlayer } from '@/models'
 
+import { Song } from '../../../components'
+
 import styles from './Playlist.module.scss'
-import { Song } from './Song'
 
 interface PlaylistProps {
   playlist: PlaylistSnapshot

@@ -5,8 +5,9 @@ import { useSonglist } from '@/hooks'
 import { useIsCurrShortcut } from '@/hooks'
 import { ShortcutEnum, usePlayer } from '@/models'
 
+import { Song } from '../../components'
+
 import styles from './PlayQueue.module.scss'
-import Song from './Song'
 
 export const PlayQueue: React.VFC = observer(() => {
   const player = usePlayer()
