@@ -1,27 +1,19 @@
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
-import { Sash, SashContainer } from '@/components'
 import { RootStoreContext, initRootStore, rootStore } from '@/models'
 
-import styles from './App.module.scss'
-import {
-  Header,
-  PlayPanel,
-  Sidebar,
-  Shortcutbar,
-  Statusbar,
-} from './components'
-
 import './globals.scss'
+import Header from './Header'
+import Main from './Main'
+import PlayPanel from './PlayPanel'
+import Statusbar from './Statusbar'
 
 const pagesWithoutLayout = ['/lyric']
 
-function MyApp({ Component, pageProps }: AppProps) {
-  const [pane1, setPane1] = useState<HTMLDivElement | null>(null)
-  const [pane2, setPane2] = useState<HTMLDivElement | null>(null)
-
+function MyApp(appProps: AppProps) {
+  const { Component, pageProps } = appProps
   const { pathname } = useRouter()
   const withoutLayout = pagesWithoutLayout.includes(pathname)
 
@@ -36,18 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       ) : (
         <>
           <Header />
-          <div className={styles.main}>
-            <SashContainer>
-              <Sash pane1={pane1} pane2={pane2} min={[400, 296]} />
-            </SashContainer>
-            <div className={styles.view_container}>
-              <div className={styles.component} ref={setPane1}>
-                <Component {...pageProps} />
-              </div>
-              <Sidebar ref={setPane2} />
-              <Shortcutbar />
-            </div>
-          </div>
+          <Main {...appProps} />
           <PlayPanel />
           <Statusbar />
         </>

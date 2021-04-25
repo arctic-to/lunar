@@ -1,10 +1,12 @@
 import { types } from 'mobx-state-tree'
 
 import { Shortcut, ShortcutEnum, shortcuts } from './Shortcut'
+import { Sidebar, sidebar } from './Sidebar'
 
 export const View = types
   .model({
     shortcuts: types.array(Shortcut),
+    sidebar: Sidebar,
   })
   .views((self) => ({
     get currShortcut() {
@@ -25,4 +27,5 @@ export const View = types
 
 export const view = View.create({
   shortcuts,
+  sidebar,
 })

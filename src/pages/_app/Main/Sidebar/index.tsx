@@ -18,7 +18,11 @@ export const Sidebar = observer<SidebarProps, HTMLDivElement>(
     const title = view.currShortcut.type
 
     return (
-      <div className={styles.container} ref={ref}>
+      <div
+        className={styles.container}
+        style={{ width: view.sidebar.width }}
+        ref={ref}
+      >
         <div className={styles.title}>{title?.toUpperCase()}</div>
         <PlayQueue />
         <Playlists />

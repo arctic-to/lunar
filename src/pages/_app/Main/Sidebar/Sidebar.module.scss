@@ -1,7 +1,6 @@
 @use '~@/style/color';
 
 .container {
-  width: 296px;
   background-color: color.$sidebar;
   display: flex;
   flex-direction: column;

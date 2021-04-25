@@ -6,9 +6,15 @@ interface SashProps {
   pane1: HTMLDivElement | null
   pane2: HTMLDivElement | null
   min: [number, number]
+  onMouseMove?: (pane1Width: number, pane2Width: number) => void
 }
 
-export const Sash: React.VFC<SashProps> = ({ pane1, pane2, min }) => {
+export const Sash: React.VFC<SashProps> = ({
+  pane1,
+  pane2,
+  min,
+  onMouseMove,
+}) => {
   const WIDTH = 4
   const HALF_WIDTH = WIDTH / 2
   const shouldRender = Boolean(pane1 && pane2)
@@ -61,10 +67,11 @@ export const Sash: React.VFC<SashProps> = ({ pane1, pane2, min }) => {
           pane1.style.width = `${pane1Width}px`
           pane2.style.width = `${pane2Width}px`
           sashRef.current.style.left = `${sashLeft}px`
+          onMouseMove?.(pane1Width, pane2Width)
         }
       })
     },
-    [correctSashLeft, min, pane1, pane2],
+    [correctSashLeft, min, onMouseMove, pane1, pane2],
   )
 
   const handleMouseUp = useCallback(() => {
