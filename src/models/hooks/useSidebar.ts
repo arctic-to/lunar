@@ -1,6 +1,6 @@
 import { useStore } from './useStrore'
 
-export function useView() {
+export function useSidebar() {
   const { view } = useStore()
-  return view
+  return view.sidebar
 }

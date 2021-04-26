@@ -1,9 +1,12 @@
-import { types } from 'mobx-state-tree'
+import { castToSnapshot, types } from 'mobx-state-tree'
+
+import { Playlists, playlists } from './Playlists/Playlists'
 
 export const Sidebar = types
-  .model({
+  .model('Sidebar', {
     minWidth: 296,
     width: 296,
+    playlists: Playlists,
   })
   .actions((self) => ({
     setWidth(width: number) {
@@ -11,4 +14,4 @@ export const Sidebar = types
     },
   }))
 
-export const sidebar = Sidebar.create()
+export const sidebar = Sidebar.create({ playlists: castToSnapshot(playlists) })

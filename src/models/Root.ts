@@ -4,6 +4,7 @@ import {
   onSnapshot,
   applySnapshot,
   SnapshotIn,
+  castToSnapshot,
 } from 'mobx-state-tree'
 
 import { Platform, platform } from './Platform'
@@ -31,7 +32,7 @@ export const RootStore = types.snapshotProcessor(RawRootStore, {
 
 export const defaultSnapshot = {
   player,
-  view,
+  view: castToSnapshot(view),
   platform,
 }
 

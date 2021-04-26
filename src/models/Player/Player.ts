@@ -16,7 +16,7 @@ export const Player = types
     tracks: types.array(Track),
     queue: Queue,
     history: History,
-    volume: 1, // [0, 1]
+    volume: 0.5, // [0, 1]
     lyric: Lyric,
     order: types.optional(
       types.enumeration('Order', Object.values(OrderEnum)),

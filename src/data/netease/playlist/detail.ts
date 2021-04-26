@@ -1,4 +1,4 @@
-import { SnapshotIn, types } from 'mobx-state-tree'
+import { SnapshotOut, types } from 'mobx-state-tree'
 import useSWR from 'swr'
 
 import { PlaylistDetail, Privilege } from '@/models/Platform/Netease'
@@ -6,7 +6,7 @@ import { PlaylistDetail, Privilege } from '@/models/Platform/Netease'
 import { fetcher } from '../fetcher'
 
 export function usePlaylistDetail(id: number | null) {
-  const { data, error } = useSWR<PlaylistDetailResponseSnapshot>(
+  const { data, error } = useSWR<PlaylistDetailResponseSnapshotOut>(
     id === null ? null : `/playlist/detail?id=${id}`,
     fetcher,
   )
@@ -18,7 +18,9 @@ export function usePlaylistDetail(id: number | null) {
   }
 }
 
-type PlaylistDetailResponseSnapshot = SnapshotIn<typeof PlaylistDetailResponse>
+type PlaylistDetailResponseSnapshotOut = SnapshotOut<
+  typeof PlaylistDetailResponse
+>
 const PlaylistDetailResponse = types.model('PlaylistDetailResponse', {
   code: types.number,
   relatedVideos: types.null,

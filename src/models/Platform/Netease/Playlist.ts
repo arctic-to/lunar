@@ -16,7 +16,7 @@ export const Playlist = types.model('Playlist', {
   englishTitle: types.null,
   opRecommend: types.boolean,
   recommendInfo: types.null,
-  description: types.null,
+  description: types.maybeNull(types.string),
   status: types.number,
   createTime: types.number,
   highQuality: types.boolean,
@@ -41,5 +41,5 @@ export const Playlist = types.model('Playlist', {
   tags: types.array(types.frozen()),
   name: types.string,
   id: types.number,
-  coverImgId_str: types.string,
+  coverImgId_str: types.maybeNull(types.string),
 })

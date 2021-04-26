@@ -1,10 +1,10 @@
-import { types } from 'mobx-state-tree'
+import { castToSnapshot, types } from 'mobx-state-tree'
 
 import { Shortcut, ShortcutEnum, shortcuts } from './Shortcut'
 import { Sidebar, sidebar } from './Sidebar'
 
 export const View = types
-  .model({
+  .model('View', {
     shortcuts: types.array(Shortcut),
     sidebar: Sidebar,
   })
@@ -27,5 +27,5 @@ export const View = types
 
 export const view = View.create({
   shortcuts,
-  sidebar,
+  sidebar: castToSnapshot(sidebar),
 })

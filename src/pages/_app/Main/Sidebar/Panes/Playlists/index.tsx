@@ -1,6 +1,9 @@
+import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
+
 import { useUserPlaylist } from '@/data'
 import { useIsCurrShortcut } from '@/hooks'
-import { ShortcutEnum } from '@/models'
+import { ShortcutEnum, useSidebar } from '@/models'
 
 import PaneContainer from '../../PaneContainer'
 import { Pane } from '../../types'
@@ -8,19 +11,23 @@ import { Pane } from '../../types'
 import Playlist from './Playlist'
 import styles from './Playlists.module.scss'
 
-const NeteaseCloudMusicPane: Pane = () => {
+const NeteaseCloudMusicPane: Pane = observer(() => {
   const { data } = useUserPlaylist()
-  if (!data) return null
+  const sidebar = useSidebar()
+  const playlists = data?.playlist
 
-  const { playlist: playlists } = data
+  useEffect(() => {
+    if (playlists) sidebar.playlists.setPlaylists(playlists)
+  }, [playlists, sidebar.playlists])
+
   return (
     <div className={styles.container}>
-      {playlists?.map((playlist) => (
-        <Playlist key={playlist.id} playlist={playlist} />
+      {sidebar.playlists.viewPlaylists.map((viewPlaylist) => (
+        <Playlist key={viewPlaylist.id} viewPlaylist={viewPlaylist} />
       ))}
     </div>
   )
-}
+})
 
 NeteaseCloudMusicPane.title = '网易云音乐'
 
@@ -35,7 +42,7 @@ export const Playlists: React.VFC = () => {
       style={isCurrShortcut ? undefined : { display: 'none' }}
     >
       {panes.map((Pane) => (
-        <PaneContainer key={Pane.title} Pane={Pane} />
+        <PaneContainer key={Pane.title} Pane={Pane} defaultFolded={false} />
       ))}
     </div>
   )
