@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
 import { useCallback, useEffect } from 'react'
-import { VscChevronDown, VscChevronRight } from 'react-icons/vsc'
 
+import { FolderPrefix } from '@/components'
 import { usePlaylistDetail } from '@/data'
 import { useSonglist } from '@/hooks'
 import { ViewPlaylistInstance, usePlayer } from '@/models'
@@ -22,7 +22,7 @@ export const Playlist: React.VFC<PlaylistProps> = observer(
 
     const folded = viewPlaylist?.viewState.folded ?? true
 
-    const { data } = usePlaylistDetail(folded ? null : viewPlaylist.id)
+    const { data, loading } = usePlaylistDetail(folded ? null : viewPlaylist.id)
 
     useEffect(() => {
       if (data) {
@@ -47,7 +47,7 @@ export const Playlist: React.VFC<PlaylistProps> = observer(
           className={styles.header}
           onClick={viewPlaylist?.viewState.toggle}
         >
-          {folded ? <VscChevronRight /> : <VscChevronDown />}
+          <FolderPrefix folded={folded} loading={loading} />
           {viewPlaylist.name}
         </div>
         <div className={styles.songlist}>
