@@ -48,7 +48,7 @@ export const Track = types
       const {
         data: [song],
       } = yield fetcher(`/song/url?id=${id}`)
-      self.songUrl = song.url
+      self.songUrl = song.url || ''
     }),
   }))
   .volatile(() => ({

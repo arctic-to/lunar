@@ -4,7 +4,7 @@ import { Creator } from './Creator'
 
 export const Playlist = types.model('Playlist', {
   subscribers: types.array(types.frozen()),
-  subscribed: types.boolean,
+  subscribed: types.maybeNull(types.boolean),
   creator: Creator,
   artists: types.null,
   tracks: types.null,

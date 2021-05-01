@@ -8,9 +8,10 @@ import { fetcher } from '../fetcher'
 
 export function useUserPlaylist() {
   const { netease } = usePlatform()
+  const userId = netease?.profile?.userId
   const { data, error } = useSWR<UserPlaylistResponseSnapshotOut>(
     // If with credentials, the request will return all playlist
-    [`/user/playlist?uid=${netease?.profile?.userId}&limit=30&offset=0`, false],
+    userId ? [`/user/playlist?uid=${userId}&limit=30&offset=0`, false] : null,
     fetcher,
   )
 

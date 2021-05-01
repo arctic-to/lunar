@@ -6,7 +6,7 @@ import { TrackId } from './TrackId'
 
 export const PlaylistDetail = types.model('PlaylistDetail', {
   subscribers: types.array(types.frozen()),
-  subscribed: types.boolean,
+  subscribed: types.maybeNull(types.boolean),
   creator: Creator,
   tracks: types.array(Track),
   videoIds: types.null,

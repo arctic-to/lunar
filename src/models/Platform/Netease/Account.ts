@@ -13,7 +13,7 @@ export const Account = types.model('Account', {
   donateVersion: types.number,
   vipType: types.number,
   anonimousUser: types.boolean,
-  paidFee: types.boolean,
+  paidFee: types.maybe(types.boolean),
 })
 
 export type AccountSnapshotIn = SnapshotIn<typeof Account>
