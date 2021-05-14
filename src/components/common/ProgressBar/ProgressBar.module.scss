@@ -1,0 +1,13 @@
+@use '~@/style/color';
+
+.track {
+  background-color: color.$grey5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background-color: color.$green1;
+  position: relative;
+}

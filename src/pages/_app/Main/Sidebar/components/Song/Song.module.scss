@@ -9,21 +9,21 @@
   padding: 0 4px;
 
   &:hover {
-    background-color: color.$highlight1;
+    background-color: color.$song-hover;
   }
   &.active {
-    background-color: color.$highlight2;
+    background-color: color.$song-focus;
   }
   &.liked {
   }
   &.playing {
     .name {
-      color: color.$green1;
+      color: color.$song-playing;
     }
   }
   &.unavailable {
     .name {
-      color: color.$grey5;
+      color: color.$song-unavailable;
     }
   }
 

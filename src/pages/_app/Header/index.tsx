@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <Link href="/">
-        <a>{/* <img className={styles.logo} src="/favicon.ico" /> */}</a>
+        <div className={styles.logo}></div>
       </Link>
 
       <div className={styles.right}>

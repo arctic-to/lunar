@@ -1,7 +1,6 @@
 import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { RiHeart3Line, RiHeart3Fill } from 'react-icons/ri'
 import {
   RiRepeat2Line,
   RiShuffleLine,
@@ -12,8 +11,7 @@ import {
   RiSkipForwardFill,
 } from 'react-icons/ri'
 
-import { useLike } from '@/data'
-import { useLiked } from '@/hooks'
+import { Like } from '@/components'
 import { IconLyric } from '@/icons'
 import { OrderEnum, useCurrentTrack, usePlayer } from '@/models'
 
@@ -32,10 +30,6 @@ export const Buttons: React.VFC = observer(() => {
     repeatOne,
     lyric,
   } = usePlayer()
-  const songId = currentTrack?.song.id
-
-  const [like, unlike] = useLike(songId)
-  const liked = useLiked(songId)
 
   return (
     <div className={styles.container}>
@@ -67,11 +61,7 @@ export const Buttons: React.VFC = observer(() => {
           className={c({ [styles.active]: lyric.opened })}
           onClick={lyric.toggle}
         />
-        {liked ? (
-          <RiHeart3Fill className={styles.fav} onClick={unlike} />
-        ) : (
-          <RiHeart3Line onClick={like} />
-        )}
+        <Like songId={currentTrack?.song.id} />
       </div>
     </div>
   )

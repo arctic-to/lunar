@@ -36,3 +36,18 @@
     }
   }
 }
+
+@mixin shadow {
+  box-shadow: 0 8px 16px color.$overlay1;
+}
+
+/** https://github.com/selfishprimate/gerillass/blob/master/scss/library/_center.scss */
+@mixin center-container($axis: 'both') {
+  display: flex;
+  @if $axis == 'both' or $axis == 'v' {
+    align-items: center;
+  }
+  @if $axis == 'both' or $axis == 'h' {
+    justify-content: center;
+  }
+}

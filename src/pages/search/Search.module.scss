@@ -1,0 +1,59 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  padding: 0 32px;
+}
+
+.header {
+  display: flex;
+  margin: 24px 0;
+  height: 30px;
+  position: relative;
+  @include mixin.center-container(v);
+  .state {
+    margin-right: 24px;
+    width: 48px;
+    height: 24px;
+    border-radius: 4px;
+    color: color.$grey5;
+    background-color: color.$grey4;
+    display: flex;
+    @include mixin.center-container;
+    svg {
+      font-size: 24px;
+    }
+  }
+  .types {
+    display: flex;
+    gap: 12px;
+    color: color.$grey6;
+    height: 100%;
+    span {
+      padding: 0 8px;
+      @include mixin.center-container;
+      &.current_type {
+        border-bottom: 2px solid color.$green1;
+      }
+    }
+  }
+  .input_wrapper {
+    color: color.$grey6;
+    background-color: color.$grey4;
+    width: 192px;
+    height: 100%;
+    border-radius: 4px;
+    position: absolute;
+    right: 0px;
+    padding: 0 16px;
+    @include mixin.center-container(v);
+    justify-content: space-between;
+    input {
+      width: 128px;
+      padding: unset;
+      font-size: 14px;
+      color: color.$grey6;
+      background-color: unset;
+    }
+  }
+}
