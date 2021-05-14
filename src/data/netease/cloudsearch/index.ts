@@ -2,7 +2,7 @@ import { SnapshotIn, types } from 'mobx-state-tree'
 import qs from 'qs'
 import useSWR from 'swr'
 
-import { Track, Privilege } from '@/models/Platform/Netease'
+import { SongResult } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 
@@ -45,14 +45,7 @@ export function useCloudSearch({
 type CloudSearchResponseSnapshotIn = SnapshotIn<typeof CloudSearchResponse>
 const CloudSearchResponse = types.model('CloudSearchResponse', {
   result: types.model({
-    songs: types.array(
-      types.compose(
-        Track,
-        types.model({
-          privilege: Privilege,
-        }),
-      ),
-    ),
+    songs: types.array(SongResult),
     songCount: types.number,
   }),
   code: types.number,

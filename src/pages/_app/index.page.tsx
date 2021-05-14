@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+import duration from 'dayjs/plugin/duration'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
@@ -9,6 +11,8 @@ import Header from './Header'
 import Main from './Main'
 import PlayPanel from './PlayPanel'
 import Statusbar from './Statusbar'
+
+dayjs.extend(duration)
 
 const pagesWithoutLayout = ['/lyric']
 

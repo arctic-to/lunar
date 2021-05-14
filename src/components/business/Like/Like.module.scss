@@ -1,0 +1,10 @@
+@use '~@/style/color';
+
+.liked {
+  color: color.$red1;
+}
+
+.liked,
+.unliked {
+  cursor: pointer;
+}

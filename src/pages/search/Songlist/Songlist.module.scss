@@ -1,0 +1,62 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.song {
+  @include mixin.center-container(v);
+  color: color.$grey5;
+  line-height: 36px;
+  gap: 16px;
+  font-size: 14px;
+  padding-right: 8px;
+
+  &:hover {
+    background-color: color.$song-hover;
+  }
+  &.active {
+    background-color: color.$song-focus;
+  }
+  &.playing {
+    .index,
+    .name {
+      color: color.$song-playing;
+    }
+  }
+
+  .index {
+    width: 40px;
+    padding-right: 2px;
+    text-align: right;
+  }
+  .name {
+    flex: 2;
+    color: color.$grey6;
+  }
+  .author {
+    flex: 1;
+  }
+  .album {
+    flex: 1;
+  }
+  .duration {
+    width: 42px;
+  }
+  .pop {
+    width: 100px;
+    @include mixin.center-container;
+  }
+
+  .name,
+  .author,
+  .album {
+    @include mixin.ellipsis;
+  }
+
+  svg {
+    font-size: 16px;
+  }
+}

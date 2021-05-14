@@ -1,17 +1,13 @@
 import c from 'classnames'
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
 import { observer } from 'mobx-react-lite'
 import { MouseEventHandler, useCallback } from 'react'
 
 import { Authors } from '@/components'
-import { useLiked, usePlaying } from '@/hooks'
-import { usePlayer, SongSnapshot } from '@/models'
+import { useLiked, usePlaying, useReplaceTrack } from '@/hooks'
+import { SongSnapshot } from '@/models'
 import { PrivilegeSnapshot } from '@/models/Platform/Netease'
 
 import styles from './Song.module.scss'
-
-dayjs.extend(duration)
 
 export type SongProps = {
   song: SongSnapshot
@@ -24,20 +20,14 @@ export type SongProps = {
 export const Song: React.VFC<SongProps> = observer(
   ({ song, privilege, active, onClick, onDoubleClick }) => {
     const liked = useLiked(song.id)
-    const player = usePlayer()
     const playing = usePlaying(song)
     const unavailable = !(privilege?.cp ?? true)
+    const replaceTrack = useReplaceTrack({ song, privilege })
 
     const handleDoubleClick = useCallback(() => {
-      if (playing) return
-      if (unavailable) return
-
-      player.replaceTrack({
-        song,
-        playing: true,
-      })
+      replaceTrack()
       onDoubleClick?.()
-    }, [onDoubleClick, player, playing, song, unavailable])
+    }, [onDoubleClick, replaceTrack])
 
     return (
       <div
