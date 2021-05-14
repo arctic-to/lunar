@@ -1,9 +1,8 @@
 import c from 'classnames'
 import { useRouter } from 'next/router'
 import React, { useCallback, useState } from 'react'
-import { VscSearch } from 'react-icons/vsc'
 
-import { Loader } from '@/components'
+import { Loader, SearchInput } from '@/components'
 import { useCloudSearch, SearchTypeEnum } from '@/data'
 
 import styles from './Search.module.scss'
@@ -46,10 +45,7 @@ export const Search: React.VFC = () => {
             </span>
           ))}
         </div>
-        <div className={styles.input_wrapper}>
-          <input type="text" placeholder="搜索" />
-          <VscSearch />
-        </div>
+        <SearchInput className={styles.search_input} />
       </div>
       <Songlist songs={data?.result.songs} />
     </div>
