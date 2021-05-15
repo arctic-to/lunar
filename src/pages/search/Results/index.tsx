@@ -5,6 +5,7 @@ import { CloudSearchResponse, SearchTypeEnum } from '@/data'
 import ArtistResults from './ArtistResults'
 import LyricResults from './LyricResults'
 import PlaylistResults from './PlaylistResults'
+import styles from './Results.module.scss'
 import SongResults from './SongResults'
 import UserResults from './UserResults'
 
@@ -13,29 +14,27 @@ export type ResultsProps = {
   data: CloudSearchResponse | undefined
 }
 
+const componentMap = {
+  [SearchTypeEnum.Song]: SongResults,
+  [SearchTypeEnum.Artist]: ArtistResults,
+  [SearchTypeEnum.Playlist]: PlaylistResults,
+  [SearchTypeEnum.User]: UserResults,
+  [SearchTypeEnum.Lyric]: LyricResults,
+  [SearchTypeEnum.Album]: null,
+  [SearchTypeEnum.MV]: null,
+}
+
 export const Results: React.VFC<ResultsProps> = ({ type, data }) => {
   if (!data) return null
 
-  switch (type) {
-    case SearchTypeEnum.Song: {
-      return <SongResults data={data} />
-    }
-    case SearchTypeEnum.Artist: {
-      return <ArtistResults data={data} />
-    }
-    case SearchTypeEnum.Playlist: {
-      return <PlaylistResults data={data} />
-    }
-    case SearchTypeEnum.User: {
-      return <UserResults data={data} />
-    }
-    case SearchTypeEnum.Lyric: {
-      return <LyricResults data={data} />
-    }
-    default: {
-      return null
-    }
-  }
+  const _Results = componentMap[type]
+  if (!_Results) return null
+
+  return (
+    <div className={styles.container}>
+      <_Results data={data} />
+    </div>
+  )
 }
 
 export default Results
