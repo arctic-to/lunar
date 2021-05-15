@@ -2,11 +2,6 @@
 @use '~@/style/mixin';
 
 .container {
-  display: flex;
-  flex-direction: column;
-}
-
-.song {
   @include mixin.center-container(v);
   color: color.$grey5;
   line-height: 36px;

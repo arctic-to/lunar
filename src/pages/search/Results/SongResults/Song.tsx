@@ -6,7 +6,7 @@ import { Like, Authors, ProgressBar } from '@/components'
 import { useReplaceTrack } from '@/hooks'
 import { SongResultSnapshotIn } from '@/models'
 
-import styles from './Songlist.module.scss'
+import styles from './Song.module.scss'
 
 export type SongProps = {
   index: number
@@ -31,7 +31,7 @@ export const Song: React.FC<SongProps> = ({
 
   return (
     <div
-      className={c(styles.song, {
+      className={c(styles.container, {
         [styles.active]: active,
       })}
       onClick={onClick}

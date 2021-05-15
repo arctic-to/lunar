@@ -5,16 +5,17 @@ import React, { useCallback, useState } from 'react'
 import { Loader, SearchInput } from '@/components'
 import { useCloudSearch, SearchTypeEnum } from '@/data'
 
+import Results from './Results'
 import styles from './Search.module.scss'
-import Songlist from './Songlist'
+import { getCount } from './getCount'
 
 const typeMap = {
   [SearchTypeEnum.Song]: '单曲',
-  [SearchTypeEnum.Author]: '歌手',
-  [SearchTypeEnum.Album]: '专辑',
+  [SearchTypeEnum.Artist]: '歌手',
+  // [SearchTypeEnum.Album]: '专辑',
   [SearchTypeEnum.Playlist]: '歌单',
-  [SearchTypeEnum.Lyric]: '歌词',
   [SearchTypeEnum.User]: '用户',
+  [SearchTypeEnum.Lyric]: '歌词',
 }
 
 export const Search: React.VFC = () => {
@@ -30,7 +31,7 @@ export const Search: React.VFC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <span className={styles.state}>
-          {loading ? <Loader /> : data?.result.songCount}
+          {loading ? <Loader /> : getCount(data)}
         </span>
         <div className={styles.types}>
           {Object.entries(typeMap).map(([key, value]) => (
@@ -45,9 +46,10 @@ export const Search: React.VFC = () => {
             </span>
           ))}
         </div>
-        <SearchInput className={styles.search_input} />
+        <SearchInput className={styles.search_input} defaultValue={keywords} />
       </div>
-      <Songlist songs={data?.result.songs} />
+
+      <Results type={type} data={data} />
     </div>
   )
 }

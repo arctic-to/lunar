@@ -1,18 +1,20 @@
 import React from 'react'
 
+import { CloudSearchResponse } from '@/data'
 import { useSonglist } from '@/hooks'
-import { SongResultSnapshotIn } from '@/models'
 
 import { Song } from './Song'
-import styles from './Songlist.module.scss'
+import styles from './SongResults.module.scss'
 
-export type SonglistProps = { songs: SongResultSnapshotIn[] | undefined }
-export const Songlist: React.FC<SonglistProps> = ({ songs }) => {
+export type SongResultsProps = { data: CloudSearchResponse }
+export const SongResults: React.FC<SongResultsProps> = ({ data }) => {
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
+
+  if (!('songs' in data.result)) return null
 
   return (
     <div className={styles.container}>
-      {songs?.map((song, index) => (
+      {data.result.songs?.map((song, index) => (
         <Song
           key={index}
           index={index}
@@ -25,4 +27,4 @@ export const Songlist: React.FC<SonglistProps> = ({ songs }) => {
   )
 }
 
-export default Songlist
+export default SongResults

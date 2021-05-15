@@ -2,9 +2,15 @@ import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { VscSearch } from 'react-icons/vsc'
 
-export type SearchInputProps = { className: string }
+export type SearchInputProps = {
+  className: string
+  defaultValue?: string
+}
 
-export const SearchInput: React.VFC<SearchInputProps> = ({ className }) => {
+export const SearchInput: React.VFC<SearchInputProps> = ({
+  className,
+  defaultValue,
+}) => {
   const router = useRouter()
   const handleEnterDown = useCallback<
     React.KeyboardEventHandler<HTMLInputElement>
@@ -19,7 +25,11 @@ export const SearchInput: React.VFC<SearchInputProps> = ({ className }) => {
   )
   return (
     <span className={className}>
-      <input placeholder="搜索" onKeyDown={handleEnterDown} />
+      <input
+        placeholder="搜索"
+        defaultValue={defaultValue}
+        onKeyDown={handleEnterDown}
+      />
       <VscSearch />
     </span>
   )
