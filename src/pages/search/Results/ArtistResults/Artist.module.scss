@@ -1,0 +1,28 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  @include mixin.center-container(v);
+  height: 80px;
+  padding-left: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: color.$highlight1;
+  }
+
+  img {
+    width: 64px;
+    border-radius: 8px;
+  }
+}
+
+.name {
+  margin-left: 16px;
+  color: color.$grey6;
+}
+
+.alias {
+  margin-left: 8px;
+  color: color.$grey5;
+}
