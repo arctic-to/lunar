@@ -1,12 +1,13 @@
 @use '~@/style/color';
 @use '~@/style/mixin';
+@use '~@/style/typography';
 
 .container {
   @include mixin.center-container(v);
   color: color.$grey5;
   line-height: 36px;
   gap: 16px;
-  font-size: 14px;
+  @include typography.b2;
   padding-right: 8px;
 
   &:hover {

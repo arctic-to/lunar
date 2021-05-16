@@ -1,4 +1,5 @@
 @use '~@/style/color';
+@use '~@/style/typography';
 
 .container {
   background-color: color.$sidebar;
@@ -7,7 +8,7 @@
 }
 
 .title {
-  font-size: 13px;
+  @include typography.h3;
   line-height: 35px;
   color: color.$sidebar-title;
   margin-left: 24px;

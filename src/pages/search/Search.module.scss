@@ -1,5 +1,6 @@
 @use '~@/style/color';
 @use '~@/style/mixin';
+@use '~@/style/typography';
 
 .container {
   padding: 0 32px;
@@ -19,6 +20,7 @@
     color: color.$grey5;
     background-color: color.$grey4;
     display: flex;
+    @include typography.h1;
     @include mixin.center-container;
     svg {
       font-size: 24px;
@@ -31,6 +33,7 @@
     height: 100%;
     span {
       padding: 0 8px;
+      @include typography.h1;
       @include mixin.center-container;
       &.current_type {
         border-bottom: 2px solid color.$green1;
@@ -52,7 +55,7 @@
     input {
       width: 128px;
       padding: unset;
-      font-size: 14px;
+      @include typography.b1;
       color: color.$grey6;
       background-color: unset;
     }

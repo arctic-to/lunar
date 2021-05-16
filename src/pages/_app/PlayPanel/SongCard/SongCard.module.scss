@@ -1,14 +1,15 @@
 @use '~@/style/color';
 @use '~@/style/mixin';
+@use '~@/style/typography';
 
 .song-card {
   flex: 1;
   display: flex;
-  align-items: center;
 
   .album-cover {
-    width: 48px;
+    height: 48px;
     margin-right: 16px;
+    border-radius: 4px;
   }
 
   .song-info {
@@ -19,10 +20,13 @@
       @include mixin.ellipsis;
     }
     .name {
+      @include typography.b1;
+      line-height: 24px;
       color: color.$song-name;
     }
     .author {
-      font-size: 15px;
+      @include typography.b2;
+      line-height: 24px;
       color: color.$song-author;
     }
   }
