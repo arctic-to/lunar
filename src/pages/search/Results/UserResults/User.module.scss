@@ -1,0 +1,40 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  display: flex;
+  height: 80px;
+  padding: 8px 0 8px 16px;
+  gap: 16px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: color.$highlight1;
+  }
+
+  img {
+    height: 64px;
+    border-radius: 50%;
+  }
+}
+
+.userinfo {
+  overflow: hidden;
+}
+
+.name {
+  color: color.$grey6;
+  @include typography.h1;
+}
+
+.bio {
+  color: color.$grey5;
+  @include typography.b2;
+}
+
+.name,
+.bio {
+  line-height: 32px;
+  @include mixin.ellipsis;
+}

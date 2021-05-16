@@ -1,9 +1,20 @@
+import React from 'react'
+
 import { CloudSearchResponse } from '@/data'
+
+import User from './User'
 
 export type UserResultsProps = { data: CloudSearchResponse }
 export const UserResults: React.FC<UserResultsProps> = ({ data }) => {
   if (!('userprofiles' in data.result)) return null
-  return <div></div>
+
+  return (
+    <>
+      {data.result.userprofiles?.map((userprofile) => (
+        <User userprofile={userprofile} />
+      ))}
+    </>
+  )
 }
 
 export default UserResults
