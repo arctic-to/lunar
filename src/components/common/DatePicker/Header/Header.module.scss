@@ -1,4 +1,5 @@
 @use '~@/style/color';
+@use '~@/style/typography';
 
 .container {
   height: 40px;
@@ -9,7 +10,7 @@
   border-bottom: 2px solid color.$grey4;
 
   .title {
-    font-size: 17px;
+    @include typography.h1;
     color: color.$grey6;
   }
 

@@ -23,7 +23,7 @@ export const Sidebar = observer<SidebarProps, HTMLDivElement>(
         style={{ width: view.sidebar.width }}
         ref={ref}
       >
-        <div className={styles.title}>{title?.toUpperCase()}</div>
+        <div className={styles.title}>{title}</div>
         <PlayQueue />
         <Playlists />
         <History />
