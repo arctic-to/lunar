@@ -6,6 +6,7 @@
   @include mixin.center-container(v);
   height: 80px;
   padding-left: 16px;
+  gap: 16px;
   cursor: pointer;
 
   &:hover {
@@ -19,13 +20,23 @@
 }
 
 .name {
-  margin-left: 16px;
+  flex: 3;
   color: color.$grey6;
+  @include typography.b1;
+  @include mixin.ellipsis;
+}
+
+.count {
+  width: 100px;
+  color: color.$grey5;
+  text-align: right;
+  padding-right: 40px;
   @include typography.b2;
 }
 
-.alias {
-  margin-left: 8px;
-  color: color.$grey5;
+.creater {
+  flex: 2;
+  color: color.$grey6;
   @include typography.b2;
+  @include mixin.ellipsis;
 }

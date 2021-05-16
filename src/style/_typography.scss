@@ -1,30 +1,31 @@
-@mixin headline1 {
+@mixin h1 {
   font-size: 16px;
   font-weight: normal;
 }
-@mixin headline2 {
+@mixin h2 {
   font-size: 13px;
   font-weight: bold;
 }
-@mixin headline3 {
+@mixin h3 {
   font-size: 13px;
   font-weight: normal;
+  text-transform: uppercase;
 }
 
-@mixin body1 {
+@mixin b1 {
+  font-size: 14px;
+  font-weight: normal;
+}
+@mixin b2 {
   font-size: 13px;
   font-weight: normal;
 }
-@mixin body2 {
+@mixin b3 {
   font-size: 11px;
   font-weight: normal;
 }
 
-@mixin label1 {
-  font-size: 14px;
-  font-weight: normal;
-}
-@mixin label2 {
-  font-size: 13px;
+@mixin l1 {
+  font-size: 10px;
   font-weight: normal;
 }
