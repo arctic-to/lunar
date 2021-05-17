@@ -1,6 +1,6 @@
 import { Instance, SnapshotIn, types } from 'mobx-state-tree'
 
-import { Song, SongSnapshot } from './Song'
+import { Song, SongSnapshotIn } from './Song'
 
 export const HistorySong = types.compose(
   Song,
@@ -37,7 +37,7 @@ export const History = types
     },
   }))
   .actions((self) => ({
-    push(song: SongSnapshot) {
+    push(song: SongSnapshotIn) {
       self.songs.push(song)
     },
   }))

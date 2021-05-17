@@ -10,8 +10,8 @@ export const ArtistResults: React.FC<ArtistResultsProps> = ({ data }) => {
 
   return (
     <>
-      {data.result.artists?.map((artist) => (
-        <Artist artist={artist} />
+      {data.result.artists?.map((artist, index) => (
+        <Artist key={index} artist={artist} />
       ))}
     </>
   )

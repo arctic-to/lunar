@@ -10,16 +10,15 @@
   @include typography.b2;
   padding-right: 8px;
 
-  &:hover {
-    background-color: color.$song-hover;
-  }
-  &.active {
-    background-color: color.$song-focus;
-  }
   &.playing {
     .index,
     .name {
       color: color.$song-playing;
+    }
+  }
+  &.unavailable {
+    .name {
+      color: color.$song-unavailable;
     }
   }
 

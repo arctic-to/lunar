@@ -1,0 +1,16 @@
+@use '~@/style/color';
+@use '~@/style/typography';
+
+.lyrics {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: color.$grey5;
+  padding: 8px 88px;
+  @include typography.b2;
+
+  b {
+    color: color.$blue1;
+    font-weight: unset;
+  }
+}

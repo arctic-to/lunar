@@ -1,0 +1,12 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  &:hover {
+    background-color: color.$song-hover;
+  }
+  &.active {
+    background-color: color.$song-focus;
+  }
+}
