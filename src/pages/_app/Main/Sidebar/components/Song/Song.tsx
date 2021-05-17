@@ -4,14 +4,14 @@ import { MouseEventHandler, useCallback } from 'react'
 
 import { Authors } from '@/components'
 import { useLiked, usePlaying, useReplaceTrack } from '@/hooks'
-import { SongSnapshot } from '@/models'
-import { PrivilegeSnapshot } from '@/models/Platform/Netease'
+import { SongSnapshotIn } from '@/models'
+import { PrivilegeSnapshotIn } from '@/models'
 
 import styles from './Song.module.scss'
 
 export type SongProps = {
-  song: SongSnapshot
-  privilege?: PrivilegeSnapshot
+  song: SongSnapshotIn
+  privilege?: PrivilegeSnapshotIn
   active: boolean
   onClick: MouseEventHandler
   onDoubleClick?: () => void

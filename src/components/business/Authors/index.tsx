@@ -1,11 +1,11 @@
 import c from 'classnames'
 
-import { SongSnapshot } from '@/models'
+import { SongSnapshotIn } from '@/models'
 
 import styles from './Authors.module.scss'
 
 export type AuthorsProps = {
-  song: SongSnapshot
+  song: SongSnapshotIn
   className?: string
 }
 

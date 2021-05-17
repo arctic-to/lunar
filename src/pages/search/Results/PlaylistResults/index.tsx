@@ -10,8 +10,8 @@ export const PlaylistResults: React.FC<PlaylistResultsProps> = ({ data }) => {
 
   return (
     <>
-      {data.result.playlists?.map((playlist) => (
-        <Playlist playlist={playlist} />
+      {data.result.playlists?.map((playlist, index) => (
+        <Playlist key={index} playlist={playlist} />
       ))}
     </>
   )

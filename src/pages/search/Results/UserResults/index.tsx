@@ -10,8 +10,8 @@ export const UserResults: React.FC<UserResultsProps> = ({ data }) => {
 
   return (
     <>
-      {data.result.userprofiles?.map((userprofile) => (
-        <User userprofile={userprofile} />
+      {data.result.userprofiles?.map((userprofile, index) => (
+        <User key={index} userprofile={userprofile} />
       ))}
     </>
   )

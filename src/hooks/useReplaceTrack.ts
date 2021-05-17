@@ -1,5 +1,5 @@
-import { SongSnapshot, usePlayer } from '@/models'
-import { PrivilegeSnapshot } from '@/models/Platform/Netease'
+import { SongSnapshotIn, usePlayer } from '@/models'
+import { PrivilegeSnapshotIn } from '@/models'
 
 import { usePlaying } from './usePlaying'
 
@@ -7,8 +7,8 @@ export function useReplaceTrack({
   song,
   privilege,
 }: {
-  song: SongSnapshot
-  privilege?: PrivilegeSnapshot
+  song: SongSnapshotIn
+  privilege?: PrivilegeSnapshotIn
 }) {
   const player = usePlayer()
   const playing = usePlaying(song)
