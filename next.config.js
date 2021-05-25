@@ -4,7 +4,9 @@ module.exports = {
   webpack: (config) => {
     // Fixes npm packages that depend on `fs` module
     config.target = 'electron-renderer'
-
     return config
+  },
+  images: {
+    domains: ['p1.music.126.net', 'p2.music.126.net'],
   },
 }

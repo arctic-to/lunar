@@ -1,3 +1,5 @@
+export * from './artist'
+export * from './artists'
 export * from './cloudsearch'
 export * from './fetcher'
 export * from './like'
