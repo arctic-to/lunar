@@ -2,17 +2,15 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
+import { Songlist } from '@/components'
 import { useArtists } from '@/data'
-import { useSonglist } from '@/hooks'
 
-import { HotSong } from './HotSong'
 import styles from './artist.module.scss'
 
 export const Artist: React.FC = () => {
   const router = useRouter()
   const { id } = router.query as { id: string }
   const { data } = useArtists(id)
-  const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
 
   if (!data) return null
 
@@ -43,15 +41,10 @@ export const Artist: React.FC = () => {
         </div>
       </div>
 
-      {data.hotSongs.map((hotSong, index) => (
-        <HotSong
-          key={index}
-          index={index}
-          hotSong={hotSong}
-          active={activeSongIndexes.includes(index)}
-          onClick={resetActiveSongIndexes(index)}
-        />
-      ))}
+      <Songlist
+        songs={data.hotSongs}
+        privileges={data.hotSongs.map((hotSong) => hotSong.privilege)}
+      />
     </div>
   )
 }
