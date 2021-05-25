@@ -1,30 +1,28 @@
 import React from 'react'
 
+import { Songlist } from '@/components'
 import { CloudSearchLyricResponseSnapshotIn, CloudSearchResponse } from '@/data'
-import { useSonglist } from '@/hooks'
 
-import LyricSong from './LyricSong'
+import styles from './LyricResults.module.scss'
 
 export type LyricResultsProps = { data: CloudSearchResponse }
 export const LyricResults: React.FC<LyricResultsProps> = ({ data }) => {
-  const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
-
   if (!('songs' in data.result)) return null
+  const lyricSongs = (data as CloudSearchLyricResponseSnapshotIn).result.songs
+  if (!lyricSongs) return null
 
   return (
-    <>
-      {(data as CloudSearchLyricResponseSnapshotIn).result.songs?.map(
-        (lyricSong, index) => (
-          <LyricSong
-            key={index}
-            index={index}
-            lyricSong={lyricSong}
-            active={activeSongIndexes.includes(index)}
-            onClick={resetActiveSongIndexes(index)}
-          />
-        ),
+    <Songlist
+      songs={lyricSongs}
+      privileges={lyricSongs.map((lyricSong) => lyricSong.privilege)}
+      getExtraContent={(lyricSong) => (
+        <div className={styles.lyrics}>
+          {lyricSong.lyrics?.slice(0, 4).map((lyric) => (
+            <div dangerouslySetInnerHTML={{ __html: lyric }} />
+          ))}
+        </div>
       )}
-    </>
+    />
   )
 }
 

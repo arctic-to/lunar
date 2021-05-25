@@ -3,12 +3,11 @@ import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 
+import Authors from '@/components/business/Authors'
+import Like from '@/components/business/Like'
+import { ProgressBar } from '@/components/common'
 import { usePlaying } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
-
-import { ProgressBar } from '../../common'
-import Authors from '../Authors'
-import Like from '../Like'
 
 import styles from './SongBase.module.scss'
 
