@@ -25,7 +25,7 @@
 
 .name {
   color: color.$grey6;
-  @include typography.h1;
+  @include typography.h5;
 }
 
 .bio {

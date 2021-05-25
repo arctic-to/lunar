@@ -10,7 +10,7 @@
   border-bottom: 2px solid color.$grey4;
 
   .title {
-    @include typography.h1;
+    @include typography.h5;
     color: color.$grey6;
   }
 

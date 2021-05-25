@@ -1,17 +1,27 @@
+/** Heading */
 @mixin h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+@mixin h2 {
+  font-size: 18px;
+  font-weight: normal;
+}
+@mixin h3 {
   font-size: 15px;
   font-weight: normal;
 }
-@mixin h2 {
+@mixin h4 {
   font-size: 13px;
   font-weight: bold;
 }
-@mixin h3 {
+@mixin h5 {
   font-size: 13px;
   font-weight: normal;
   text-transform: uppercase;
 }
 
+/** Body */
 @mixin b1 {
   font-size: 14px;
   font-weight: normal;
@@ -25,6 +35,7 @@
   font-weight: normal;
 }
 
+/** Label */
 @mixin l1 {
   font-size: 10px;
   font-weight: normal;
