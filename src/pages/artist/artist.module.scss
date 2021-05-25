@@ -21,7 +21,7 @@
 
   .info {
     .name {
-      font-size: 24px;
+      @include typography.h1;
       color: color.$grey6;
     }
     .alias {

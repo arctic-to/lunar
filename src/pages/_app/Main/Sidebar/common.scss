@@ -3,7 +3,7 @@
 @use '~@/style/typography';
 
 @mixin _header {
-  @include typography.h2;
+  @include typography.h4;
   line-height: 30px;
   color: color.$pane-header-fg;
   background-color: color.$pane-header-bg;
