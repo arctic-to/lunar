@@ -18,11 +18,17 @@
   transform: translateX(-50%);
 }
 
-@mixin ellipsis {
-  max-width: 100%;
-  white-space: nowrap;
+@mixin ellipsis($n: 1) {
   overflow: hidden;
   text-overflow: ellipsis;
+  @if $n == '1' {
+    max-width: 100%;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $n;
+    -webkit-box-orient: vertical;
+  }
 }
 
 @mixin scrollbar($width) {

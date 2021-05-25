@@ -2,6 +2,8 @@ import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { VscSearch } from 'react-icons/vsc'
 
+import { path } from '@/path'
+
 export type SearchInputProps = {
   className: string
   defaultValue?: string
@@ -18,7 +20,7 @@ export const SearchInput: React.VFC<SearchInputProps> = ({
     (e) => {
       if (e.code === 'Enter') {
         const keywords = e.currentTarget.value
-        router.push(`search?keywords=${keywords}`)
+        router.push(path.search({ keywords }))
       }
     },
     [router],

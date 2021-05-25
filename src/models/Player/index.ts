@@ -1,4 +1,5 @@
 export * from './History'
+export * from './HotSong'
 export * from './Lyric'
 export * from './Player'
 export * from './Playlist'
