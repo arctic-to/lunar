@@ -1,10 +1,8 @@
-import c from 'classnames'
-import Link from 'next/link'
+import React from 'react'
 
 import { SongSnapshotIn } from '@/models'
-import { path } from '@/path'
 
-import styles from './Authors.module.scss'
+import ArtistLink from '../ArtistLink'
 
 export type AuthorsProps = {
   song: SongSnapshotIn
@@ -13,13 +11,9 @@ export type AuthorsProps = {
 
 export const Authors: React.FC<AuthorsProps> = ({ song, className }) => {
   return (
-    <div className={c(styles.container, className)}>
+    <div className={className}>
       {song.ar
-        ?.map((author) => (
-          <Link href={path.artist({ id: author.id })}>
-            <span className={styles.author}>{author.name}</span>
-          </Link>
-        ))
+        ?.map((artist) => <ArtistLink artist={artist} />)
         .reduce((acc, cur) => {
           return (
             <>

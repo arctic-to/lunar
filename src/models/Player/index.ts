@@ -1,3 +1,4 @@
+export * from './Album'
 export * from './History'
 export * from './HotSong'
 export * from './Lyric'

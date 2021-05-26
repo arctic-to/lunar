@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 
+import Album from '@/components/business/Album'
 import Authors from '@/components/business/Authors'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
@@ -32,7 +33,7 @@ export const SongBase: React.FC<SongBaseProps> = observer(
         <Like songId={song.id} />
         <span className={styles.name}>{song.name}</span>
         <Authors className={styles.author} song={song} />
-        <span className={styles.album}>{song.al.name}</span>
+        <Album className={styles.album} album={song.al} />
         <span className={styles.duration}>
           {dayjs.duration(song.dt).format('mm:ss')}
         </span>
