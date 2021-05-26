@@ -5,10 +5,16 @@ export const path = {
       query,
     }
   },
-  artist(query: { id: number }) {
+  artist(id: number) {
     return {
       pathname: '/artist/[id]',
-      query,
+      query: { id },
+    }
+  },
+  album(id: number) {
+    return {
+      pathname: '/album/[id]',
+      query: { id },
     }
   },
 }
