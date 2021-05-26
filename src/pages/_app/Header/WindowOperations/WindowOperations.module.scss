@@ -1,25 +1,12 @@
 @use '~@/style/color';
 
-.window-operations {
+.container {
+  display: flex;
   height: 100%;
-  margin-left: 10px;
+}
 
-  button {
-    height: 100%;
-    padding: 0 15px;
-    color: color.$grey7;
-
-    &.minimize,
-    &.maximize {
-      &:hover {
-        background-color: color.$highlight2;
-      }
-    }
-
-    &.close {
-      &:hover {
-        background-color: red;
-      }
-    }
+.close {
+  &:hover {
+    background-color: red;
   }
 }

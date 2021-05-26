@@ -1,0 +1,12 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.button {
+  @include mixin.center-container;
+  width: 48px;
+  color: color.$grey7;
+
+  &:hover {
+    background-color: color.$highlight2;
+  }
+}

@@ -1,11 +1,13 @@
 import { remote } from 'electron'
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   VscChromeMinimize,
   VscChromeMaximize,
   VscChromeRestore,
   VscChromeClose,
 } from 'react-icons/vsc'
+
+import Button from '../components/Button'
 
 import styles from './WindowOperations.module.scss'
 
@@ -39,20 +41,20 @@ export default function WindowOperations() {
   }, [win])
 
   return (
-    <div className={styles['window-operations']}>
-      <button className={styles.minimize} onClick={minimize}>
+    <div className={styles.container}>
+      <Button onClick={minimize}>
         <VscChromeMinimize size={16} />
-      </button>
-      <button className={styles.maximize} onClick={maximize}>
+      </Button>
+      <Button onClick={maximize}>
         {isMaximized ? (
           <VscChromeRestore size={16} />
         ) : (
           <VscChromeMaximize size={16} />
         )}
-      </button>
-      <button className={styles.close} onClick={close}>
+      </Button>
+      <Button className={styles.close} onClick={close}>
         <VscChromeClose size={16} />
-      </button>
+      </Button>
     </div>
   )
 }
