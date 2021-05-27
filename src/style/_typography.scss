@@ -5,17 +5,21 @@
 }
 @mixin h2 {
   font-size: 18px;
-  font-weight: normal;
+  font-weight: bold;
 }
 @mixin h3 {
-  font-size: 15px;
+  font-size: 18px;
   font-weight: normal;
 }
 @mixin h4 {
+  font-size: 15px;
+  font-weight: normal;
+}
+@mixin h5 {
   font-size: 13px;
   font-weight: bold;
 }
-@mixin h5 {
+@mixin h6 {
   font-size: 13px;
   font-weight: normal;
   text-transform: uppercase;

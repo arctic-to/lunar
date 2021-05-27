@@ -8,7 +8,7 @@
 }
 
 .title {
-  @include typography.h5;
+  @include typography.h6;
   line-height: 35px;
   color: color.$sidebar-title;
   margin-left: 24px;

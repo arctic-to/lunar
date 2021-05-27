@@ -20,7 +20,7 @@
     color: color.$grey5;
     background-color: color.$grey4;
     display: flex;
-    @include typography.h5;
+    @include typography.h6;
     @include mixin.center-container;
     svg {
       font-size: 24px;
@@ -33,7 +33,7 @@
     height: 100%;
     span {
       padding: 0 8px;
-      @include typography.h5;
+      @include typography.h6;
       @include mixin.center-container;
       &.current_type {
         border-bottom: 2px solid color.$green1;
