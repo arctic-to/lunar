@@ -22,6 +22,7 @@ export function Songlist<T extends SongSnapshotIn>({
     <div>
       {songs.map((song, index) => (
         <SongContainer
+          key={song.id}
           song={song}
           privilege={privileges[index]}
           active={activeSongIndexes.includes(index)}

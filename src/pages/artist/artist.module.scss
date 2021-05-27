@@ -26,7 +26,7 @@
     }
     .alias {
       margin-left: 8px;
-      font-size: 18px;
+      @include typography.h2;
       color: color.$grey5;
     }
     .intro {

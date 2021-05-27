@@ -17,4 +17,10 @@ export const path = {
       query: { id },
     }
   },
+  user(id: number) {
+    return {
+      pathname: '/u/[id]',
+      query: { id },
+    }
+  },
 }

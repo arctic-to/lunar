@@ -1,8 +1,17 @@
-import { PlaylistResultSnapshotIn } from '@/models'
-
 import styles from './Playlist.module.scss'
 
-export type PlaylistProps = { playlist: PlaylistResultSnapshotIn }
+export type PlaylistProps = {
+  playlist: {
+    id: number
+    name: string
+    trackCount: number
+    coverImgUrl: string
+    creator: {
+      nickname: string
+    }
+  }
+}
+
 export const Playlist: React.FC<PlaylistProps> = ({ playlist }) => {
   return (
     <div className={styles.container}>
