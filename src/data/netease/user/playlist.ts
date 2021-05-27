@@ -1,4 +1,5 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
+import qs from 'qs'
 import useSWR from 'swr'
 
 import { usePlatform } from '@/models'
@@ -6,12 +7,22 @@ import { Playlist } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 
-export function useUserPlaylist() {
+export function useUserPlaylist(id?: string) {
   const { netease } = usePlatform()
-  const userId = netease?.profile?.userId
+  const myId = netease?.profile?.userId
+  const uid = id ?? myId
   const { data, error } = useSWR<UserPlaylistResponseSnapshotOut>(
-    // If with credentials, the request will return all playlist
-    userId ? [`/user/playlist?uid=${userId}&limit=30&offset=0`, false] : null,
+    // If with credentials, the request of my playlists will return all playlist
+    uid
+      ? [
+          `/user/playlist?${qs.stringify({
+            uid,
+            limit: 30,
+            offset: 0,
+          })}`,
+          false,
+        ]
+      : null,
     fetcher,
   )
 

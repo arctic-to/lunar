@@ -1,0 +1,58 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  padding: 32px 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header {
+  display: flex;
+  gap: 24px;
+  height: 200px;
+
+  .img_container {
+    img {
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  .info {
+    .title {
+      @include mixin.center-container;
+      gap: 8px;
+      .name {
+        @include typography.h1;
+        color: color.$grey6;
+      }
+
+      .level,
+      .vip_level {
+        padding: 4px 8px;
+        @include typography.l1;
+        border-radius: 8px;
+      }
+      .level {
+        background-color: color.$grey4;
+        color: color.$grey6;
+      }
+      .vip_level {
+        background-color: color.$green1;
+        color: color.$grey4;
+      }
+    }
+
+    .bio {
+      margin-top: 8px;
+      @include typography.b1;
+      @include mixin.ellipsis(6);
+      color: color.$grey5;
+      text-align: justify;
+      white-space: pre-wrap;
+    }
+  }
+}
