@@ -1,8 +1,8 @@
 @use '~@/style/color';
+@use '~@/style/typography';
 
 .subtitle {
-  font-size: 18px;
-  font-weight: bold;
+  @include typography.h2;
   margin-bottom: 8px;
   color: color.$grey6;
 }
