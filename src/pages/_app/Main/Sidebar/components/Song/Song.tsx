@@ -2,7 +2,7 @@ import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { MouseEventHandler, useCallback } from 'react'
 
-import { Authors } from '@/components'
+import { Artists } from '@/components'
 import { useLiked, usePlaying, useReplaceTrack } from '@/hooks'
 import { SongSnapshotIn } from '@/models'
 import { PrivilegeSnapshotIn } from '@/models'
@@ -42,7 +42,7 @@ export const Song: React.VFC<SongProps> = observer(
       >
         <div className={styles.prefix}></div>
         <div className={styles.name}>{song.name}</div>
-        <Authors className={styles.authors} song={song} />
+        <Artists className={styles.artists} song={song} />
       </div>
     )
   },

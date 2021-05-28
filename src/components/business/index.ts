@@ -1,5 +1,5 @@
 export * from './Album'
-export * from './Authors'
+export * from './Artists'
 export * from './FolderPrefix'
 export * from './Like'
 export * from './Link'
