@@ -5,7 +5,7 @@ import { PlaylistDetail, Privilege } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 
-export function usePlaylistDetail(id: number | null) {
+export function usePlaylistDetail(id: number | string | null) {
   const { data, error } = useSWR<PlaylistDetailResponseSnapshotOut>(
     id === null ? null : `/playlist/detail?id=${id}`,
     fetcher,

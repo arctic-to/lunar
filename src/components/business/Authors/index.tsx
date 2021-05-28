@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { SongSnapshotIn } from '@/models'
+import { path } from '@/path'
 
-import ArtistLink from '../ArtistLink'
+import { Link } from '../Link'
 
 export type AuthorsProps = {
   song: SongSnapshotIn
@@ -13,7 +14,11 @@ export const Authors: React.FC<AuthorsProps> = ({ song, className }) => {
   return (
     <div className={className}>
       {song.ar
-        ?.map((artist) => <ArtistLink artist={artist} />)
+        ?.map(({ id, name }) => (
+          <Link href={path.artist(id)}>
+            <span>{name}</span>
+          </Link>
+        ))
         .reduce((acc, cur) => {
           return (
             <>

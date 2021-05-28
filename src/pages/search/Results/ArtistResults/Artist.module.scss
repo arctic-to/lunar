@@ -6,7 +6,6 @@
   @include mixin.center-container(v);
   height: 80px;
   padding-left: 16px;
-  cursor: pointer;
 
   &:hover {
     background-color: color.$highlight1;

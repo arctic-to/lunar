@@ -1,11 +1,9 @@
-import c from 'classnames'
-import Link from 'next/link'
 import React from 'react'
 
 import { AlbumSnapshotIn } from '@/models'
 import { path } from '@/path'
 
-import styles from './Album.module.scss'
+import { Link } from '../Link'
 
 export type AlbumProps = {
   album: AlbumSnapshotIn
@@ -14,7 +12,7 @@ export type AlbumProps = {
 export const Album: React.FC<AlbumProps> = ({ album, className }) => {
   return (
     <Link href={path.album(album.id)}>
-      <span className={c(className, styles.container)}>{album.name}</span>
+      <span className={className}>{album.name}</span>
     </Link>
   )
 }
