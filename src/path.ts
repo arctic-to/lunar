@@ -23,4 +23,10 @@ export const path = {
       query: { id },
     }
   },
+  playlist(id: number) {
+    return {
+      pathname: '/playlist/[id]',
+      query: { id },
+    }
+  },
 }

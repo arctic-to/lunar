@@ -2,8 +2,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import { ArtistLink, Songlist } from '@/components'
+import { Link, Songlist } from '@/components'
 import { useAlbum } from '@/data'
+import { path } from '@/path'
 
 import styles from './album.module.scss'
 
@@ -14,12 +15,14 @@ export const Album: React.FC = () => {
 
   if (!data) return null
 
+  const { picUrl, name, artist, description } = data.album
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.img_container}>
           <Image
-            src={data.album.picUrl}
+            src={picUrl}
             alt="Cover of the album"
             width={200}
             height={200}
@@ -27,12 +30,15 @@ export const Album: React.FC = () => {
           />
         </div>
         <div className={styles.info}>
-          <div className={styles.name}>{data.album.name}</div>
+          <div className={styles.name}>{name}</div>
           <div className={styles.artist}>
-            - <ArtistLink artist={data.album.artist} />
+            -{' '}
+            <Link href={path.artist(artist.id)}>
+              <span>{artist.name}</span>
+            </Link>
           </div>
-          <div className={styles.description} title={data.album.description}>
-            {data.album.description}
+          <div className={styles.description} title={description}>
+            {description}
           </div>
         </div>
       </div>

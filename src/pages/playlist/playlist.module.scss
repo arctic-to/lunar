@@ -1,0 +1,51 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  padding: 32px 32px 0;
+}
+
+.header {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  height: 200px;
+
+  .img_container {
+    img {
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
+
+  .info {
+    .name {
+      @include typography.h1;
+      color: color.$grey6;
+    }
+    .data {
+      @include typography.b1;
+      margin-top: 16px;
+      display: flex;
+      gap: 16px;
+      .creator,
+      .created_at,
+      .n_song {
+        @include mixin.center-container(v);
+        color: color.$grey5;
+        gap: 8px;
+        img {
+          width: 24px;
+          border-radius: 50%;
+        }
+        svg {
+          font-size: 20px;
+        }
+        :last-child {
+          color: color.$grey6;
+        }
+      }
+    }
+  }
+}
