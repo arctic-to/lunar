@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 
 import Album from '@/components/business/Album'
-import Authors from '@/components/business/Authors'
+import Artists from '@/components/business/Artists'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
 import { usePlaying } from '@/hooks'
@@ -32,7 +32,7 @@ export const SongBase: React.FC<SongBaseProps> = observer(
         <span className={styles.index}>{index + 1}</span>
         <Like songId={song.id} />
         <span className={styles.name}>{song.name}</span>
-        <Authors className={styles.author} song={song} />
+        <Artists className={styles.artist} song={song} />
         <Album className={styles.album} album={song.al} />
         <span className={styles.duration}>
           {dayjs.duration(song.dt).format('mm:ss')}

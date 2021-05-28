@@ -1,6 +1,6 @@
 import { types } from 'mobx-state-tree'
 
-export const Author = types.model('Author', {
+export const Artist = types.model('Artist', {
   id: types.number,
   name: types.string,
   tns: types.array(types.frozen()),

@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree'
 
 import { Album } from './Album'
-import { Author } from './Author'
+import { Artist } from './Artist'
 import { HML } from './HML'
 import { NoCopyrightRcmd } from './NoCopyrightRcmd'
 import { OriginSongSimpleData } from './OriginSongSimpleData'
@@ -10,7 +10,7 @@ export const Track = types.model('Track', {
   a: types.null,
   al: Album,
   alia: types.array(types.frozen()),
-  ar: types.array(Author),
+  ar: types.array(Artist),
   cd: types.string,
   cf: types.string,
   copyright: types.number,

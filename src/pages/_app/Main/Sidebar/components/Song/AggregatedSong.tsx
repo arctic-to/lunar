@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
 import { MouseEventHandler, useCallback } from 'react'
 
-import { Authors } from '@/components'
+import { Artists } from '@/components'
 import { useLiked } from '@/hooks'
 import { usePlayer, AggregatedSong as AggregatedSongType } from '@/models'
 
@@ -58,7 +58,7 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
           {count > 1 && <div className={prefixStyles.count}>{count}</div>}
         </div>
         <div className={styles.name}>{historySong.name}</div>
-        <Authors className={styles.authors} song={historySong} />
+        <Artists className={styles.artists} song={historySong} />
       </div>
     )
   },

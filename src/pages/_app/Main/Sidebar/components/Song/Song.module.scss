@@ -40,13 +40,13 @@
     color: color.$grey6;
   }
 
-  .authors {
+  .artists {
     flex: 1;
     color: color.$grey5;
   }
 
   .name,
-  .authors {
+  .artists {
     @include mixin.ellipsis;
   }
 }

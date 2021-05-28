@@ -31,7 +31,7 @@
     flex: 2;
     color: color.$grey6;
   }
-  .author {
+  .artist {
     flex: 1;
   }
   .album {
@@ -46,7 +46,7 @@
   }
 
   .name,
-  .author,
+  .artist,
   .album {
     @include mixin.ellipsis;
   }

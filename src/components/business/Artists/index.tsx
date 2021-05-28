@@ -5,12 +5,12 @@ import { path } from '@/path'
 
 import { Link } from '../Link'
 
-export type AuthorsProps = {
+export type ArtistsProps = {
   song: SongSnapshotIn
   className?: string
 }
 
-export const Authors: React.FC<AuthorsProps> = ({ song, className }) => {
+export const Artists: React.FC<ArtistsProps> = ({ song, className }) => {
   return (
     <div className={className}>
       {song.ar
@@ -30,4 +30,4 @@ export const Authors: React.FC<AuthorsProps> = ({ song, className }) => {
   )
 }
 
-export default Authors
+export default Artists

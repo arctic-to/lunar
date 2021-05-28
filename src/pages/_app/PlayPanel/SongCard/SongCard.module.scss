@@ -16,7 +16,7 @@
     max-width: 136px;
 
     .name,
-    .author {
+    .artist {
       @include mixin.ellipsis;
     }
     .name {
@@ -24,10 +24,10 @@
       line-height: 24px;
       color: color.$song-name;
     }
-    .author {
+    .artist {
       @include typography.b2;
       line-height: 24px;
-      color: color.$song-author;
+      color: color.$song-artist;
     }
   }
 }
