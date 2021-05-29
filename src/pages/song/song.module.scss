@@ -6,25 +6,13 @@
   @include mixin.center-container(v);
   flex-direction: column;
   gap: 40px;
+  padding: 48px 0;
   height: 100%;
-  position: relative;
-}
-
-.background {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background-size: cover;
-  opacity: 0.3;
-  filter: blur(20px);
 }
 
 .header {
   @include mixin.center-container;
   flex-direction: column;
-  margin-top: 48px;
-  /* To fix style issues */
-  position: relative;
 
   .title {
     @include typography.h1;

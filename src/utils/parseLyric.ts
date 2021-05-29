@@ -25,5 +25,9 @@ export function parseLyric({ lrc, tlyric }: LyricResponse) {
     }
   })
 
+  parsedLyric[0].duration = parsedLyric[1].begin
+  parsedLyric[0].begin = 0
+  parsedLyric.slice(-1)[0].duration = Number.MAX_SAFE_INTEGER
+
   return parsedLyric
 }

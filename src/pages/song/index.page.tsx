@@ -14,11 +14,6 @@ export const Song: React.FC = observer(() => {
 
   return (
     <div className={styles.container}>
-      <div
-        className={styles.background}
-        style={{ backgroundImage: `url(${song.al.picUrl})` }}
-      />
-
       <div className={styles.header}>
         <div className={styles.title}>{song.name}</div>
         <div className={styles.subtitle}>

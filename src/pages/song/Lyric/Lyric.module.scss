@@ -3,7 +3,6 @@
 @use '~@/style/typography';
 
 .container {
-  height: 432px;
   overflow: auto;
   padding: 0 10px;
   color: color.$grey6;
@@ -15,8 +14,6 @@
   @include mixin.center-container(v);
   flex-direction: column;
   gap: 8px;
-  /* To fix `:hover` not work after adding `overflow: auto` */
-  position: relative;
 
   .raw_container {
     @include mixin.center-container;
