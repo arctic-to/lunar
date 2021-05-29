@@ -62,7 +62,7 @@ export const Lyric: React.VFC = observer(() => {
        * Variables store time (like `currentTime`) should be calculated by other
        * variables, instead of sync them.
        */
-      const excludedActions = ['setCurrentTime', 'setTimeoutID']
+      const excludedActions = ['_setCurrentTime', 'setTimeoutID']
       if (!excludedActions.includes(action.name)) {
         win?.webContents.send('store:player:action', action)
       }

@@ -1,11 +1,12 @@
 import { SnapshotIn, types } from 'mobx-state-tree'
+import qs from 'qs'
 import useSWR from 'swr'
 
 import { fetcher } from '../fetcher'
 
-export function useLyric(id: number | null) {
+export function useLyric(id: number | string | null | undefined) {
   const { data, error } = useSWR<LyricResponseSnapshotIn>(
-    id === null ? null : `/lyric?id=${id}`,
+    id ? `/lyric?${qs.stringify({ id })}` : null,
     fetcher,
   )
 
@@ -21,17 +22,26 @@ const LyricResponse = types.model('LyricResponse', {
   sgc: types.boolean,
   sfy: types.boolean,
   qfy: types.boolean,
-  lrc: types.model({
-    version: types.number,
-    lyric: types.string,
-  }),
-  klyric: types.model({
-    version: types.number,
-    lyric: types.string,
-  }),
-  tlyric: types.model({
-    version: types.number,
-    lyric: types.string,
-  }),
+  lrc: types.maybe(
+    types.model({
+      version: types.number,
+      lyric: types.string,
+    }),
+  ),
+  klyric: types.maybe(
+    types.model({
+      version: types.number,
+      lyric: types.string,
+    }),
+  ),
+  tlyric: types.maybe(
+    types.model({
+      version: types.number,
+      lyric: types.string,
+    }),
+  ),
+  nolyric: types.maybe(types.boolean),
+  needDesc: types.maybe(types.boolean),
+  briefDesc: types.null,
   code: types.number,
 })

@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite'
+import React from 'react'
 
-import { Artists } from '@/components'
+import { Artists, Link } from '@/components'
 import { useCurrentTrack } from '@/models'
+import { path } from '@/path'
 
 import styles from './SongCard.module.scss'
 
@@ -11,11 +13,13 @@ export const SongCard: React.FC = observer(() => {
   return (
     <div className={styles['song-card']}>
       {song && (
-        <img
-          className={styles['album-cover']}
-          src={song.al.picUrl ?? ''}
-          alt="The album cover"
-        />
+        <Link href={path.song}>
+          <img
+            className={styles['album-cover']}
+            src={song.al.picUrl ?? ''}
+            alt="The album cover"
+          />
+        </Link>
       )}
 
       {song && (

@@ -1,0 +1,71 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  height: 432px;
+  overflow: auto;
+  padding: 0 10px;
+  color: color.$grey6;
+  @include mixin.scrollbar(0);
+}
+
+.lyric {
+  padding: 8px 16px;
+  @include mixin.center-container(v);
+  flex-direction: column;
+  gap: 8px;
+  /* To fix `:hover` not work after adding `overflow: auto` */
+  position: relative;
+
+  .raw_container {
+    @include mixin.center-container;
+    position: relative;
+
+    svg {
+      opacity: 0;
+      position: absolute;
+      color: color.$highlight4;
+      right: -20px;
+      transition: 0.3s all;
+      &:hover {
+        color: color.$blue1;
+      }
+    }
+  }
+
+  .raw,
+  .translation {
+    padding: 0 8px;
+    transition: 0.3s all;
+    &:hover {
+      background-color: color.$highlight2;
+    }
+  }
+
+  .raw {
+    @include typography.b1;
+  }
+
+  .translation {
+    @include typography.b2;
+  }
+
+  &:hover {
+    svg {
+      opacity: unset;
+    }
+  }
+
+  &.current {
+    color: color.$green1;
+
+    .raw {
+      font-size: 16px;
+    }
+
+    .translation {
+      @include typography.b1;
+    }
+  }
+}

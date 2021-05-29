@@ -22,14 +22,15 @@ export const CentralController: React.VFC = observer(() => {
   }, [currentTrack, player.handleEnded])
 
   useEffect(() => {
-    if (currentTrack && ref.current) {
+    /** `currentTime` can be set when <audio> has non-empty `src`(currentTrack.songUrl). */
+    if (currentTrack && currentTrack.songUrl && ref.current) {
       ref.current.currentTime = currentTrack.currentTimeInSecond
     }
     /**
      * Ignore the updates of `currentTimeInSecond`, cause it is
      * updated continually if audio is playing.
      */
-  }, [currentTrack, currentTrack?.currentTimeSetTimes])
+  }, [currentTrack, currentTrack?.songUrl, currentTrack?.currentTimeSetTimes])
 
   useEffect(() => {
     if (currentTrack && ref.current) {

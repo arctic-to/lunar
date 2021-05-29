@@ -31,8 +31,12 @@ export const Track = types
     },
   }))
   .actions((self) => ({
+    _setCurrentTime(currentTime: number) {
+      self.currentTime = currentTime
+    },
     setCurrentTime(currentTime: number) {
       self.currentTime = currentTime
+      self.currentTimeSetTimes++
     },
     setCurrentTimeByPercentage(percentage: number) {
       self.currentTime = percentage * self.song.dt
@@ -67,9 +71,9 @@ export const Track = types
           setInterval(() => {
             if (e) {
               if (!(e.target instanceof HTMLAudioElement)) return
-              self.setCurrentTime(e.target?.currentTime * SECOND)
+              self._setCurrentTime(e.target?.currentTime * SECOND)
             } else {
-              self.setCurrentTime(self.currentTime + interval)
+              self._setCurrentTime(self.currentTime + interval)
             }
           }, interval),
         )

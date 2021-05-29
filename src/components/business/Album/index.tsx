@@ -7,7 +7,7 @@ import { Link } from '../Link'
 
 export type AlbumProps = {
   album: AlbumSnapshotIn
-  className: string
+  className?: string
 }
 export const Album: React.FC<AlbumProps> = ({ album, className }) => {
   return (

@@ -29,4 +29,5 @@ export const path = {
       query: { id },
     }
   },
+  song: '/song',
 }
