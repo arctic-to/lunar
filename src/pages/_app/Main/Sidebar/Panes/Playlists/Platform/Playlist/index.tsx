@@ -1,22 +1,25 @@
 import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import { FolderPrefix } from '@/components'
 import { usePlaylistDetail } from '@/data'
 import { useSonglist } from '@/hooks'
 import { ViewPlaylistInstance, usePlayer } from '@/models'
 
-import { Song } from '../../../components'
+import { Song } from '../../../../components'
+import { Range } from '../range'
 
 import styles from './Playlist.module.scss'
 
 interface PlaylistProps {
   viewPlaylist: ViewPlaylistInstance
+  track: () => void
+  visibleItemRange: Range
 }
 
 export const Playlist: React.VFC<PlaylistProps> = observer(
-  ({ viewPlaylist }) => {
+  ({ viewPlaylist, track, visibleItemRange }) => {
     const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
     const player = usePlayer()
 
@@ -31,6 +34,11 @@ export const Playlist: React.VFC<PlaylistProps> = observer(
       }
     }, [data, viewPlaylist])
 
+    const handleClick = useCallback(() => {
+      viewPlaylist?.viewState.toggle()
+      track()
+    }, [track, viewPlaylist?.viewState])
+
     const updatePlayQueue = useCallback(() => {
       player.replaceQueue({
         name: viewPlaylist.name,
@@ -40,20 +48,37 @@ export const Playlist: React.VFC<PlaylistProps> = observer(
       })
     }, [data?.playlist.tracks, data?.privileges, player, viewPlaylist.name])
 
+    const [isHeaderVisible, visibleSongRange] = useMemo(() => {
+      return visibleItemRange.start === 0
+        ? [
+            true,
+            {
+              ...visibleItemRange,
+              start: visibleItemRange.start + 1,
+            },
+          ]
+        : [false, visibleItemRange]
+    }, [visibleItemRange])
+
     return (
-      <div className={styles.container}>
-        <div
-          key={viewPlaylist.id}
-          className={styles.header}
-          onClick={viewPlaylist?.viewState.toggle}
-        >
-          <FolderPrefix folded={folded} loading={loading} />
-          {viewPlaylist.name}
-        </div>
-        <div className={styles.songlist}>
-          {folded ||
-            viewPlaylist?.viewState.playlistDetail?.tracks?.map(
-              (track, index) => (
+      <>
+        {isHeaderVisible && (
+          <div
+            key={viewPlaylist.id}
+            className={styles.header}
+            onClick={handleClick}
+          >
+            <FolderPrefix folded={folded} loading={loading} />
+            {viewPlaylist.name}
+          </div>
+        )}
+
+        {folded ||
+          viewPlaylist?.viewState.playlistDetail?.tracks
+            ?.slice(visibleSongRange.start, visibleSongRange.end)
+            .map((track, _index) => {
+              const index = _index + visibleSongRange.start
+              return (
                 <Song
                   key={track.id}
                   song={getSnapshot(track)}
@@ -62,10 +87,9 @@ export const Playlist: React.VFC<PlaylistProps> = observer(
                   onClick={resetActiveSongIndexes(index)}
                   onDoubleClick={updatePlayQueue}
                 />
-              ),
-            )}
-        </div>
-      </div>
+              )
+            })}
+      </>
     )
   },
 )
