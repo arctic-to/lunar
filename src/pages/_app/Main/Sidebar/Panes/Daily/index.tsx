@@ -9,8 +9,7 @@ import { useToggle } from 'react-use'
 import { DatePicker } from '@/components'
 import { useRecommedSongs, useSongDetail } from '@/data'
 import { useBoolean, useSonglist } from '@/hooks'
-import { useIsCurrShortcut } from '@/hooks'
-import { ShortcutEnum, usePlayer } from '@/models'
+import { usePlayer } from '@/models'
 import { useNeteaseCloudMusicRecommendedSongs } from '@/tracking'
 
 import { Song } from '../../components'
@@ -18,7 +17,6 @@ import { Song } from '../../components'
 import styles from './Daily.module.scss'
 
 export const Daily: React.VFC = observer(() => {
-  const isCurrShortcut = useIsCurrShortcut(ShortcutEnum.Daily)
   const [isLatest, setIsLatestToTrue, setIsLatestToFalse] = useBoolean(true)
   const [date, setDate] = useState(dayjs())
   const [datePickerActive, toggleDatePickerActive] = useToggle(false)
@@ -66,10 +64,7 @@ export const Daily: React.VFC = observer(() => {
   )
 
   return (
-    <div
-      className={styles.container}
-      style={isCurrShortcut ? undefined : { display: 'none' }}
-    >
+    <div className={styles.container}>
       <div className={styles.header}>
         <div>{title}</div>
         <div className={styles.buttons}>

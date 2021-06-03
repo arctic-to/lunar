@@ -1,8 +1,7 @@
 import { observer } from 'mobx-react-lite'
 
 import { useSonglist } from '@/hooks'
-import { useIsCurrShortcut } from '@/hooks'
-import { ShortcutEnum, usePlayer } from '@/models'
+import { usePlayer } from '@/models'
 
 import { AggregatedSong } from '../../components'
 
@@ -11,13 +10,9 @@ import styles from './History.module.scss'
 export const History: React.VFC = observer(() => {
   const { history } = usePlayer()
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
-  const isCurrShortcut = useIsCurrShortcut(ShortcutEnum.History)
 
   return (
-    <div
-      className={styles.container}
-      style={isCurrShortcut ? undefined : { display: 'none' }}
-    >
+    <div className={styles.container}>
       {history.aggregatedSongs.map((aggregatedSong, index) => (
         <AggregatedSong
           key={Number(aggregatedSong.songs[0].played)}

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 
-import { useView } from '@/models'
+import { ShortcutEnum, useView } from '@/models'
 
 import { Playlists, PlayQueue, History, Daily } from './Panes'
 import styles from './Sidebar.module.scss'
@@ -9,12 +9,20 @@ import styles from './Sidebar.module.scss'
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface SidebarProps {}
 
+const shortcutMap = {
+  [ShortcutEnum.PlayQueue]: PlayQueue,
+  [ShortcutEnum.Playlists]: Playlists,
+  [ShortcutEnum.History]: History,
+  [ShortcutEnum.Daily]: Daily,
+}
+
 export const Sidebar = observer<SidebarProps, HTMLDivElement>(
   (_, ref) => {
     const view = useView()
 
     if (!view.currShortcut) return null
 
+    const Component = shortcutMap[view.currShortcut.type]
     const title = view.currShortcut.type
 
     return (
@@ -24,10 +32,7 @@ export const Sidebar = observer<SidebarProps, HTMLDivElement>(
         ref={ref}
       >
         <div className={styles.title}>{title}</div>
-        <PlayQueue />
-        <Playlists />
-        <History />
-        <Daily />
+        <Component />
       </div>
     )
   },
