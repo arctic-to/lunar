@@ -16,6 +16,7 @@ export const VolumeSlider: React.VFC = observer(() => {
         width={80}
         percentage={player?.volume}
         onChange={player?.setVolume}
+        updateWhileMouseMove
       />
     </div>
   )
