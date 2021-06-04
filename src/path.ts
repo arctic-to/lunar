@@ -29,5 +29,12 @@ export const path = {
       query: { id },
     }
   },
+  charts: '/charts',
+  chart(id: number) {
+    return {
+      pathname: '/playlist/[id]',
+      query: { id },
+    }
+  },
   song: '/song',
 }
