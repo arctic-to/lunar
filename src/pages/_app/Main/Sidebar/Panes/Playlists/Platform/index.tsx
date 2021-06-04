@@ -16,7 +16,7 @@ import { Pane } from '../../../types'
 
 import styles from './Platform.module.scss'
 import { Playlist } from './Playlist'
-import { Range, intersects, intersect, translate } from './range'
+import { Range, intersect, translate, isEmpty } from './range'
 
 function getPlaylistRangeSize({ viewState, trackCount }: ViewPlaylistInstance) {
   return 1 + (viewState.folded ? 0 : trackCount)
@@ -32,12 +32,8 @@ export const NeteaseCloudMusicPane: Pane = observer(() => {
   const [range, setRange] = useState<Range>()
 
   const { data } = useUserPlaylist()
-  const sidebar = useSidebar()
+  const { viewPlaylists, setPlaylists } = useSidebar().playlists
   const playlists = data?.playlist
-
-  const viewPlaylists = useMemo(() => sidebar.playlists.viewPlaylists, [
-    sidebar.playlists.viewPlaylists,
-  ])
 
   const playlistRanges = useMemo(() => {
     return viewPlaylists.reduce<Range[]>((acc, viewPlaylist) => {
@@ -48,12 +44,6 @@ export const NeteaseCloudMusicPane: Pane = observer(() => {
     }, [])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewPlaylists, tracker])
-
-  const playlistIntersections = useMemo(() => {
-    return playlistRanges.map((playlistRange) => {
-      return range ? intersect(range, playlistRange) : { start: 0, end: 0 }
-    })
-  }, [playlistRanges, range])
 
   const height = useMemo(() => {
     return (
@@ -66,8 +56,8 @@ export const NeteaseCloudMusicPane: Pane = observer(() => {
   }, [viewPlaylists, tracker])
 
   useEffect(() => {
-    if (playlists) sidebar.playlists.setPlaylists(playlists)
-  }, [playlists, sidebar.playlists])
+    if (playlists) setPlaylists(playlists)
+  }, [playlists, setPlaylists])
 
   const updateVisualState = useCallback((scrollTop: number) => {
     if (!containerRef.current) return
@@ -80,8 +70,11 @@ export const NeteaseCloudMusicPane: Pane = observer(() => {
       end,
     })
 
-    if (contentRef.current)
-      contentRef.current.style.top = start * ITEM_SIZE + 'px'
+    if (contentRef.current) {
+      contentRef.current.style.transform = `translate3d(0, ${
+        start * ITEM_SIZE
+      }px, 0)`
+    }
   }, [])
 
   const handleScroll = useCallback(
@@ -95,6 +88,12 @@ export const NeteaseCloudMusicPane: Pane = observer(() => {
     updateVisualState(0)
   }, [updateVisualState])
 
+  const playlistIntersections = useMemo(() => {
+    return playlistRanges.map((playlistRange) => {
+      return range ? intersect(range, playlistRange) : { start: 0, end: 0 }
+    })
+  }, [playlistRanges, range])
+
   const visiblePlaylistRange = useMemo(() => {
     let start = NaN
     let end = NaN
@@ -104,10 +103,10 @@ export const NeteaseCloudMusicPane: Pane = observer(() => {
     }
 
     for (let i = 0; i < playlistRanges.length; i++) {
-      if (isNaN(start) && intersects(range, playlistRanges[i])) {
+      if (isNaN(start) && !isEmpty(playlistIntersections[i])) {
         start = i
       }
-      if (!isNaN(start) && !intersects(range, playlistRanges[i])) {
+      if (!isNaN(start) && isEmpty(playlistIntersections[i])) {
         end = i
         break
       }
@@ -118,7 +117,7 @@ export const NeteaseCloudMusicPane: Pane = observer(() => {
     }
 
     return { start, end }
-  }, [playlistRanges, range])
+  }, [playlistIntersections, playlistRanges.length, range])
 
   return (
     <div

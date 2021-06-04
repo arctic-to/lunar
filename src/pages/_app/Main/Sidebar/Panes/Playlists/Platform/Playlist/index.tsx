@@ -60,6 +60,11 @@ export const Playlist: React.VFC<PlaylistProps> = observer(
         : [false, visibleItemRange]
     }, [visibleItemRange])
 
+    const tracks = viewPlaylist?.viewState.playlistDetail?.tracks.slice(
+      visibleSongRange.start,
+      visibleSongRange.end,
+    )
+
     return (
       <>
         {isHeaderVisible && (
@@ -74,21 +79,19 @@ export const Playlist: React.VFC<PlaylistProps> = observer(
         )}
 
         {folded ||
-          viewPlaylist?.viewState.playlistDetail?.tracks
-            ?.slice(visibleSongRange.start, visibleSongRange.end)
-            .map((track, _index) => {
-              const index = _index + visibleSongRange.start
-              return (
-                <Song
-                  key={track.id}
-                  song={getSnapshot(track)}
-                  privilege={viewPlaylist?.viewState.privileges[index]}
-                  active={activeSongIndexes.includes(index)}
-                  onClick={resetActiveSongIndexes(index)}
-                  onDoubleClick={updatePlayQueue}
-                />
-              )
-            })}
+          tracks?.map((track, _index) => {
+            const index = _index + visibleSongRange.start
+            return (
+              <Song
+                key={track.id}
+                song={getSnapshot(track)}
+                privilege={viewPlaylist?.viewState.privileges[index]}
+                active={activeSongIndexes.includes(index)}
+                onClick={resetActiveSongIndexes(index)}
+                onDoubleClick={updatePlayQueue}
+              />
+            )
+          })}
       </>
     )
   },
