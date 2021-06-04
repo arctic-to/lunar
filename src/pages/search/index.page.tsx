@@ -2,7 +2,7 @@ import c from 'classnames'
 import { useRouter } from 'next/router'
 import React, { useCallback, useState } from 'react'
 
-import { Loader, SearchInput } from '@/components'
+import { Loader } from '@/components'
 import { useCloudSearch, SearchTypeEnum } from '@/data'
 
 import Results from './Results'
@@ -46,7 +46,6 @@ export const Search: React.VFC = () => {
             </span>
           ))}
         </div>
-        <SearchInput className={styles.search_input} defaultValue={keywords} />
       </div>
 
       <Results type={type} data={data} />

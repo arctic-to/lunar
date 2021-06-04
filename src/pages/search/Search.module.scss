@@ -40,24 +40,4 @@
       }
     }
   }
-
-  .search_input {
-    color: color.$grey6;
-    background-color: color.$grey4;
-    width: 192px;
-    height: 100%;
-    border-radius: 4px;
-    position: absolute;
-    right: 0px;
-    padding: 0 16px;
-    @include mixin.center-container(v);
-    justify-content: space-between;
-    input {
-      width: 128px;
-      padding: unset;
-      @include typography.b1;
-      color: color.$grey6;
-      background-color: unset;
-    }
-  }
 }

@@ -1,5 +1,6 @@
 @use '~@/style/color';
 @use '~@/style/mixin';
+@use '~@/style/typography';
 
 .header {
   height: 30px;
@@ -22,6 +23,22 @@
     display: flex;
     svg {
       font-size: 20px;
+    }
+  }
+  .search_input {
+    color: color.$grey6;
+    background-color: color.$grey4;
+    width: 192px;
+    padding: 0 16px;
+    margin-left: 48px;
+    @include mixin.center-container(v);
+    justify-content: space-between;
+    input {
+      width: 128px;
+      padding: unset;
+      @include typography.b1;
+      color: color.$grey6;
+      background-color: unset;
     }
   }
 }

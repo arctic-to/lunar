@@ -7,26 +7,3 @@
   justify-content: center;
   align-items: center;
 }
-
-.search_input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 440px;
-  height: 60px;
-  color: color.$grey6;
-  background-color: color.$grey4;
-  margin-top: 64px;
-  padding: 0 24px;
-
-  input {
-    color: color.$grey6;
-    background-color: unset;
-    // TODO: tg
-    font-size: 24px;
-  }
-
-  svg {
-    font-size: 32px;
-  }
-}

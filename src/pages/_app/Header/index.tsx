@@ -3,6 +3,7 @@ import React from 'react'
 import { useCallback } from 'react'
 import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc'
 
+import { SearchInput } from '@/components'
 import { useHistory } from '@/hooks'
 
 import styles from './Header.module.scss'
@@ -35,6 +36,7 @@ export default function Header() {
             <VscChevronRight />
           </Button>
         </div>
+        <SearchInput className={styles.search_input} />
       </div>
 
       <div className={styles.right}>
