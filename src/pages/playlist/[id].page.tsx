@@ -13,7 +13,8 @@ import styles from './playlist.module.scss'
 
 export const Playlist: React.FC = () => {
   const router = useRouter()
-  const { id } = router.query as { id: string }
+  const { id } = router.query as { id?: string }
+
   const { data } = usePlaylistDetail(id)
 
   if (!data) return null

@@ -10,7 +10,7 @@ import styles from './album.module.scss'
 
 export const Album: React.FC = () => {
   const router = useRouter()
-  const { id } = router.query as { id: string }
+  const { id } = router.query as { id?: string }
   const { data } = useAlbum(id)
 
   if (!data) return null

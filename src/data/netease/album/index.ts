@@ -6,9 +6,9 @@ import { Track, Privilege } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 
-export function useAlbum(id: string) {
+export function useAlbum(id?: string) {
   const { data, error } = useSWR<AlbumResponseSnapshot>(
-    `/album?${qs.stringify({ id })}`,
+    id ? `/album?${qs.stringify({ id })}` : null,
     fetcher,
   )
 

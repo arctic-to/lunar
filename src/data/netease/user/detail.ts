@@ -6,9 +6,9 @@ import { Profile } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 
-export function useUserDetail(uid: string) {
+export function useUserDetail(uid?: string) {
   const { data, error } = useSWR<UserDetailResponseSnapshotOut>(
-    `/user/detail?${qs.stringify({ uid })}`,
+    uid ? `/user/detail?${qs.stringify({ uid })}` : null,
     fetcher,
   )
 

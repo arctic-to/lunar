@@ -1,10 +1,11 @@
 import { SnapshotIn, types } from 'mobx-state-tree'
 import qs from 'qs'
 import useSWR from 'swr'
+import { Maybe } from 'yup/lib/types'
 
 import { fetcher } from '../fetcher'
 
-export function useLyric(id: number | string | null | undefined) {
+export function useLyric(id: Maybe<number | string>) {
   const { data, error } = useSWR<LyricResponseSnapshotIn>(
     id ? `/lyric?${qs.stringify({ id })}` : null,
     fetcher,

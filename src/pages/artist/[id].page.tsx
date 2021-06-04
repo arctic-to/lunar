@@ -9,7 +9,7 @@ import styles from './artist.module.scss'
 
 export const Artist: React.FC = () => {
   const router = useRouter()
-  const { id } = router.query as { id: string }
+  const { id } = router.query as { id?: string }
   const { data } = useArtists(id)
 
   if (!data) return null

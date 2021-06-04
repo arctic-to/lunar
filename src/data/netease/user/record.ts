@@ -11,9 +11,9 @@ export enum RecordType {
   Week,
 }
 
-export function useUserRecord(uid: string, type?: RecordType) {
+export function useUserRecord(uid?: string, type?: RecordType) {
   const { data, error } = useSWR<UserRecordResponseSnapshotOut>(
-    `/user/record?${qs.stringify({ uid, type })}`,
+    uid ? `/user/record?${qs.stringify({ uid, type })}` : null,
     fetcher,
   )
 

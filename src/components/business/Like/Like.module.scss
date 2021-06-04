@@ -1,7 +1,7 @@
 @use '~@/style/color';
 
 .liked {
-  color: color.$red1;
+  color: color.$red1 !important;
 }
 
 .liked,

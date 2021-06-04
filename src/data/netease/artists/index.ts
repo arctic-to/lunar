@@ -6,9 +6,9 @@ import { HotSong } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 
-export function useArtists(id: string) {
+export function useArtists(id?: string) {
   const { data, error } = useSWR<ArtistsResponseSnapshot>(
-    `/artists?${qs.stringify({ id })}`,
+    id ? `/artists?${qs.stringify({ id })}` : null,
     fetcher,
   )
 
