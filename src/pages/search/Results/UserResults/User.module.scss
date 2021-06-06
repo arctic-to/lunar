@@ -23,12 +23,12 @@
 }
 
 .name {
-  color: color.$grey6;
+  color: color.$grey7;
   @include typography.h4;
 }
 
 .bio {
-  color: color.$grey5;
+  color: color.$grey6;
   @include typography.b2;
 }
 

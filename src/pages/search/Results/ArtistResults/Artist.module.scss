@@ -19,12 +19,12 @@
 
 .name {
   margin-left: 16px;
-  color: color.$grey6;
+  color: color.$grey7;
   @include typography.b2;
 }
 
 .alias {
   margin-left: 8px;
-  color: color.$grey5;
+  color: color.$grey6;
   @include typography.b2;
 }

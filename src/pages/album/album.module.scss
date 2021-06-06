@@ -22,21 +22,21 @@
   .info {
     .name {
       @include typography.h1;
-      color: color.$grey6;
+      color: color.$grey7;
     }
     .artist {
       @include typography.b1;
       margin-top: 8px;
-      color: color.$grey5;
+      color: color.$grey6;
       span {
-        color: color.$grey6;
+        color: color.$grey7;
       }
     }
     .description {
       margin-top: 16px;
       @include typography.b1;
       @include mixin.ellipsis(6);
-      color: color.$grey5;
+      color: color.$grey6;
       text-align: justify;
       white-space: pre-wrap;
     }

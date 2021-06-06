@@ -17,7 +17,7 @@
     width: 48px;
     height: 24px;
     border-radius: 4px;
-    color: color.$grey5;
+    color: color.$grey6;
     background-color: color.$grey4;
     display: flex;
     @include typography.h4;
@@ -29,7 +29,7 @@
   .types {
     display: flex;
     gap: 12px;
-    color: color.$grey6;
+    color: color.$grey7;
     height: 100%;
     span {
       padding: 0 8px;

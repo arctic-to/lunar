@@ -26,7 +26,7 @@
     }
   }
   .search_input {
-    color: color.$grey6;
+    color: color.$grey7;
     background-color: color.$grey4;
     width: 192px;
     padding: 0 16px;
@@ -37,7 +37,7 @@
       width: 128px;
       padding: unset;
       @include typography.b1;
-      color: color.$grey6;
+      color: color.$grey7;
       background-color: unset;
     }
   }

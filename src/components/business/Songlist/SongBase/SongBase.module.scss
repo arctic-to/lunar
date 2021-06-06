@@ -4,7 +4,7 @@
 
 .container {
   @include mixin.center-container(v);
-  color: color.$grey5;
+  color: color.$grey6;
   line-height: 36px;
   gap: 16px;
   @include typography.b2;
@@ -29,7 +29,7 @@
   }
   .name {
     flex: 2;
-    color: color.$grey6;
+    color: color.$grey7;
   }
   .artist {
     flex: 1;

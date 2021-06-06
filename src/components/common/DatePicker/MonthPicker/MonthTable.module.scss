@@ -3,7 +3,7 @@
 
 .container {
   padding: 17px 6px;
-  color: color.$grey6;
+  color: color.$grey7;
 
   .table {
     display: grid;
@@ -22,8 +22,8 @@
     cursor: pointer;
 
     &:hover {
-      color: color.$grey6;
-      background-color: color.$grey5;
+      color: color.$grey7;
+      background-color: color.$grey6;
     }
 
     &.active {

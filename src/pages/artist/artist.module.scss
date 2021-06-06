@@ -22,18 +22,18 @@
   .info {
     .name {
       @include typography.h1;
-      color: color.$grey6;
+      color: color.$grey7;
     }
     .alias {
       margin-left: 8px;
       @include typography.h3;
-      color: color.$grey5;
+      color: color.$grey6;
     }
     .intro {
       margin-top: 16px;
       @include typography.b1;
       @include mixin.ellipsis(8);
-      color: color.$grey5;
+      color: color.$grey6;
       text-align: justify;
     }
   }

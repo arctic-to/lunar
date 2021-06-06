@@ -16,16 +16,16 @@
 
   .title {
     @include typography.h1;
-    color: color.$grey7;
+    color: color.$grey8;
     margin-bottom: 8px;
   }
 
   .subtitle {
     display: flex;
     gap: 8px;
-    color: color.$grey5;
+    color: color.$grey6;
     span {
-      color: color.$grey6;
+      color: color.$grey7;
     }
   }
 }

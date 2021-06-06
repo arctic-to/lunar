@@ -5,7 +5,7 @@
 .container {
   overflow: auto;
   padding: 0 10px;
-  color: color.$grey6;
+  color: color.$grey7;
   @include mixin.scrollbar(0);
 }
 
