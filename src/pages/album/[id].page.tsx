@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
@@ -21,13 +20,7 @@ export const Album: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.img_container}>
-          <Image
-            src={picUrl}
-            alt="Cover of the album"
-            width={200}
-            height={200}
-            layout="fixed"
-          />
+          <img src={picUrl} alt="Cover of the album" width={200} height={200} />
         </div>
         <div className={styles.info}>
           <div className={styles.name}>{name}</div>

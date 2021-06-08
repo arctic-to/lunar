@@ -1,4 +1,13 @@
 import { app, BrowserWindow } from 'electron'
+import debug from 'electron-debug'
+import isDev from 'electron-is-dev'
+import serve from 'electron-serve'
+
+if (isDev) {
+  debug()
+} else {
+  serve({ directory: 'build' })
+}
 
 let win: BrowserWindow | null = null
 function createWindow() {
@@ -15,7 +24,7 @@ function createWindow() {
     },
   })
 
-  const urlLocation = 'http://localhost:3000'
+  const urlLocation = isDev ? 'http://localhost:3000' : 'app://./index.html'
 
   win.loadURL(urlLocation)
 
