@@ -3,7 +3,7 @@ import React from 'react'
 
 import { ShortcutEnum, useView } from '@/models'
 
-import { Playlists, PlayQueue, History, Daily } from './Panes'
+import { PlayQueue, History, Daily } from './Panes'
 import styles from './Sidebar.module.scss'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -11,7 +11,6 @@ interface SidebarProps {}
 
 const shortcutMap = {
   [ShortcutEnum.PlayQueue]: PlayQueue,
-  [ShortcutEnum.Playlists]: Playlists,
   [ShortcutEnum.History]: History,
   [ShortcutEnum.Daily]: Daily,
 }

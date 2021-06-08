@@ -3,17 +3,13 @@ import { observer } from 'mobx-react-lite'
 import { useCallback } from 'react'
 import { IoCalendarOutline } from 'react-icons/io5'
 import { RiPlayListFill } from 'react-icons/ri'
-import { VscHistory, VscRepo } from 'react-icons/vsc'
+import { VscHistory } from 'react-icons/vsc'
 
 import { useView, ShortcutEnum } from '@/models'
 
 import styles from './Shortcutbar.module.scss'
 
 const Shortcuts = [
-  {
-    type: ShortcutEnum.Playlists,
-    icon: VscRepo,
-  },
   {
     type: ShortcutEnum.PlayQueue,
     icon: RiPlayListFill,
