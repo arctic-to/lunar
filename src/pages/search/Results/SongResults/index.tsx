@@ -1,12 +1,12 @@
 import React from 'react'
 
 import { Songlist } from '@/components'
-import { CloudSearchResponse } from '@/data'
+import { CloudSearchSongResponseSnapshotIn, CloudSearchResponse } from '@/data'
 
 export type SongResultsProps = { data: CloudSearchResponse }
 export const SongResults: React.FC<SongResultsProps> = ({ data }) => {
   if (!('songs' in data.result)) return null
-  const songs = data.result.songs
+  const songs = (data as CloudSearchSongResponseSnapshotIn).result.songs
   if (!songs) return null
 
   return (
