@@ -1,0 +1,19 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  color: color.$grey7;
+  background-color: color.$grey4;
+  width: 192px;
+  padding: 0 16px;
+  @include mixin.center-container(v);
+  justify-content: space-between;
+  input {
+    width: 128px;
+    padding: unset;
+    @include typography.b1;
+    color: color.$grey7;
+    background-color: unset;
+  }
+}

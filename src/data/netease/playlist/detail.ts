@@ -19,7 +19,7 @@ export function usePlaylistDetail(id: Maybe<number | string>) {
   }
 }
 
-type PlaylistDetailResponseSnapshotOut = SnapshotOut<
+export type PlaylistDetailResponseSnapshotOut = SnapshotOut<
   typeof PlaylistDetailResponse
 >
 const PlaylistDetailResponse = types.model('PlaylistDetailResponse', {

@@ -1,37 +1,23 @@
-import { useRouter } from 'next/router'
-import { useCallback } from 'react'
+import c from 'classnames'
 import { VscSearch } from 'react-icons/vsc'
 
-import { path } from '@/path'
+import styles from './SearchInput.module.scss'
 
 export type SearchInputProps = {
   className: string
+  value?: string
   defaultValue?: string
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
 }
 
 export const SearchInput: React.VFC<SearchInputProps> = ({
   className,
-  defaultValue,
+  ...inputProps
 }) => {
-  const router = useRouter()
-  const handleEnterDown = useCallback<
-    React.KeyboardEventHandler<HTMLInputElement>
-  >(
-    (e) => {
-      if (e.code === 'Enter') {
-        const keywords = e.currentTarget.value
-        router.push(path.search({ keywords }))
-      }
-    },
-    [router],
-  )
   return (
-    <span className={className}>
-      <input
-        placeholder="搜索"
-        defaultValue={defaultValue}
-        onKeyDown={handleEnterDown}
-      />
+    <span className={c(styles.container, className)}>
+      <input placeholder="搜索" {...inputProps} />
       <VscSearch />
     </span>
   )
