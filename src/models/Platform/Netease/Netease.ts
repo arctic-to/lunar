@@ -12,10 +12,10 @@ export const Netease = types
   })
   .actions((self) => ({
     setAccount(account: AccountSnapshotIn | null) {
-      self.account = account
+      self.account = cast(account)
     },
     setProfile(profile: ProfileSnapshotIn | null) {
-      self.profile = profile
+      self.profile = cast(profile)
     },
     setLikelist(likelist: LikelistSnapshotOut) {
       self.likelist = cast(likelist)

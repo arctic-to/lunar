@@ -1,7 +1,4 @@
 import { app, BrowserWindow } from 'electron'
-import debug = require('electron-debug')
-
-debug()
 
 let win: BrowserWindow | null = null
 function createWindow() {
