@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import Image from 'next/image'
 import React from 'react'
 import { VscFile } from 'react-icons/vsc'
 
@@ -16,12 +15,11 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
   return (
     <div className={styles.container}>
       <div className={styles.img_container}>
-        <Image
+        <img
           src={data.playlist.coverImgUrl}
           alt="Cover of the playlist"
           width={200}
           height={200}
-          layout="fixed"
         />
       </div>
 

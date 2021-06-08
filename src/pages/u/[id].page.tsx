@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import React from 'react'
 
 import { useUserDetail } from '@/data'
@@ -18,12 +17,11 @@ export const Profile: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.img_container}>
-          <Image
+          <img
             src={data.profile.avatarUrl}
             alt="Avatar"
             width={200}
             height={200}
-            layout="fixed"
           />
         </div>
         <div className={styles.info}>
