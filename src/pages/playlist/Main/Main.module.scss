@@ -15,6 +15,9 @@
       &:hover {
         color: color.$green2;
       }
+      &:disabled {
+        color: color.$green1;
+      }
     }
     .search_input {
       border-radius: 4px;

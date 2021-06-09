@@ -4,6 +4,7 @@ import styles from './Button.module.scss'
 
 export type ButtonProps = {
   Icon?: React.FC
+  disabled?: boolean
   className?: string
   onClick: () => void
 }
@@ -11,13 +12,18 @@ export type ButtonProps = {
 export const Button: React.FC<ButtonProps> = ({
   children,
   Icon,
+  disabled = false,
   className,
   onClick,
 }) => {
   return (
-    <button className={c(styles.container, className)} onClick={onClick}>
+    <button
+      className={c(styles.container, className)}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {Icon && <Icon />}
-      <span>{children}</span>
+      {children && <span>{children}</span>}
     </button>
   )
 }

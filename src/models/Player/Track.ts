@@ -1,7 +1,7 @@
 import { types, flow, SnapshotIn, Instance } from 'mobx-state-tree'
 import { SECOND } from 'unit-of-time'
 
-import { fetcher } from '@/data'
+import { fetcher } from '@/data/netease'
 
 import { Song } from './Song'
 

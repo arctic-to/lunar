@@ -5,8 +5,8 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
 import { useCallback } from 'react'
 
+import { trackNeteaseCloudMusicLikeSong } from '@/data'
 import { usePlatform } from '@/models'
-import { trackNeteaseCloudMusicLikeSong } from '@/tracking/netease-cloud-music/like'
 
 import { fetcher } from '../fetcher'
 import { useLikelist } from '../likelist'
@@ -17,7 +17,7 @@ function postLike(id: number, like: boolean) {
 
 export function useLike(id: number | undefined) {
   const { mutate } = useLikelist()
-  const { netease } = usePlatform()
+  const { userId } = usePlatform().netease.profile ?? {}
 
   const _like = useCallback(
     async (like: boolean) => {
@@ -28,10 +28,10 @@ export function useLike(id: number | undefined) {
         const idSet = new Set(data.ids)
         if (like) {
           idSet.add(id)
-          if (netease.profile) {
+          if (userId) {
             trackNeteaseCloudMusicLikeSong({
               songId: id,
-              userId: netease.profile.userId,
+              userId,
             })
           }
         } else {
@@ -46,7 +46,7 @@ export function useLike(id: number | undefined) {
       await postLike(id, like)
       mutate()
     },
-    [id, mutate, netease.profile],
+    [id, mutate, userId],
   )
 
   return [

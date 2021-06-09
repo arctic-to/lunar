@@ -1,8 +1,8 @@
 import { NeteaseCloudMusicLikeSongEvent, Prisma } from '@prisma/client'
 
-import { axios } from '../fetcher'
+import { axios } from '../../fetcher'
 
-const PATH = '/like'
+const PATH = '/tracking/like'
 
 export function trackNeteaseCloudMusicLikeSong(
   data: Prisma.NeteaseCloudMusicLikeSongEventCreateInput,

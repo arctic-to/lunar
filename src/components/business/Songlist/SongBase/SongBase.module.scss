@@ -3,6 +3,9 @@
 @use '~@/style/typography';
 
 .container {
+}
+
+.top {
   @include mixin.center-container(v);
   color: color.$grey6;
   line-height: 36px;
@@ -29,6 +32,7 @@
   }
   .name {
     flex: 2;
+    padding-left: 4px;
     color: color.$grey7;
   }
   .artist {
@@ -53,5 +57,24 @@
 
   svg {
     font-size: 16px;
+  }
+}
+
+.bottom {
+  .tags {
+    @include mixin.center-container(v);
+    gap: 8px;
+    height: 28px;
+    padding: 0 8px;
+    margin-left: 84px;
+  }
+
+  .tag {
+    @include mixin.center-container;
+    @include typography.l1;
+    height: 20px;
+    color: color.$grey7;
+    background-color: color.$grey4;
+    padding: 0 8px;
   }
 }

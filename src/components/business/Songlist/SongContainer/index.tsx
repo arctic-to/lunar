@@ -12,7 +12,7 @@ export type SongContainerProps = {
   privilege: PrivilegeSnapshotIn
   active: boolean
   onClick: MouseEventHandler
-  onDoubleClick?: () => void
+  onDoubleClick?: (() => void) | undefined
 }
 export const SongContainer: React.FC<SongContainerProps> = observer(
   ({ song, privilege, active, onClick, onDoubleClick, children }) => {
