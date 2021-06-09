@@ -3,6 +3,6 @@
 
 .subtitle {
   @include typography.h2;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   color: color.$grey7;
 }

@@ -1,0 +1,23 @@
+@use '~@/style/color';
+
+.container {
+  header {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .right {
+    display: flex;
+    gap: 16px;
+    .button {
+      color: color.$grey7;
+      background-color: color.$grey4;
+      &:hover {
+        color: color.$green2;
+      }
+    }
+    .search_input {
+      border-radius: 4px;
+    }
+  }
+}
