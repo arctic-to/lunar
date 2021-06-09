@@ -41,6 +41,10 @@
 
 /** Label */
 @mixin l1 {
+  font-size: 12px;
+  font-weight: normal;
+}
+@mixin l2 {
   font-size: 10px;
   font-weight: normal;
 }

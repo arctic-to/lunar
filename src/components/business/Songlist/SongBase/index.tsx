@@ -1,3 +1,4 @@
+import { NeteaseCloudMusicTag } from '@prisma/client'
 import c from 'classnames'
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
@@ -16,30 +17,43 @@ export type SongBaseProps = {
   index: number
   song: SongSnapshotIn
   privilege: PrivilegeSnapshotIn
+  tags?: NeteaseCloudMusicTag[] | undefined
 }
 export const SongBase: React.FC<SongBaseProps> = observer(
-  ({ index, song, privilege }) => {
+  ({ index, song, privilege, tags }) => {
     const playing = usePlaying(song)
     const unavailable = !(privilege?.cp ?? true)
 
     return (
-      <div
-        className={c(styles.container, {
-          [styles.playing]: playing,
-          [styles.unavailable]: unavailable,
-        })}
-      >
-        <span className={styles.index}>{index + 1}</span>
-        <Like songId={song.id} />
-        <span className={styles.name}>{song.name}</span>
-        <Artists className={styles.artist} song={song} />
-        <Album className={styles.album} album={song.al} />
-        <span className={styles.duration}>
-          {dayjs.duration(song.dt).format('mm:ss')}
-        </span>
-        <span className={styles.pop}>
-          <ProgressBar percentage={song.pop / 100} />
-        </span>
+      <div className={styles.container}>
+        <div
+          className={c(styles.top, {
+            [styles.playing]: playing,
+            [styles.unavailable]: unavailable,
+          })}
+        >
+          <span className={styles.index}>{index + 1}</span>
+          <Like songId={song.id} />
+          <span className={styles.name}>{song.name}</span>
+          <Artists className={styles.artist} song={song} />
+          <Album className={styles.album} album={song.al} />
+          <span className={styles.duration}>
+            {dayjs.duration(song.dt).format('mm:ss')}
+          </span>
+          <span className={styles.pop}>
+            <ProgressBar percentage={song.pop / 100} />
+          </span>
+        </div>
+
+        <div className={styles.bottom}>
+          {tags && (
+            <div className={styles.tags}>
+              {tags.map((tag) => (
+                <div className={styles.tag}>{tag.name}</div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     )
   },

@@ -3,9 +3,9 @@ import useSWR from 'swr'
 
 import { usePlatform } from '@/models'
 
-import { fetcher, axios } from '../fetcher'
+import { fetcher, axios } from '../../fetcher'
 
-const PATH = '/recommended/songs'
+const PATH = '/tracking/recommended/songs'
 
 export function useNeteaseCloudMusicRecommendedSongs() {
   const { netease } = usePlatform()

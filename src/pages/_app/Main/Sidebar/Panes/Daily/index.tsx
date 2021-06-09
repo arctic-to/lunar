@@ -7,10 +7,13 @@ import { CgCalendar, CgCalendarToday } from 'react-icons/cg'
 import { useToggle } from 'react-use'
 
 import { DatePicker } from '@/components'
-import { useRecommedSongs, useSongDetail } from '@/data'
+import {
+  useNeteaseCloudMusicRecommendedSongs,
+  useRecommedSongs,
+  useSongDetail,
+} from '@/data'
 import { useBoolean, useSonglist } from '@/hooks'
 import { usePlayer } from '@/models'
-import { useNeteaseCloudMusicRecommendedSongs } from '@/tracking'
 
 import { Song } from '../../components'
 

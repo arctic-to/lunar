@@ -10,7 +10,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "lib": ["DOM"],
+    "lib": ["DOM", "ESNext"],
     "paths": {
       "@/*": ["*"]
     }

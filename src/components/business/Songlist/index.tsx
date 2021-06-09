@@ -1,3 +1,5 @@
+import { NeteaseCloudMusicTag } from '@prisma/client'
+
 import { useSonglist } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
 
@@ -7,6 +9,7 @@ import SongContainer from './SongContainer'
 type SonglistProps<T> = {
   songs: T[]
   privileges: PrivilegeSnapshotIn[]
+  tags?: NeteaseCloudMusicTag[][] | undefined
   getExtraContent?: (song: T) => React.ReactNode
   onDoubleClick?: () => void
 }
@@ -14,6 +17,7 @@ type SonglistProps<T> = {
 export function Songlist<T extends SongSnapshotIn>({
   songs,
   privileges,
+  tags,
   getExtraContent,
   onDoubleClick,
 }: SonglistProps<T>) {
@@ -29,7 +33,12 @@ export function Songlist<T extends SongSnapshotIn>({
           onClick={resetActiveSongIndexes(index)}
           onDoubleClick={onDoubleClick}
         >
-          <SongBase index={index} song={song} privilege={privileges[index]} />
+          <SongBase
+            index={index}
+            song={song}
+            privilege={privileges[index]}
+            tags={tags?.[index]}
+          />
           {getExtraContent?.(song)}
         </SongContainer>
       ))}
