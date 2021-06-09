@@ -20,3 +20,19 @@ model NeteaseCloudMusicLikeSongEvent {
   userId    Int
   createdAt DateTime @default(now())
 }
+
+model NeteaseCloudMusicSong {
+  id                   Int                    @id @default(autoincrement())
+  createdAt            DateTime               @default(now())
+  songId               Int
+  userId               Int
+  NeteaseCloudMusicTag NeteaseCloudMusicTag[]
+}
+
+model NeteaseCloudMusicTag {
+  id                    Int                     @id @default(autoincrement())
+  createdAt             DateTime                @default(now())
+  userId                Int
+  name                  String
+  NeteaseCloudMusicSong NeteaseCloudMusicSong[]
+}
