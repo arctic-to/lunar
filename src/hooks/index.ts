@@ -1,6 +1,7 @@
 export * from './useBoolean'
 export * from './useHistory'
 export * from './useIsCurrShortcut'
+export * from './useKeyword'
 export * from './useLiked'
 export * from './usePlaying'
 export * from './useReplaceTrack'

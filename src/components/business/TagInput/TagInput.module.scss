@@ -1,0 +1,30 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  padding: 8px 0;
+  background-color: color.$grey5;
+}
+
+.row {
+  @include mixin.center-container(v);
+  gap: 8px;
+  height: 28px;
+  padding-left: 8px;
+  padding-right: 32px;
+
+  &.create {
+    padding-left: 16px;
+    color: color.$grey9;
+    @include typography.l1;
+  }
+
+  &:hover {
+    background-color: color.$highlight4;
+  }
+
+  &.selected {
+    background-color: color.$highlight6;
+  }
+}

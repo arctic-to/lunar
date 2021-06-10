@@ -2,7 +2,7 @@ import { NeteaseCloudMusicTag } from '@prisma/client'
 import c from 'classnames'
 import React, { useCallback, useState } from 'react'
 
-import { Tag } from '@/components'
+import { Tag } from '../Tag'
 
 import styles from './TagSelect.module.scss'
 

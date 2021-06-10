@@ -36,6 +36,9 @@ button {
 
 input {
   border: none;
+  background-color: unset;
+  color: inherit;
+  padding: unset;
 
   &:focus {
     outline: none;

@@ -11,9 +11,6 @@
   justify-content: space-between;
   input {
     width: 128px;
-    padding: unset;
     @include typography.b1;
-    color: color.$grey8;
-    background-color: unset;
   }
 }
