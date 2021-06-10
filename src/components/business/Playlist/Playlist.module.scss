@@ -20,14 +20,14 @@
 
 .name {
   flex: 3;
-  color: color.$grey7;
+  color: color.$grey8;
   @include typography.b1;
   @include mixin.ellipsis;
 }
 
 .count {
   width: 100px;
-  color: color.$grey6;
+  color: color.$grey7;
   text-align: right;
   padding-right: 40px;
   @include typography.b2;
@@ -35,7 +35,7 @@
 
 .creater {
   flex: 2;
-  color: color.$grey7;
+  color: color.$grey8;
   @include typography.b2;
   @include mixin.ellipsis;
 }

@@ -3,7 +3,7 @@
 @use '~@/style/typography';
 
 .container {
-  color: color.$grey7;
+  color: color.$grey8;
   background-color: color.$grey4;
   width: 192px;
   padding: 0 16px;
@@ -13,7 +13,7 @@
     width: 128px;
     padding: unset;
     @include typography.b1;
-    color: color.$grey7;
+    color: color.$grey8;
     background-color: unset;
   }
 }

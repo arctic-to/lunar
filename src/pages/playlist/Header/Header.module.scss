@@ -18,7 +18,7 @@
   .info {
     .name {
       @include typography.h1;
-      color: color.$grey7;
+      color: color.$grey8;
     }
     .data {
       @include typography.b1;
@@ -29,7 +29,7 @@
       .created_at,
       .n_song {
         @include mixin.center-container(v);
-        color: color.$grey6;
+        color: color.$grey7;
         gap: 8px;
         img {
           width: 24px;
@@ -39,7 +39,7 @@
           font-size: 20px;
         }
         :last-child {
-          color: color.$grey7;
+          color: color.$grey8;
         }
       }
     }
