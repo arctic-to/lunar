@@ -1,6 +1,9 @@
-import { toLower } from 'lodash'
+import { uniqBy } from 'lodash'
 import React, { useCallback, useMemo, useState } from 'react'
+import { useEffect } from 'react'
 import { FaTags } from 'react-icons/fa'
+import { usePopper } from 'react-popper'
+import { useToggle } from 'react-use'
 
 import { Button, SearchInput, Songlist } from '@/components'
 import {
@@ -12,42 +15,78 @@ import { usePlatform } from '@/models'
 import pageStyles from '@/style/business/page.module.scss'
 
 import styles from './Main.module.scss'
+import TagSelect from './TagSelect'
+import { filterTracksByKeyword, filterTracksByTags } from './utils'
+
+enum State {
+  Tagify,
+  Filter,
+}
+
+const textMap = {
+  [State.Tagify]: 'Tagify',
+  [State.Filter]: 'Filter',
+}
 
 export type MainProps = { data: PlaylistDetailResponseSnapshotOut }
 export const Main: React.FC<MainProps> = ({ data }) => {
   const { playlist, privileges } = data
-
   const [keyword, setKeyword] = useState('')
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
   const { userId } = usePlatform().netease.profile ?? {}
 
-  const { data: tags } = useSongTags(
-    userId,
-    playlist.tracks.map((track) => track.id),
+  const [isPopperHidden, toggleIsPopperHidden] = useToggle(true)
+  const [
+    referenceElement,
+    setReferenceElement,
+  ] = useState<HTMLButtonElement | null>(null)
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+    null,
+  )
+  const { styles: popperStyles, attributes } = usePopper(
+    referenceElement,
+    popperElement,
   )
 
-  const tagified = tags ? Boolean(tags.flat().length) : true
+  const trackIds = useMemo(() => playlist.trackIds.map(({ id }) => id), [
+    playlist.trackIds,
+  ])
+  const { data: tags, loading } = useSongTags(userId, trackIds)
+  const flatTags = useMemo(() => tags?.flat(), [tags])
+  const uniqTags = useMemo(() => uniqBy(flatTags, 'id'), [flatTags])
+  const state = flatTags?.length ? State.Filter : State.Tagify
 
   const tracks = useMemo(() => {
-    return !keyword
-      ? playlist.tracks
-      : playlist.tracks.filter((track) => {
-          const names = [
-            track.name,
-            ...track.ar.map((artist) => artist.name),
-            track.al.name,
-          ].map(toLower)
+    const _tracks = filterTracksByKeyword(playlist.tracks, keyword)
+    return tags ? filterTracksByTags(_tracks, tags, selectedTagIds) : _tracks
+  }, [playlist.tracks, keyword, tags, selectedTagIds])
 
-          return names.some((name) => name.includes(keyword.toLowerCase()))
-        })
-  }, [playlist.tracks, keyword])
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.currentTarget.value)
-  }, [])
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setKeyword(e.currentTarget.value)
+    },
+    [],
+  )
 
   const tagify = useCallback(() => {
     if (userId) generateTags({ userId, playlistId: playlist.id })
   }, [playlist.id, userId])
+
+  const clickHandlerMap = useMemo(
+    () => ({
+      [State.Tagify]: tagify,
+      [State.Filter]: toggleIsPopperHidden,
+    }),
+    [tagify, toggleIsPopperHidden],
+  )
+
+  useEffect(() => {
+    if (popperElement) {
+      popperElement.style.display = isPopperHidden ? 'none' : ''
+    }
+  }, [isPopperHidden, popperElement])
+
+  if (loading) return null
 
   return (
     <div className={styles.container}>
@@ -57,16 +96,25 @@ export const Main: React.FC<MainProps> = ({ data }) => {
           <SearchInput
             className={styles.search_input}
             value={keyword}
-            onChange={handleChange}
+            onChange={handleInputChange}
           />
           <Button
             className={styles.button}
-            disabled={tagified}
+            disabled={loading}
             Icon={FaTags}
-            onClick={tagify}
+            onClick={clickHandlerMap[state]}
+            ref={setReferenceElement}
           >
-            {!tagified && 'Tagify'}
+            {textMap[state]}
           </Button>
+          <div
+            className={styles.popper}
+            ref={setPopperElement}
+            style={popperStyles.popper}
+            {...attributes.popper}
+          >
+            <TagSelect tags={uniqTags} onChange={setSelectedTagIds} />
+          </div>
         </div>
       </header>
 

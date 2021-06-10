@@ -1,0 +1,16 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  @include mixin.center-container;
+  @include typography.l1;
+  height: 20px;
+  color: color.$grey7;
+  background-color: color.$grey4;
+  padding: 0 8px;
+  gap: 8px;
+  svg {
+    font-size: 16px;
+  }
+}

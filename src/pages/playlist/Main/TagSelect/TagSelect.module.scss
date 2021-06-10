@@ -1,0 +1,23 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  padding: 8px 0;
+  border-radius: 4px;
+  background-color: color.$grey5;
+}
+
+.row {
+  @include mixin.center-container(v);
+  height: 28px;
+  padding-left: 8px;
+  padding-right: 32px;
+
+  &:hover {
+    background-color: color.$highlight4;
+  }
+
+  &.selected {
+    background-color: color.$highlight6;
+  }
+}

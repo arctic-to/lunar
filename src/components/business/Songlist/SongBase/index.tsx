@@ -16,7 +16,7 @@ import styles from './SongBase.module.scss'
 export type SongBaseProps = {
   index: number
   song: SongSnapshotIn
-  privilege: PrivilegeSnapshotIn
+  privilege: PrivilegeSnapshotIn | undefined
   tags?: NeteaseCloudMusicTag[] | undefined
 }
 export const SongBase: React.FC<SongBaseProps> = observer(
@@ -49,7 +49,9 @@ export const SongBase: React.FC<SongBaseProps> = observer(
           {tags && (
             <div className={styles.tags}>
               {tags.map((tag) => (
-                <div className={styles.tag}>{tag.name}</div>
+                <div key={tag.id} className={styles.tag}>
+                  {tag.name}
+                </div>
               ))}
             </div>
           )}
