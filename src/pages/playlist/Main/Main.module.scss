@@ -8,6 +8,7 @@
   }
   .right {
     display: flex;
+    position: relative;
     gap: 16px;
 
     .search_input {
@@ -20,8 +21,14 @@
         color: color.$green2;
       }
     }
-    .popper {
+    .dropdown {
+      position: absolute;
       z-index: 1;
+      right: 0;
+      top: 38px;
+      &.hidden {
+        display: none;
+      }
     }
   }
 }
