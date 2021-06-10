@@ -4,18 +4,17 @@ import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FaTags } from 'react-icons/fa'
 import { useClickAway } from 'react-use'
 
-import { Button, SearchInput, Songlist } from '@/components'
+import { Button, SearchInput, Songlist, TagSelect } from '@/components'
 import {
   generateTags,
   PlaylistDetailResponseSnapshotOut,
   useSongTags,
 } from '@/data'
-import { useBoolean } from '@/hooks'
+import { useBoolean, useKeyword } from '@/hooks'
 import { usePlatform } from '@/models'
 import pageStyles from '@/style/business/page.module.scss'
 
 import styles from './Main.module.scss'
-import TagSelect from './TagSelect'
 import { filterTracksByKeyword, filterTracksByTags } from './utils'
 
 enum State {
@@ -31,7 +30,7 @@ const textMap = {
 export type MainProps = { data: PlaylistDetailResponseSnapshotOut }
 export const Main: React.FC<MainProps> = ({ data }) => {
   const { playlist, privileges } = data
-  const [keyword, setKeyword] = useState('')
+  const [keyword, handleInputChange] = useKeyword()
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
   const { userId } = usePlatform().netease.profile ?? {}
 
@@ -56,13 +55,6 @@ export const Main: React.FC<MainProps> = ({ data }) => {
     const _tracks = filterTracksByKeyword(playlist.tracks, keyword)
     return tags ? filterTracksByTags(_tracks, tags, selectedTagIds) : _tracks
   }, [playlist.tracks, keyword, tags, selectedTagIds])
-
-  const handleInputChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setKeyword(e.currentTarget.value)
-    },
-    [],
-  )
 
   const tagify = useCallback(() => {
     if (userId) generateTags({ userId, playlistId: playlist.id })

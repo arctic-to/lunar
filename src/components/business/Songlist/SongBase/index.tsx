@@ -2,14 +2,18 @@ import { NeteaseCloudMusicTag } from '@prisma/client'
 import c from 'classnames'
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
-import React from 'react'
+import React, { useCallback, useRef } from 'react'
+import { useClickAway } from 'react-use'
 
+import { Tag } from '@/components'
 import Album from '@/components/business/Album'
 import Artists from '@/components/business/Artists'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
-import { usePlaying } from '@/hooks'
+import { useBoolean, useKeyword, usePlaying } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
+
+import TagInput, { ClickHandlerParams } from '../../TagInput'
 
 import styles from './SongBase.module.scss'
 
@@ -21,8 +25,32 @@ export type SongBaseProps = {
 }
 export const SongBase: React.FC<SongBaseProps> = observer(
   ({ index, song, privilege, tags }) => {
+    const [keyword, handleInputChange] = useKeyword()
+    const [isTagsActive, setTagsToActive, setTagsToInactive] = useBoolean(false)
+    const tagsContainerRef = useRef<HTMLDivElement | null>(null)
+    useClickAway(tagsContainerRef, setTagsToInactive)
+
     const playing = usePlaying(song)
     const unavailable = !(privilege?.cp ?? true)
+
+    const handleClick = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+        setTagsToActive()
+      },
+      [setTagsToActive],
+    )
+
+    const handleDoubleClick = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        e.stopPropagation()
+      },
+      [],
+    )
+
+    const handleTagRowClick = useCallback((args: ClickHandlerParams) => {
+      args
+    }, [])
 
     return (
       <div className={styles.container}>
@@ -47,12 +75,30 @@ export const SongBase: React.FC<SongBaseProps> = observer(
 
         <div className={styles.bottom}>
           {tags && (
-            <div className={styles.tags}>
+            <div
+              className={c(styles.tags_container, {
+                [styles.active]: isTagsActive,
+              })}
+              ref={tagsContainerRef}
+              onClick={handleClick}
+              onDoubleClick={handleDoubleClick}
+            >
               {tags.map((tag) => (
-                <div key={tag.id} className={styles.tag}>
-                  {tag.name}
-                </div>
+                <Tag tag={tag} active={isTagsActive} />
               ))}
+              {isTagsActive && (
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={handleInputChange}
+                  autoFocus
+                />
+              )}
+              {isTagsActive && (
+                <div className={styles.tag_input}>
+                  <TagInput keyword={keyword} onClick={handleTagRowClick} />
+                </div>
+              )}
             </div>
           )}
         </div>
