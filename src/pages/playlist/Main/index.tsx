@@ -1,9 +1,8 @@
+import c from 'classnames'
 import { uniqBy } from 'lodash'
-import React, { useCallback, useMemo, useState } from 'react'
-import { useEffect } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { FaTags } from 'react-icons/fa'
-import { usePopper } from 'react-popper'
-import { useToggle } from 'react-use'
+import { useClickAway } from 'react-use'
 
 import { Button, SearchInput, Songlist } from '@/components'
 import {
@@ -11,6 +10,7 @@ import {
   PlaylistDetailResponseSnapshotOut,
   useSongTags,
 } from '@/data'
+import { useBoolean } from '@/hooks'
 import { usePlatform } from '@/models'
 import pageStyles from '@/style/business/page.module.scss'
 
@@ -35,18 +35,14 @@ export const Main: React.FC<MainProps> = ({ data }) => {
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
   const { userId } = usePlatform().netease.profile ?? {}
 
-  const [isPopperHidden, toggleIsPopperHidden] = useToggle(true)
-  const [
-    referenceElement,
-    setReferenceElement,
-  ] = useState<HTMLButtonElement | null>(null)
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
-    null,
-  )
-  const { styles: popperStyles, attributes } = usePopper(
-    referenceElement,
-    popperElement,
-  )
+  const [isDropdownHidden, hideDropdown, , toggleDropdown] = useBoolean(true)
+  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
+  useClickAway(dropdownRef, (e) => {
+    if (!buttonRef.current?.contains(e.target as HTMLElement)) {
+      hideDropdown()
+    }
+  })
 
   const trackIds = useMemo(() => playlist.trackIds.map(({ id }) => id), [
     playlist.trackIds,
@@ -75,16 +71,10 @@ export const Main: React.FC<MainProps> = ({ data }) => {
   const clickHandlerMap = useMemo(
     () => ({
       [State.Tagify]: tagify,
-      [State.Filter]: toggleIsPopperHidden,
+      [State.Filter]: toggleDropdown,
     }),
-    [tagify, toggleIsPopperHidden],
+    [toggleDropdown, tagify],
   )
-
-  useEffect(() => {
-    if (popperElement) {
-      popperElement.style.display = isPopperHidden ? 'none' : ''
-    }
-  }, [isPopperHidden, popperElement])
 
   if (loading) return null
 
@@ -100,18 +90,17 @@ export const Main: React.FC<MainProps> = ({ data }) => {
           />
           <Button
             className={styles.button}
-            disabled={loading}
+            ref={buttonRef}
             Icon={FaTags}
             onClick={clickHandlerMap[state]}
-            ref={setReferenceElement}
           >
             {textMap[state]}
           </Button>
           <div
-            className={styles.popper}
-            ref={setPopperElement}
-            style={popperStyles.popper}
-            {...attributes.popper}
+            className={c(styles.dropdown, {
+              [styles.hidden]: isDropdownHidden,
+            })}
+            ref={dropdownRef}
           >
             <TagSelect tags={uniqTags} onChange={setSelectedTagIds} />
           </div>
