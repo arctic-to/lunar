@@ -4,7 +4,7 @@
 .button {
   @include mixin.center-container;
   width: 48px;
-  color: color.$grey8;
+  color: color.$grey9;
 
   &:hover {
     background-color: color.$highlight2;

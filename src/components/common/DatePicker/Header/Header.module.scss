@@ -11,7 +11,7 @@
 
   .title {
     @include typography.h4;
-    color: color.$grey7;
+    color: color.$grey8;
   }
 
   .left,
@@ -22,7 +22,7 @@
     svg {
       font-size: 24px;
       cursor: pointer;
-      color: color.$grey6;
+      color: color.$grey7;
     }
   }
 }

@@ -13,7 +13,7 @@ $playpanel: $grey3;
 $footer: $grey2;
 
 /* Slider */
-$slider-track: $grey6;
+$slider-track: $grey7;
 $slider-fill: $green2;
 $slider-slider: $green1;
 
@@ -23,27 +23,27 @@ $scrollbar--hover: $highlight6;
 
 /* FOREGROUND COLORS */
 /* Shortcutbar */
-$shortcutbar-icon: $grey6;
-$shortcutbar-active-icon: $grey8;
+$shortcutbar-icon: $grey7;
+$shortcutbar-active-icon: $grey9;
 /* Sidebar */
-$sidebar-title: $grey7;
-$pane-header-fg: $grey7;
+$sidebar-title: $grey8;
+$pane-header-fg: $grey8;
 
 /* PlayPanel */
 /* SongCard */
-$song-name: $grey8;
-$song-artist: $grey7;
+$song-name: $grey9;
+$song-artist: $grey8;
 /* CentralController */
-$button: $grey7;
-$play-button: $grey8;
+$button: $grey8;
+$play-button: $grey9;
 $active-button: $green1;
 
-$input: $grey6;
+$input: $grey7;
 $input-border: $green1;
-$input-text: $grey8;
-$input-placeholder: $grey7;
+$input-text: $grey9;
+$input-placeholder: $grey8;
 
 $song-hover: $highlight1;
 $song-focus: $highlight2;
 $song-playing: $green1;
-$song-unavailable: $grey6;
+$song-unavailable: $grey7;
