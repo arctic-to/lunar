@@ -13,6 +13,13 @@ type LyricResponse = {
     | undefined
 }
 
+export type ParsedLyric = {
+  translation: string | undefined
+  duration: number
+  begin: number
+  content: string | undefined
+}[]
+
 export function parseLyric({ lrc, tlyric }: LyricResponse) {
   if (!(lrc && tlyric)) return null
 
@@ -29,13 +36,13 @@ export function parseLyric({ lrc, tlyric }: LyricResponse) {
     }
   })
 
-  const hasTimestamp = parsedLyric.some(({ duration }) => duration)
+  const noTimestamp = parsedLyric.every(({ begin }) => begin === 0)
 
-  if (hasTimestamp && parsedLyric[0] && parsedLyric[1]) {
+  if (!noTimestamp && parsedLyric[0] && parsedLyric[1]) {
     parsedLyric[0].duration = parsedLyric[1].begin
     parsedLyric[0].begin = 0
     parsedLyric.slice(-1)[0].duration = Number.MAX_SAFE_INTEGER
   }
 
-  return { parsedLyric, hasTimestamp }
+  return { parsedLyric, noTimestamp }
 }

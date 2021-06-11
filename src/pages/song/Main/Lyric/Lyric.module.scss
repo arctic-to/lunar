@@ -3,20 +3,6 @@
 @use '~@/style/typography';
 
 .container {
-  @include mixin.center-container;
-  flex-direction: column;
-  gap: 24px;
-  overflow: auto;
-}
-
-.no_timestamp {
-  color: color.$grey5;
-  @include typography.b1;
-  background-color: color.$blue1;
-  padding: 2px 8px;
-}
-
-.lyrics_container {
   overflow: auto;
   padding: 0 10px;
   color: color.$grey8;
