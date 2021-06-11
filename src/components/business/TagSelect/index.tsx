@@ -2,7 +2,7 @@ import { NeteaseCloudMusicTag } from '@prisma/client'
 import c from 'classnames'
 import React, { useCallback, useState } from 'react'
 
-import { Tag } from '../Tag'
+import { TagBase } from '../Tag'
 
 import styles from './TagSelect.module.scss'
 
@@ -31,7 +31,7 @@ export const TagSelect: React.FC<TagSelectProps> = ({ tags, onChange }) => {
           className={c(styles.row, { [styles.selected]: ids.has(tag.id) })}
           onClick={handleClick(tag.id)}
         >
-          <Tag tag={tag} />
+          <TagBase tagName={tag.name} />
         </div>
       ))}
     </div>
