@@ -13,7 +13,7 @@ import { ProgressBar } from '@/components/common'
 import { useBoolean, useKeyword, usePlaying } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
 
-import TagInput, { ClickHandlerParams } from '../../TagInput'
+import TagInput from '../../TagInput'
 
 import styles from './SongBase.module.scss'
 
@@ -48,10 +48,6 @@ export const SongBase: React.FC<SongBaseProps> = observer(
       [],
     )
 
-    const handleTagRowClick = useCallback((args: ClickHandlerParams) => {
-      args
-    }, [])
-
     return (
       <div className={styles.container}>
         <div
@@ -84,7 +80,12 @@ export const SongBase: React.FC<SongBaseProps> = observer(
               onDoubleClick={handleDoubleClick}
             >
               {tags.map((tag) => (
-                <Tag tag={tag} active={isTagsActive} />
+                <Tag
+                  key={tag.id}
+                  tag={tag}
+                  active={isTagsActive}
+                  songId={song.id}
+                />
               ))}
               {isTagsActive && (
                 <input
@@ -96,7 +97,11 @@ export const SongBase: React.FC<SongBaseProps> = observer(
               )}
               {isTagsActive && (
                 <div className={styles.tag_input}>
-                  <TagInput keyword={keyword} onClick={handleTagRowClick} />
+                  <TagInput
+                    keyword={keyword}
+                    songId={song.id}
+                    initialTags={tags}
+                  />
                 </div>
               )}
             </div>

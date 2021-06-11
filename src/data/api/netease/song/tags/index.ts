@@ -4,13 +4,27 @@ import useSWR from 'swr'
 
 import { axios, fetcher } from '../../fetcher'
 
-import { GenerateTagsDto } from './dto'
+import { AddTagDto, GenerateTagsDto } from './dto'
 
 const PATH = '/song/tags'
 
 export function generateTags(data: GenerateTagsDto) {
   return axios
     .post<NeteaseCloudMusicTag[][]>(`${PATH}/generate`, data)
+    .then((res) => res.data)
+}
+
+export function addTag(data: AddTagDto) {
+  return axios
+    .post<NeteaseCloudMusicTag[][]>(PATH, data)
+    .then((res) => res.data)
+}
+
+export function removeTag(tagId: number, songId: number) {
+  return axios
+    .delete<NeteaseCloudMusicTag[][]>(
+      `${PATH}/${tagId}?${qs.stringify({ songId })}`,
+    )
     .then((res) => res.data)
 }
 

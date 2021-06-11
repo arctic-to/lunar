@@ -1,5 +1,6 @@
 export interface AddTagDto {
   userId: number
   songId: number
-  name: string
+  tagName?: string
+  tagId?: number
 }
