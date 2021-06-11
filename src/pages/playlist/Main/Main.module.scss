@@ -17,7 +17,8 @@
     .button {
       color: color.$grey8;
       background-color: color.$grey4;
-      &:hover {
+      &:hover,
+      &.active {
         color: color.$green2;
       }
     }
