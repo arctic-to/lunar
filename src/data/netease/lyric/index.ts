@@ -42,6 +42,7 @@ const LyricResponse = types.model('LyricResponse', {
     }),
   ),
   nolyric: types.maybe(types.boolean),
+  uncollected: types.maybe(types.boolean),
   needDesc: types.maybe(types.boolean),
   briefDesc: types.null,
   code: types.number,

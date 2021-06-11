@@ -4,7 +4,7 @@ import React from 'react'
 import { Album, Artists } from '@/components'
 import { useCurrentTrack } from '@/models'
 
-import Lyric from './Lyric'
+import { Main } from './Main'
 import styles from './song.module.scss'
 
 export const Song: React.FC = observer(() => {
@@ -23,7 +23,7 @@ export const Song: React.FC = observer(() => {
         </div>
       </div>
 
-      <Lyric />
+      <Main />
     </div>
   )
 })
