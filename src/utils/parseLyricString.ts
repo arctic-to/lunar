@@ -6,7 +6,7 @@ export function parseLyricString(rawLyric: string) {
   const parsedLyric = lyric
     ?.map((rawSentence) => {
       const matches = rawSentence.match(
-        /\[(?<minute>\d+):(?<second>\d+).(?<millisecond>\d+)\](?<content>.*)/,
+        /(\[(?<minute>\d+):(?<second>\d+).(?<millisecond>\d+)\])?(?<content>.*)/,
       )
       return {
         begin: dayjs
