@@ -15,7 +15,11 @@ export const Lyric: React.FC = observer(() => {
   const { song, currentTime, setCurrentTime, play } = useCurrentTrack() ?? {}
   const { data } = useLyric(song?.id)
 
-  const parsedLyric = useMemo(() => data && parseLyric(data), [data])
+  const result = useMemo(() => {
+    if (data) return parseLyric(data)
+  }, [data])
+
+  const { parsedLyric, hasTimestamp } = result || {}
 
   const jump = useCallback(
     (begin: number) => () => {
@@ -60,27 +64,32 @@ export const Lyric: React.FC = observer(() => {
     }
   }, [currentTime, parsedLyric])
 
-  if (parsedLyric === undefined) return null
+  if (data === undefined) return null
 
   return (
-    <div className={styles.container} ref={ref}>
-      {parsedLyric
-        ? parsedLyric.map((sentence, index) => (
-            <div key={index} className={c(styles.lyric)}>
-              <div className={styles.raw_container}>
-                <span className={styles.raw} onClick={copy}>
-                  {sentence.content}
-                </span>
-                <IoMdLocate onClick={jump(sentence.begin)} />
+    <div className={styles.container}>
+      {!hasTimestamp && <span className={styles.no_timestamp}>时间戳缺失</span>}
+      <div className={styles.lyrics_container} ref={ref}>
+        {parsedLyric
+          ? parsedLyric.map((sentence, index) => (
+              <div key={index} className={c(styles.lyric)}>
+                <div className={styles.row_container}>
+                  <span className={styles.row} onClick={copy}>
+                    {sentence.content}
+                  </span>
+                  {hasTimestamp && (
+                    <IoMdLocate onClick={jump(sentence.begin)} />
+                  )}
+                </div>
+                {sentence.translation && (
+                  <span className={styles.translation} onClick={copy}>
+                    {sentence.translation}
+                  </span>
+                )}
               </div>
-              {sentence.translation && (
-                <span className={styles.translation} onClick={copy}>
-                  {sentence.translation}
-                </span>
-              )}
-            </div>
-          ))
-        : '纯音乐'}
+            ))
+          : '纯音乐'}
+      </div>
     </div>
   )
 })
