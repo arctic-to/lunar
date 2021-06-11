@@ -43,18 +43,19 @@ export const Main: React.FC<MainProps> = ({ data }) => {
     }
   })
 
-  const trackIds = useMemo(() => playlist.trackIds.map(({ id }) => id), [
-    playlist.trackIds,
-  ])
-  const { data: tags, loading } = useSongTags(userId, trackIds)
+  const { data: _songTagMap, loading } = useSongTags(userId, playlist.id)
+  const songTagMap = useMemo(() => new Map(_songTagMap), [_songTagMap])
+  const tags = _songTagMap?.map(([, tags]) => tags)
   const flatTags = useMemo(() => tags?.flat(), [tags])
   const uniqTags = useMemo(() => uniqBy(flatTags, 'id'), [flatTags])
   const state = flatTags?.length ? State.Filter : State.Tagify
 
   const tracks = useMemo(() => {
     const _tracks = filterTracksByKeyword(playlist.tracks, keyword)
-    return tags ? filterTracksByTags(_tracks, tags, selectedTagIds) : _tracks
-  }, [playlist.tracks, keyword, tags, selectedTagIds])
+    return tags
+      ? filterTracksByTags(_tracks, songTagMap, selectedTagIds)
+      : _tracks
+  }, [playlist.tracks, keyword, tags, songTagMap, selectedTagIds])
 
   const tagify = useCallback(() => {
     if (userId) generateTags({ userId, playlistId: playlist.id })
@@ -81,7 +82,9 @@ export const Main: React.FC<MainProps> = ({ data }) => {
             onChange={handleInputChange}
           />
           <Button
-            className={styles.button}
+            className={c(styles.button, {
+              [styles.active]: selectedTagIds.length,
+            })}
             ref={buttonRef}
             Icon={FaTags}
             onClick={clickHandlerMap[state]}
@@ -99,7 +102,11 @@ export const Main: React.FC<MainProps> = ({ data }) => {
         </div>
       </header>
 
-      <Songlist songs={tracks} privileges={privileges} tags={tags} />
+      <Songlist
+        songs={tracks}
+        privileges={privileges}
+        songTagMap={songTagMap}
+      />
     </div>
   )
 }

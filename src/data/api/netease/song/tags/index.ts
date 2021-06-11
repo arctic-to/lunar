@@ -28,11 +28,11 @@ export function removeTag(tagId: number, songId: number) {
     .then((res) => res.data)
 }
 
-export function useSongTags(userId: number | undefined, songIds: number[]) {
-  const { data, error } = useSWR<NeteaseCloudMusicTag[][]>(
-    userId
-      ? `${PATH}?${qs.stringify({ userId, songIds: songIds.join(',') })}`
-      : null,
+type NeteaseCloudMusicSongTagMap = [number, NeteaseCloudMusicTag[]][]
+
+export function useSongTags(userId: number | undefined, playlistId: number) {
+  const { data, error } = useSWR<NeteaseCloudMusicSongTagMap>(
+    userId ? `${PATH}?${qs.stringify({ userId, playlistId })}` : null,
     fetcher,
   )
 
