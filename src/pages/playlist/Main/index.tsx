@@ -1,6 +1,7 @@
 import c from 'classnames'
 import { uniqBy } from 'lodash'
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import { observer } from 'mobx-react-lite'
+import React, { useCallback, useMemo, useRef } from 'react'
 import { FaTags } from 'react-icons/fa'
 import { useClickAway } from 'react-use'
 
@@ -10,9 +11,11 @@ import {
   PlaylistDetailResponseSnapshotOut,
   useSongTags,
 } from '@/data'
-import { useBoolean, useKeyword } from '@/hooks'
+import { useBoolean } from '@/hooks'
 import { usePlatform } from '@/models'
 import pageStyles from '@/style/business/page.module.scss'
+
+import { playlistStore } from '../playlist.store'
 
 import styles from './Main.module.scss'
 import { filterTracksByKeyword, filterTracksByTags } from './utils'
@@ -28,10 +31,14 @@ const textMap = {
 }
 
 export type MainProps = { data: PlaylistDetailResponseSnapshotOut }
-export const Main: React.FC<MainProps> = ({ data }) => {
+export const Main: React.FC<MainProps> = observer(({ data }) => {
   const { playlist, privileges } = data
-  const [keyword, handleInputChange] = useKeyword()
-  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
+  const {
+    keyword,
+    handleInputChange,
+    selectedTagIds,
+    setSelectedTagIds,
+  } = playlistStore
   const { userId } = usePlatform().netease.profile ?? {}
 
   const [isDropdownHidden, hideDropdown, , toggleDropdown] = useBoolean(true)
@@ -97,7 +104,11 @@ export const Main: React.FC<MainProps> = ({ data }) => {
             })}
             ref={dropdownRef}
           >
-            <TagSelect tags={uniqTags} onChange={setSelectedTagIds} />
+            <TagSelect
+              tags={uniqTags}
+              selectedTagIds={selectedTagIds}
+              onChange={setSelectedTagIds}
+            />
           </div>
         </div>
       </header>
@@ -109,6 +120,6 @@ export const Main: React.FC<MainProps> = ({ data }) => {
       />
     </div>
   )
-}
+})
 
 export default Main
