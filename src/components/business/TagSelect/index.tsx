@@ -8,10 +8,15 @@ import styles from './TagSelect.module.scss'
 
 export type TagSelectProps = {
   tags: NeteaseCloudMusicTag[]
+  selectedTagIds: number[]
   onChange: (ids: number[]) => void
 }
-export const TagSelect: React.FC<TagSelectProps> = ({ tags, onChange }) => {
-  const [ids, setIds] = useState<Set<number>>(new Set())
+export const TagSelect: React.FC<TagSelectProps> = ({
+  tags,
+  onChange,
+  selectedTagIds,
+}) => {
+  const [ids, setIds] = useState<Set<number>>(new Set(selectedTagIds))
 
   const handleClick = useCallback(
     (tagId: number) => () => {
