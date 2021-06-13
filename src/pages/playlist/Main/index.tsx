@@ -13,9 +13,10 @@ import {
 } from '@/data'
 import { useBoolean } from '@/hooks'
 import { usePlatform } from '@/models'
+import { useMst } from '@/stores'
 import pageStyles from '@/style/business/page.module.scss'
 
-import { playlistStore } from '../playlist.store'
+import { PlaylistStore } from '../playlist.store'
 
 import styles from './Main.module.scss'
 import { filterTracksByKeyword, filterTracksByTags } from './utils'
@@ -38,7 +39,7 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
     handleInputChange,
     selectedTagIds,
     setSelectedTagIds,
-  } = playlistStore
+  } = useMst(PlaylistStore, { scope: playlist.id })
   const { userId } = usePlatform().netease.profile ?? {}
 
   const [isDropdownHidden, hideDropdown, , toggleDropdown] = useBoolean(true)

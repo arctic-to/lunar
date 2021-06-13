@@ -3,18 +3,22 @@ import { useRouter } from 'next/router'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { usePlaylistDetail } from '@/data'
+import { useMst } from '@/stores'
 
 import Header from './Header'
 import Main from './Main'
 import styles from './playlist.module.scss'
-import { playlistStore } from './playlist.store'
+import { PlaylistStore } from './playlist.store'
 
 export const Playlist: React.FC = () => {
   const router = useRouter()
   const [node, setNode] = useState<HTMLDivElement | null>(null)
   const scrollableElement = useMemo(() => node?.parentElement, [node])
-  const { scrollTop, handleScroll } = playlistStore
   const { id } = router.query as { id?: string }
+
+  const { scrollTop, handleScroll } = useMst(PlaylistStore, {
+    scope: id,
+  })
 
   const { data } = usePlaylistDetail(id)
 
