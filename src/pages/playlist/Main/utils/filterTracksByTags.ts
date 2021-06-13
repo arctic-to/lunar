@@ -1,14 +1,15 @@
-import { NeteaseCloudMusicTag } from '@prisma/client'
-
 import { SongSnapshotIn } from '@/models'
+import { TagStoreInstance } from '@/stores'
 
 export default function filterTracksByTags(
   tracks: SongSnapshotIn[],
-  songTagMap: Map<number, NeteaseCloudMusicTag[]>,
+  songTagMap: TagStoreInstance['songTagMap'],
   selectedTagIds: number[],
 ) {
   if (!selectedTagIds.length) return tracks
   return tracks.filter((track) =>
-    songTagMap.get(track.id)?.some((tag) => selectedTagIds.includes(tag.id)),
+    songTagMap
+      .get(String(track.id))
+      ?.some((tag) => selectedTagIds.includes(tag.id)),
   )
 }

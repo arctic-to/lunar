@@ -1,4 +1,3 @@
-import { NeteaseCloudMusicTag } from '@prisma/client'
 import c from 'classnames'
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
@@ -12,6 +11,7 @@ import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
 import { useBoolean, useKeyword, usePlaying } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
+import { TagInstance } from '@/stores'
 
 import TagInput from '../../TagInput'
 
@@ -21,7 +21,7 @@ export type SongBaseProps = {
   index: number
   song: SongSnapshotIn
   privilege: PrivilegeSnapshotIn | undefined
-  tags?: NeteaseCloudMusicTag[] | undefined
+  tags?: TagInstance[] | undefined
 }
 export const SongBase: React.FC<SongBaseProps> = observer(
   ({ index, song, privilege, tags }) => {

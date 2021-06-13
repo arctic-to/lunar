@@ -1,9 +1,9 @@
-import { NeteaseCloudMusicTag } from '@prisma/client'
 import c from 'classnames'
 import React, { useCallback, useMemo, useState } from 'react'
 
 import { addTag, useTags } from '@/data'
 import { usePlatform } from '@/models'
+import { TagInstance } from '@/stores'
 
 import { TagBase } from '../Tag'
 
@@ -13,7 +13,7 @@ export type ClickHandlerParams = { tagName?: string; tagId?: number }
 export type TagInputProps = {
   keyword: string
   songId: number
-  initialTags: NeteaseCloudMusicTag[]
+  initialTags: TagInstance[]
 }
 export const TagInput: React.FC<TagInputProps> = ({
   keyword,
