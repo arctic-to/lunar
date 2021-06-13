@@ -1,13 +1,13 @@
-import { NeteaseCloudMusicTag } from '@prisma/client'
 import { useCallback } from 'react'
 import { IoClose } from 'react-icons/io5'
 
 import { removeTag } from '@/data'
+import { TagInstance } from '@/stores'
 
 import styles from './Tag.module.scss'
 
 export type TagProps = {
-  tag: NeteaseCloudMusicTag
+  tag: TagInstance
   songId: number
   active?: boolean
 }

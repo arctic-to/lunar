@@ -1,11 +1,10 @@
 import c from 'classnames'
-import { uniqBy } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import React, { useCallback, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { FaTags } from 'react-icons/fa'
 import { useClickAway } from 'react-use'
 
-import { Button, SearchInput, Songlist, TagSelect } from '@/components'
+import { Button, SearchInput, Songlist } from '@/components'
 import {
   generateTags,
   PlaylistDetailResponseSnapshotOut,
@@ -19,6 +18,7 @@ import pageStyles from '@/style/business/page.module.scss'
 import { PlaylistStore } from '../playlist.store'
 
 import styles from './Main.module.scss'
+import TagSelect from './TagSelect'
 import { filterTracksByKeyword, filterTracksByTags } from './utils'
 
 enum State {
@@ -37,9 +37,15 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
   const {
     keyword,
     handleInputChange,
+    songTagMap,
+    tags,
+    uniqTags,
+    setSongTagMap,
     selectedTagIds,
-    setSelectedTagIds,
-  } = useMst(PlaylistStore, { scope: playlist.id })
+  } = useMst(PlaylistStore, {
+    scope: playlist.id,
+  })
+
   const { userId } = usePlatform().netease.profile ?? {}
 
   const [isDropdownHidden, hideDropdown, , toggleDropdown] = useBoolean(true)
@@ -51,19 +57,31 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
     }
   })
 
-  const { data: _songTagMap, loading } = useSongTags(userId, playlist.id)
-  const songTagMap = useMemo(() => new Map(_songTagMap), [_songTagMap])
-  const tags = _songTagMap?.map(([, tags]) => tags)
-  const flatTags = useMemo(() => tags?.flat(), [tags])
-  const uniqTags = useMemo(() => uniqBy(flatTags, 'id'), [flatTags])
-  const state = flatTags?.length ? State.Filter : State.Tagify
+  const { data: songTagPairs } = useSongTags(userId, playlist.id)
+
+  useEffect(() => {
+    if (songTagPairs) setSongTagMap(songTagPairs)
+  }, [setSongTagMap, songTagPairs])
+
+  const state = uniqTags?.length ? State.Filter : State.Tagify
 
   const tracks = useMemo(() => {
     const _tracks = filterTracksByKeyword(playlist.tracks, keyword)
     return tags
       ? filterTracksByTags(_tracks, songTagMap, selectedTagIds)
       : _tracks
-  }, [playlist.tracks, keyword, tags, songTagMap, selectedTagIds])
+    // The component is rerendered due to `selectedTagIds` change,
+    // but `selectedTagIds` is considered as unchanged in hooks.
+    // It seems a bug of React or Mst.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    keyword,
+    playlist.tracks,
+    selectedTagIds,
+    selectedTagIds.length,
+    songTagMap,
+    tags,
+  ])
 
   const tagify = useCallback(() => {
     if (userId) generateTags({ userId, playlistId: playlist.id })
@@ -76,8 +94,6 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
     }),
     [toggleDropdown, tagify],
   )
-
-  if (loading) return null
 
   return (
     <div className={styles.container}>
@@ -105,11 +121,7 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
             })}
             ref={dropdownRef}
           >
-            <TagSelect
-              tags={uniqTags}
-              selectedTagIds={selectedTagIds}
-              onChange={setSelectedTagIds}
-            />
+            <TagSelect />
           </div>
         </div>
       </header>

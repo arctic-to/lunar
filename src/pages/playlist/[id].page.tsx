@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import { useRouter } from 'next/router'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { usePlaylistDetail } from '@/data'
@@ -7,14 +6,14 @@ import { useMst } from '@/stores'
 
 import Header from './Header'
 import Main from './Main'
+import { useId } from './hooks'
 import styles from './playlist.module.scss'
 import { PlaylistStore } from './playlist.store'
 
 export const Playlist: React.FC = () => {
-  const router = useRouter()
+  const id = useId()
   const [node, setNode] = useState<HTMLDivElement | null>(null)
   const scrollableElement = useMemo(() => node?.parentElement, [node])
-  const { id } = router.query as { id?: string }
 
   const { scrollTop, handleScroll } = useMst(PlaylistStore, {
     scope: id,
