@@ -15,5 +15,3 @@ export const PlaylistStore = types.compose(
       },
     })),
 )
-
-export const playlistStore = PlaylistStore.create()
