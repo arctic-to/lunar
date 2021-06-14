@@ -1,4 +1,4 @@
-import { NeteaseCloudMusicTag } from '@prisma/client'
+import { NeteaseCloudMusicSong, NeteaseCloudMusicTag } from '@prisma/client'
 import qs from 'qs'
 import useSWR from 'swr'
 
@@ -9,29 +9,27 @@ import { AddTagDto, GenerateTagsDto } from './dto'
 const PATH = '/song/tags'
 
 export function generateTags(data: GenerateTagsDto) {
-  return axios
-    .post<NeteaseCloudMusicTag[][]>(`${PATH}/generate`, data)
-    .then((res) => res.data)
+  return axios.post<void>(`${PATH}/generate`, data).then((res) => res.data)
+}
+
+type SongWithTags = NeteaseCloudMusicSong & {
+  tags: NeteaseCloudMusicTag[]
 }
 
 export function addTag(data: AddTagDto) {
+  return axios.post<SongWithTags>(PATH, data).then((res) => res.data)
+}
+
+export function removeTag(songId: number, userId: number, tagId: number) {
   return axios
-    .post<NeteaseCloudMusicTag[][]>(PATH, data)
+    .delete<SongWithTags>(`${PATH}?${qs.stringify({ songId, userId, tagId })}`)
     .then((res) => res.data)
 }
 
-export function removeTag(tagId: number, songId: number) {
-  return axios
-    .delete<NeteaseCloudMusicTag[][]>(
-      `${PATH}/${tagId}?${qs.stringify({ songId })}`,
-    )
-    .then((res) => res.data)
-}
-
-type NeteaseCloudMusicSongTagMap = [number, NeteaseCloudMusicTag[]][]
+type SongTagPair = [number, NeteaseCloudMusicTag[]]
 
 export function useSongTags(userId: number | undefined, playlistId: number) {
-  const { data, error } = useSWR<NeteaseCloudMusicSongTagMap>(
+  const { data, error } = useSWR<SongTagPair[]>(
     userId ? `${PATH}?${qs.stringify({ userId, playlistId })}` : null,
     fetcher,
   )

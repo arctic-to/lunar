@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useCallback } from 'react'
 
 import { TagBase } from '@/components'
-import { useMst } from '@/stores'
+import { getMst } from '@/stores'
 
 import { useId } from '../../hooks'
 import { PlaylistStore } from '../../playlist.store'
@@ -12,7 +12,7 @@ import styles from './TagSelect.module.scss'
 
 export const TagSelect: React.FC = observer(() => {
   const id = useId()
-  const { uniqTags, selectedTagIds, toggleTag } = useMst(PlaylistStore, {
+  const { uniqTags, selectedTagIds, toggleTag } = getMst(PlaylistStore, {
     scope: id,
   })
 

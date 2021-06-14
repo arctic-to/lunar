@@ -2,16 +2,25 @@ import { NeteaseCloudMusicTag } from '@prisma/client'
 import { uniqBy } from 'lodash'
 import { Instance, types } from 'mobx-state-tree'
 
-export const Tag = types.model({
-  id: types.identifierNumber,
-  name: types.string,
-})
+import { GlobalTagStore, TagInstance } from './GlobalTag.store'
+import { getMst } from './getMst'
 
-export const TagStore = types
+const globalTagStore = getMst(GlobalTagStore)
+
+export const PlaylistTagStore = types
   .model({
-    songTagMap: types.map(types.array(Tag)),
+    songIds: types.array(types.number),
     selectedTagIds: types.array(types.number),
   })
+  .views((self) => ({
+    get songTagMap() {
+      const _songTagMap = new Map<number, TagInstance[]>()
+      self.songIds.forEach((songId) => {
+        _songTagMap.set(songId, globalTagStore.songTagMap.get(String(songId))!)
+      })
+      return _songTagMap
+    },
+  }))
   .views((self) => ({
     get tags() {
       return [...self.songTagMap.values()]
@@ -31,9 +40,8 @@ export const TagStore = types
   }))
   .actions((self) => ({
     setSongTagMap(songTagPairs: [number, NeteaseCloudMusicTag[]][]) {
-      songTagPairs.forEach(([songId, tags]) => {
-        self.songTagMap.set(String(songId), tags)
-      })
+      self.songIds.replace(songTagPairs.map(([songId]) => songId))
+      globalTagStore.setSongTagMap(songTagPairs)
     },
     toggleTag(tagId: number) {
       if (self.selectedTagIds.includes(tagId)) {
@@ -44,5 +52,4 @@ export const TagStore = types
     },
   }))
 
-export type TagInstance = Instance<typeof Tag>
-export type TagStoreInstance = Instance<typeof TagStore>
+export type PlaylistTagStoreInstance = Instance<typeof PlaylistTagStore>

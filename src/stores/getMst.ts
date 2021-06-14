@@ -34,7 +34,7 @@ function narrowScope(rawScope: Options['scope']) {
   return getScopeByPageId(rawScope)
 }
 
-export function useMst<S extends M>(
+export function getMst<S extends M>(
   Model: S,
   options: Options = defaultOptions,
 ): S['Type'] {
