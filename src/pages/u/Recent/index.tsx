@@ -24,6 +24,7 @@ export const Recent: React.FC = () => {
         <Songlist
           songs={songs}
           privileges={songs.map((song) => song.privilege)}
+          hideHeader
         />
       </div>
     </div>

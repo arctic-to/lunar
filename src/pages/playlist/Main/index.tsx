@@ -92,7 +92,7 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
         </div>
       </header>
 
-      <Songlist songs={tracks} privileges={privileges} />
+      <Songlist songs={tracks} privileges={privileges} displayTags />
     </div>
   )
 })

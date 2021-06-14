@@ -21,7 +21,7 @@
 @mixin ellipsis($n: 1) {
   overflow: hidden;
   text-overflow: ellipsis;
-  @if $n == '1' {
+  @if $n == 1 {
     max-width: 100%;
     white-space: nowrap;
   } @else {

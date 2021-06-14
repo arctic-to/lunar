@@ -45,7 +45,10 @@ export const TagInput: React.FC<TagInputProps> = observer(({ song }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [song.id, songTagMap.size],
   )
-  const isInputPlaceholderVisible = !tags.length
+
+  const noTags = !tags.length
+  const isInputVisible = noTags || isTagsActive
+  const isInputPlaceholderVisible = noTags
 
   return (
     <div
@@ -66,7 +69,10 @@ export const TagInput: React.FC<TagInputProps> = observer(({ song }) => {
         value={keyword}
         onChange={handleInputChange}
         placeholder={isInputPlaceholderVisible ? '添加标签' : ''}
-        style={{ cursor: isTagsActive ? '' : 'default' }}
+        style={{
+          cursor: isTagsActive ? '' : 'default',
+          width: isInputVisible ? '' : 0,
+        }}
       />
 
       {isTagsActive && (

@@ -7,7 +7,7 @@
   gap: 8px;
   height: 28px;
   padding: 0 8px;
-  margin-left: 84px;
+  margin-left: 80px;
   position: relative;
   color: color.$grey8;
   &:hover {
@@ -18,6 +18,7 @@
   }
 
   input {
+    width: 100px;
     @include typography.l1;
   }
 }

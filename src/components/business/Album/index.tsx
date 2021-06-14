@@ -11,9 +11,11 @@ export type AlbumProps = {
 }
 export const Album: React.FC<AlbumProps> = ({ album, className }) => {
   return (
-    <Link href={path.album(album.id)}>
-      <span className={className}>{album.name}</span>
-    </Link>
+    <div className={className}>
+      <Link href={path.album(album.id)}>
+        <span>{album.name}</span>
+      </Link>
+    </div>
   )
 }
 

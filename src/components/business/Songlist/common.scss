@@ -1,0 +1,34 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+@mixin layout {
+  display: flex;
+  line-height: 36px;
+  color: color.$grey7;
+  @include typography.b2;
+  gap: 16px;
+  padding-right: 8px;
+
+  .index {
+    width: 40px;
+  }
+  .icon {
+    width: 16px;
+  }
+  .name {
+    flex: 2;
+  }
+  .artist {
+    flex: 1;
+  }
+  .album {
+    flex: 1;
+  }
+  .duration {
+    width: 60px;
+  }
+  .pop {
+    width: 80px;
+  }
+}
