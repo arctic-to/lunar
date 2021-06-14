@@ -34,9 +34,10 @@ export const Daily: React.VFC = observer(() => {
     [data, date],
   )
   const songDetail = useSongDetail(dailySongIds)
-  const specificDailySongs = useMemo(() => songDetail.data?.songs, [
-    songDetail.data?.songs,
-  ])
+  const specificDailySongs = useMemo(
+    () => songDetail.data?.songs,
+    [songDetail.data?.songs],
+  )
 
   const latestDailySongs = useRecommedSongs().data?.data.dailySongs
 

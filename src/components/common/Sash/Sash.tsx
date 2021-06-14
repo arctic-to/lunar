@@ -25,9 +25,10 @@ export const Sash: React.VFC<SashProps> = ({
   const startWidth1Ref = useRef<number>()
   const startWidth2Ref = useRef<number>()
 
-  const correctSashLeft = useCallback((left: number) => left - HALF_WIDTH, [
-    HALF_WIDTH,
-  ])
+  const correctSashLeft = useCallback(
+    (left: number) => left - HALF_WIDTH,
+    [HALF_WIDTH],
+  )
 
   useEffect(() => {
     if (sashRef.current && pane1 && shouldRender) {

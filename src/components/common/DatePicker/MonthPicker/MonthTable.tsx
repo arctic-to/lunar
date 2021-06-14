@@ -23,9 +23,10 @@ export const MonthTable: React.FC<MonthTableProps> = ({
 }) => {
   const thisYear = useMemo(() => temporaryDate, [temporaryDate])
 
-  const months = useMemo(() => range(12).map((n) => thisYear.month(n)), [
-    thisYear,
-  ])
+  const months = useMemo(
+    () => range(12).map((n) => thisYear.month(n)),
+    [thisYear],
+  )
 
   const checkIsActive = useCallback(
     (month: dayjs.Dayjs) => prevMonth.isSame(month, 'month'),

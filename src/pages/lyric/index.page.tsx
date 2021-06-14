@@ -40,9 +40,10 @@ export const Lyric: React.VFC = observer(() => {
       : currentTrack.unobserveCurrentTime()
   }, [currentTrack, currentTrack?.playing])
 
-  const lyric = useMemo(() => compact(data?.lrc?.lyric.split('\n')), [
-    data?.lrc?.lyric,
-  ])
+  const lyric = useMemo(
+    () => compact(data?.lrc?.lyric.split('\n')),
+    [data?.lrc?.lyric],
+  )
 
   const parsedLyric = useMemo(
     () =>
@@ -90,10 +91,10 @@ export const Lyric: React.VFC = observer(() => {
     () => filteredParsedLyric[nextSentenceIndex - 1],
     [filteredParsedLyric, nextSentenceIndex],
   )
-  const nextSentence = useMemo(() => filteredParsedLyric[nextSentenceIndex], [
-    filteredParsedLyric,
-    nextSentenceIndex,
-  ])
+  const nextSentence = useMemo(
+    () => filteredParsedLyric[nextSentenceIndex],
+    [filteredParsedLyric, nextSentenceIndex],
+  )
 
   useEffect(() => {
     const win = remote.getCurrentWindow()
@@ -124,9 +125,8 @@ export const Lyric: React.VFC = observer(() => {
     currSentenceElem.style.transform = ''
 
     const { width: containerWidth } = container.getBoundingClientRect()
-    const {
-      width: currSentenceWidth,
-    } = currSentenceElem.getBoundingClientRect()
+    const { width: currSentenceWidth } =
+      currSentenceElem.getBoundingClientRect()
     const currSentenceOverflowWidth = currSentenceWidth - containerWidth
     const start = Date.now()
 

@@ -40,11 +40,11 @@ export const TagInput: React.FC<TagInputProps> = observer(({ song }) => {
     [],
   )
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const tags = useMemo(() => songTagMap.get(String(song.id)) ?? [], [
-    song.id,
-    songTagMap.size,
-  ])
+  const tags = useMemo(
+    () => songTagMap.get(String(song.id)) ?? [],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [song.id, songTagMap.size],
+  )
   const isInputPlaceholderVisible = !tags.length
 
   return (

@@ -6,7 +6,5 @@ export const axios = _axios.create({
 })
 
 export function fetcher<T>(url: string, withCredentials = true) {
-  return axios
-    .get<T>(url, { withCredentials })
-    .then((res) => res.data)
+  return axios.get<T>(url, { withCredentials }).then((res) => res.data)
 }

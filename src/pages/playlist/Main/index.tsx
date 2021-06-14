@@ -24,15 +24,10 @@ import { filterTracksByKeyword, filterTracksByTags } from './utils'
 export type MainProps = { data: PlaylistDetailResponseSnapshotOut }
 export const Main: React.FC<MainProps> = observer(({ data }) => {
   const { playlist, privileges } = data
-  const {
-    keyword,
-    handleInputChange,
-    tags,
-    setSongTagMap,
-    selectedTagIds,
-  } = getMst(PlaylistStore, {
-    scope: playlist.id,
-  })
+  const { keyword, handleInputChange, tags, setSongTagMap, selectedTagIds } =
+    getMst(PlaylistStore, {
+      scope: playlist.id,
+    })
 
   const { userId } = usePlatform().netease.profile ?? {}
 
