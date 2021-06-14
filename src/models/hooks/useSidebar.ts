@@ -1,4 +1,4 @@
-import { useStore } from './useStrore'
+import { useStore } from './useStore'
 
 export function useSidebar() {
   const { view } = useStore()

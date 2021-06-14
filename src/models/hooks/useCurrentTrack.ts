@@ -1,4 +1,4 @@
-import { useStore } from './useStrore'
+import { useStore } from './useStore'
 
 export function useCurrentTrack() {
   const { player } = useStore()
