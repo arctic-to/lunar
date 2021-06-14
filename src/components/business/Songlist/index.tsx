@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 
 import { useSonglist } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
-import { PlaylistTagStoreInstance } from '@/stores'
 
 import SongBase from './SongBase'
 import SongContainer from './SongContainer'
@@ -10,7 +9,6 @@ import SongContainer from './SongContainer'
 type SonglistProps<T> = {
   songs: T[]
   privileges: PrivilegeSnapshotIn[]
-  songTagMap?: PlaylistTagStoreInstance['songTagMap']
   getExtraContent?: (song: T) => React.ReactNode
   onDoubleClick?: () => void
 }
@@ -18,7 +16,6 @@ type SonglistProps<T> = {
 export function Songlist<T extends SongSnapshotIn>({
   songs,
   privileges,
-  songTagMap,
   getExtraContent,
   onDoubleClick,
 }: SonglistProps<T>) {
@@ -49,7 +46,6 @@ export function Songlist<T extends SongSnapshotIn>({
             index={index}
             song={song}
             privilege={privilegeMap.get(song.id)}
-            tags={songTagMap?.get(song.id)}
           />
           {getExtraContent?.(song)}
         </SongContainer>

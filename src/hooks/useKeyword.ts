@@ -8,6 +8,9 @@ export function useKeyword() {
     },
     [],
   )
+  const clear = useCallback(() => {
+    setKeyword('')
+  }, [])
 
-  return [keyword, handleInputChange] as const
+  return [keyword, handleInputChange, clear] as const
 }

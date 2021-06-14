@@ -1,13 +1,12 @@
 import c from 'classnames'
 import React, { useCallback, useMemo, useState } from 'react'
 
+import { TagBase } from '@/components/business/Tag'
 import { addTag, useTags } from '@/data'
 import { usePlatform } from '@/models'
 import { getMst, GlobalTagStore, TagInstance } from '@/stores'
 
-import { TagBase } from '../Tag'
-
-import styles from './TagInput.module.scss'
+import styles from './AddTag.module.scss'
 
 const globalTagStore = getMst(GlobalTagStore)
 
@@ -16,11 +15,13 @@ export type TagInputProps = {
   keyword: string
   songId: number
   initialTags: TagInstance[]
+  onAdd: () => void
 }
-export const TagInput: React.FC<TagInputProps> = ({
+export const AddTag: React.FC<TagInputProps> = ({
   keyword,
   songId,
   initialTags,
+  onAdd,
 }) => {
   const [hasIdenticalTag, setHasIdenticalTag] = useState(false)
   const creatable = keyword && !hasIdenticalTag
@@ -32,11 +33,12 @@ export const TagInput: React.FC<TagInputProps> = ({
     (args: ClickHandlerParams) => () => {
       if (userId) {
         addTag({ userId, songId, ...args }).then(({ tags }) => {
+          onAdd()
           globalTagStore.replaceSongTag(songId, tags)
         })
       }
     },
-    [songId, userId],
+    [songId, userId, onAdd],
   )
 
   const tags = useMemo(() => {
@@ -50,7 +52,6 @@ export const TagInput: React.FC<TagInputProps> = ({
       if (matched && _name === _keyword) setHasIdenticalTag(true)
       return matched
     })
-    // `initialTags` is a Proxy
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, initialTags.length, keyword])
 
@@ -80,4 +81,4 @@ export const TagInput: React.FC<TagInputProps> = ({
   )
 }
 
-export default TagInput
+export default AddTag

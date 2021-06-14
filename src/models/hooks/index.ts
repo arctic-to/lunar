@@ -1,5 +1,4 @@
 export * from './useCurrentTrack'
-export * from './useNeteaseUserId'
 export * from './usePlatform'
 export * from './usePlayer'
 export * from './useSidebar'

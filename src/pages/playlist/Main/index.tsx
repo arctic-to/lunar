@@ -21,25 +21,13 @@ import styles from './Main.module.scss'
 import TagSelect from './TagSelect'
 import { filterTracksByKeyword, filterTracksByTags } from './utils'
 
-enum State {
-  Tagify,
-  Filter,
-}
-
-const textMap = {
-  [State.Tagify]: 'Tagify',
-  [State.Filter]: 'Filter',
-}
-
 export type MainProps = { data: PlaylistDetailResponseSnapshotOut }
 export const Main: React.FC<MainProps> = observer(({ data }) => {
   const { playlist, privileges } = data
   const {
     keyword,
     handleInputChange,
-    songTagMap,
     tags,
-    uniqTags,
     setSongTagMap,
     selectedTagIds,
   } = getMst(PlaylistStore, {
@@ -49,10 +37,10 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
   const { userId } = usePlatform().netease.profile ?? {}
 
   const [isDropdownHidden, hideDropdown, , toggleDropdown] = useBoolean(true)
-  const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const filterButtonRef = useRef<HTMLButtonElement | null>(null)
   const dropdownRef = useRef<HTMLDivElement | null>(null)
   useClickAway(dropdownRef, (e) => {
-    if (!buttonRef.current?.contains(e.target as HTMLElement)) {
+    if (!filterButtonRef.current?.contains(e.target as HTMLElement)) {
       hideDropdown()
     }
   })
@@ -63,37 +51,18 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
     if (songTagPairs) setSongTagMap(songTagPairs)
   }, [setSongTagMap, songTagPairs])
 
-  const state = uniqTags?.length ? State.Filter : State.Tagify
-
   const tracks = useMemo(() => {
     const _tracks = filterTracksByKeyword(playlist.tracks, keyword)
-    return tags
-      ? filterTracksByTags(_tracks, songTagMap, selectedTagIds)
-      : _tracks
+    return tags ? filterTracksByTags(_tracks, selectedTagIds) : _tracks
     // The component is rerendered due to `selectedTagIds` change,
     // but `selectedTagIds` is considered as unchanged in hooks.
     // It seems a bug of React or Mst.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    keyword,
-    playlist.tracks,
-    selectedTagIds,
-    selectedTagIds.length,
-    songTagMap,
-    tags,
-  ])
+  }, [keyword, playlist.tracks, selectedTagIds.length, tags])
 
   const tagify = useCallback(() => {
     if (userId) generateTags({ userId, playlistId: playlist.id })
   }, [playlist.id, userId])
-
-  const clickHandlerMap = useMemo(
-    () => ({
-      [State.Tagify]: tagify,
-      [State.Filter]: toggleDropdown,
-    }),
-    [toggleDropdown, tagify],
-  )
 
   return (
     <div className={styles.container}>
@@ -105,15 +74,17 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
             value={keyword}
             onChange={handleInputChange}
           />
+          <Button className={styles.button} Icon={FaTags} onClick={tagify}>
+            Tagify
+          </Button>
           <Button
             className={c(styles.button, {
-              [styles.active]: selectedTagIds.length,
+              [styles.active]: selectedTagIds.length || !isDropdownHidden,
             })}
-            ref={buttonRef}
-            Icon={FaTags}
-            onClick={clickHandlerMap[state]}
+            ref={filterButtonRef}
+            onClick={toggleDropdown}
           >
-            {textMap[state]}
+            Filter
           </Button>
           <div
             className={c(styles.dropdown, {
@@ -126,11 +97,7 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
         </div>
       </header>
 
-      <Songlist
-        songs={tracks}
-        privileges={privileges}
-        songTagMap={songTagMap}
-      />
+      <Songlist songs={tracks} privileges={privileges} />
     </div>
   )
 })

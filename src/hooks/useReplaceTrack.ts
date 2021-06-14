@@ -8,7 +8,7 @@ export function useReplaceTrack({
   privilege,
 }: {
   song: SongSnapshotIn
-  privilege?: PrivilegeSnapshotIn
+  privilege?: PrivilegeSnapshotIn | undefined
 }) {
   const player = usePlayer()
   const playing = usePlaying(song)

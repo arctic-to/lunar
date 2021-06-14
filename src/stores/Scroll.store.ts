@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree'
 
 export const ScrollStore = types
-  .model({
+  .model('ScrollStore', {
     scrollTop: 0,
   })
   .actions((self) => ({

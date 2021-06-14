@@ -1,13 +1,16 @@
 import { SongSnapshotIn } from '@/models'
-import { PlaylistTagStoreInstance } from '@/stores'
+import { getMst, GlobalTagStore } from '@/stores'
+
+const { songTagMap } = getMst(GlobalTagStore)
 
 export default function filterTracksByTags(
   tracks: SongSnapshotIn[],
-  songTagMap: PlaylistTagStoreInstance['songTagMap'],
   selectedTagIds: number[],
 ) {
   if (!selectedTagIds.length) return tracks
   return tracks.filter((track) =>
-    songTagMap.get(track.id)?.some((tag) => selectedTagIds.includes(tag.id)),
+    songTagMap
+      .get(String(track.id))
+      ?.some((tag) => selectedTagIds.includes(tag.id)),
   )
 }
