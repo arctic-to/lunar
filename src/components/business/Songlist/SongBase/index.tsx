@@ -88,21 +88,21 @@ export const SongBase: React.FC<SongBaseProps> = observer(
                 />
               ))}
               {isTagsActive && (
-                <input
-                  type="text"
-                  value={keyword}
-                  onChange={handleInputChange}
-                  autoFocus
-                />
-              )}
-              {isTagsActive && (
-                <div className={styles.tag_input}>
-                  <TagInput
-                    keyword={keyword}
-                    songId={song.id}
-                    initialTags={tags}
+                <>
+                  <input
+                    type="text"
+                    value={keyword}
+                    onChange={handleInputChange}
+                    autoFocus
                   />
-                </div>
+                  <div className={styles.tag_input}>
+                    <TagInput
+                      keyword={keyword}
+                      songId={song.id}
+                      initialTags={tags}
+                    />
+                  </div>
+                </>
               )}
             </div>
           )}

@@ -12,7 +12,7 @@ import {
 } from '@/data'
 import { useBoolean } from '@/hooks'
 import { usePlatform } from '@/models'
-import { useMst } from '@/stores'
+import { getMst } from '@/stores'
 import pageStyles from '@/style/business/page.module.scss'
 
 import { PlaylistStore } from '../playlist.store'
@@ -42,7 +42,7 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
     uniqTags,
     setSongTagMap,
     selectedTagIds,
-  } = useMst(PlaylistStore, {
+  } = getMst(PlaylistStore, {
     scope: playlist.id,
   })
 

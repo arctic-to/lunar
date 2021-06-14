@@ -3,11 +3,13 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { addTag, useTags } from '@/data'
 import { usePlatform } from '@/models'
-import { TagInstance } from '@/stores'
+import { getMst, GlobalTagStore, TagInstance } from '@/stores'
 
 import { TagBase } from '../Tag'
 
 import styles from './TagInput.module.scss'
+
+const globalTagStore = getMst(GlobalTagStore)
 
 export type ClickHandlerParams = { tagName?: string; tagId?: number }
 export type TagInputProps = {
@@ -28,7 +30,11 @@ export const TagInput: React.FC<TagInputProps> = ({
 
   const handleClick = useCallback(
     (args: ClickHandlerParams) => () => {
-      if (userId) addTag({ userId, songId, ...args })
+      if (userId) {
+        addTag({ userId, songId, ...args }).then(({ tags }) => {
+          globalTagStore.replaceSongTag(songId, tags)
+        })
+      }
     },
     [songId, userId],
   )
@@ -44,7 +50,9 @@ export const TagInput: React.FC<TagInputProps> = ({
       if (matched && _name === _keyword) setHasIdenticalTag(true)
       return matched
     })
-  }, [data, initialTags, keyword])
+    // `initialTags` is a Proxy
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, initialTags.length, keyword])
 
   if (loading) return null
 

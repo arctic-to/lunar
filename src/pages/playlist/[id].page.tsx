@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { usePlaylistDetail } from '@/data'
-import { useMst } from '@/stores'
+import { getMst } from '@/stores'
 
 import Header from './Header'
 import Main from './Main'
@@ -15,7 +15,7 @@ export const Playlist: React.FC = () => {
   const [node, setNode] = useState<HTMLDivElement | null>(null)
   const scrollableElement = useMemo(() => node?.parentElement, [node])
 
-  const { scrollTop, handleScroll } = useMst(PlaylistStore, {
+  const { scrollTop, handleScroll } = getMst(PlaylistStore, {
     scope: id,
   })
 
