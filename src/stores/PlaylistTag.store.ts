@@ -8,22 +8,25 @@ import { getMst } from './getMst'
 const globalTagStore = getMst(GlobalTagStore)
 
 export const PlaylistTagStore = types
-  .model({
+  .model('PlaylistTagStore', {
     songIds: types.array(types.number),
     selectedTagIds: types.array(types.number),
   })
   .views((self) => ({
-    get songTagMap() {
+    get _songTagMap() {
       const _songTagMap = new Map<number, TagInstance[]>()
       self.songIds.forEach((songId) => {
-        _songTagMap.set(songId, globalTagStore.songTagMap.get(String(songId))!)
+        _songTagMap.set(
+          songId,
+          globalTagStore.songTagMap.get(String(songId)) ?? [],
+        )
       })
       return _songTagMap
     },
   }))
   .views((self) => ({
     get tags() {
-      return [...self.songTagMap.values()]
+      return [...self._songTagMap.values()]
     },
   }))
   .views((self) => ({

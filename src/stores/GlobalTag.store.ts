@@ -7,7 +7,7 @@ export const Tag = types.model({
 })
 
 export const GlobalTagStore = types
-  .model({
+  .model('GlobalTagStore', {
     songTagMap: types.map(types.array(Tag)),
   })
   .actions((self) => ({

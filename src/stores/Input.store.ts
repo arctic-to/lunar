@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree'
 
 export const InputStore = types
-  .model({
+  .model('InputStore', {
     keyword: '',
   })
   .actions((self) => ({

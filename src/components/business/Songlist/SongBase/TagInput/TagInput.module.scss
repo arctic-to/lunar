@@ -1,0 +1,40 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+  @include mixin.center-container(v);
+  gap: 8px;
+  height: 28px;
+  padding: 0 8px;
+  margin-left: 84px;
+  position: relative;
+  color: color.$grey8;
+  &:hover {
+    background-color: color.$highlight4;
+  }
+  &.active {
+    background-color: color.$grey6;
+  }
+
+  input {
+    @include typography.l1;
+  }
+}
+
+.tag {
+  @include mixin.center-container;
+  @include typography.l1;
+  height: 20px;
+  color: color.$grey8;
+  background-color: color.$grey4;
+  padding: 0 8px;
+}
+
+.tag_input {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 1;
+  left: 0;
+}
