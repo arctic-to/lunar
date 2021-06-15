@@ -38,7 +38,6 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
         playing: true,
       })
       player.replaceQueue({
-        name: '正在播放',
         songs: [historySongSnapshot],
       })
     }, [playing, unavailable, historySong, player])

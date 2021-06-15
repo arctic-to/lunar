@@ -1,15 +1,5 @@
 @use '../../common';
 
 .container {
-  overflow: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-.header {
-  @include common.header-without-icon;
-}
-
-.songlist {
   @include common.songlist;
 }

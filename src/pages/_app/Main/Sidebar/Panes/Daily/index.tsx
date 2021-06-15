@@ -53,10 +53,9 @@ export const Daily: React.VFC = observer(() => {
 
   const updatePlayQueue = useCallback(() => {
     player.replaceQueue({
-      name: title,
       songs: dailySongs,
     })
-  }, [dailySongs, player, title])
+  }, [dailySongs, player])
 
   const handleChange = useCallback(
     (date: dayjs.Dayjs) => {

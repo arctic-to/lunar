@@ -3,7 +3,6 @@ import { SnapshotIn, types } from 'mobx-state-tree'
 import { Song } from './Song'
 
 export const Queue = types.model('Queue', {
-  name: '',
   songs: types.array(Song),
 })
 

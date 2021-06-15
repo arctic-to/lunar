@@ -14,17 +14,14 @@ export const PlayQueue: React.VFC = observer(() => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>{player.queue.name}</div>
-      <div className={styles.songlist}>
-        {player.queue.songs.map((song, index) => (
-          <Song
-            key={song.id}
-            song={getSnapshot(song)}
-            active={activeSongIndexes.includes(index)}
-            onClick={resetActiveSongIndexes(index)}
-          />
-        ))}
-      </div>
+      {player.queue.songs.map((song, index) => (
+        <Song
+          key={song.id}
+          song={getSnapshot(song)}
+          active={activeSongIndexes.includes(index)}
+          onClick={resetActiveSongIndexes(index)}
+        />
+      ))}
     </div>
   )
 })
