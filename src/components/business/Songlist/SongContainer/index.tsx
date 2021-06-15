@@ -1,27 +1,34 @@
 import c from 'classnames'
 import { observer } from 'mobx-react-lite'
-import React, { MouseEventHandler, useCallback } from 'react'
+import React, { useMemo, MouseEventHandler, useCallback } from 'react'
 
-import { useReplaceTrack } from '@/hooks'
-import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
+import { PrivilegeSnapshotIn, SongSnapshotIn, usePlayer } from '@/models'
 
 import styles from './SongContainer.module.scss'
 
 export type SongContainerProps = {
-  song: SongSnapshotIn
-  privilege: PrivilegeSnapshotIn
+  index: number
+  songs: SongSnapshotIn[]
+  privilege: PrivilegeSnapshotIn | undefined
   active: boolean
   onClick: MouseEventHandler
-  onDoubleClick?: (() => void) | undefined
 }
 export const SongContainer: React.FC<SongContainerProps> = observer(
-  ({ song, privilege, active, onClick, onDoubleClick, children }) => {
-    const replaceTrack = useReplaceTrack({ song, privilege })
+  ({ index, songs, privilege, active, onClick, children }) => {
+    const player = usePlayer()
+    const song = useMemo(() => songs[index], [index, songs])
 
-    const handleDoubleClick = useCallback(() => {
-      replaceTrack()
-      onDoubleClick?.()
-    }, [onDoubleClick, replaceTrack])
+    const handleDoubleClick = useCallback(
+      (e: React.MouseEvent<HTMLDivElement>) => {
+        if (e.ctrlKey) {
+          player.insertOneToQueue(song)
+        } else {
+          player.replaceQueue({ songs })
+        }
+        player.tryReplaceTrack({ song }, { privilege })
+      },
+      [player, privilege, song, songs],
+    )
 
     return (
       <div

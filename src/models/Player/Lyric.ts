@@ -1,6 +1,6 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
 
-export const Rectangle = types.model({
+export const Rectangle = types.model('Rectangle', {
   x: types.maybe(types.number),
   y: types.maybe(types.number),
   width: types.number,
@@ -10,7 +10,7 @@ export const Rectangle = types.model({
 type RectangleSnapshotOut = SnapshotOut<typeof Rectangle>
 
 export const Lyric = types
-  .model({
+  .model('Lyric', {
     opened: false,
     bounds: types.optional(Rectangle, {
       width: 1200,
