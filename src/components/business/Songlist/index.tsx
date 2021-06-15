@@ -13,7 +13,6 @@ type SonglistProps<T> = {
   songs: T[]
   privileges: PrivilegeSnapshotIn[]
   getExtraContent?: (song: T) => React.ReactNode
-  onDoubleClick?: () => void
   hideHeader?: boolean
   displayTags?: boolean
 }
@@ -22,14 +21,14 @@ export function Songlist<T extends SongSnapshotIn>({
   songs,
   privileges,
   getExtraContent,
-  onDoubleClick,
   hideHeader = false,
   displayTags = false,
 }: SonglistProps<T>) {
-  const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
   const [privilegeMap, setPrivilegeMap] = useState<
     Map<number, PrivilegeSnapshotIn>
   >(new Map())
+  const { activeSongIndexes, resetActiveSongIndexes, handleKeyDown } =
+    useSonglist(songs, privilegeMap)
 
   useEffect(() => {
     setPrivilegeMap((prevPrivilegeMap) => {
@@ -39,17 +38,17 @@ export function Songlist<T extends SongSnapshotIn>({
   }, [songs, privileges])
 
   return (
-    <div>
+    <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
       {hideHeader || <Header />}
 
       {songs.map((song, index) => (
         <SongContainer
           key={song.id}
-          song={song}
-          privilege={privileges[index]}
+          index={index}
+          songs={songs}
+          privilege={privilegeMap.get(song.id)}
           active={activeSongIndexes.includes(index)}
           onClick={resetActiveSongIndexes(index)}
-          onDoubleClick={onDoubleClick}
         >
           <SongBase
             index={index}

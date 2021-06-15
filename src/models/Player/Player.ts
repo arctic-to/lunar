@@ -2,7 +2,9 @@ import { applySnapshot, getSnapshot, SnapshotOut, types } from 'mobx-state-tree'
 
 import { History, history } from './History'
 import { Lyric, lyric } from './Lyric'
+import { PrivilegeSnapshotIn } from './Privilege'
 import { Queue, queue, QueueSnapshotIn } from './Queue'
+import { SongSnapshotIn } from './Song'
 import { Track, TrackSnapshot } from './Track'
 
 export enum OrderEnum {
@@ -51,11 +53,43 @@ export const Player = types
     replaceQueue(queueSnapshot: QueueSnapshotIn) {
       applySnapshot(self.queue, queueSnapshot)
     },
+    insertOneToQueue(song: SongSnapshotIn) {
+      const songIndex = self.queue.songs.findIndex(({ id }) => id === song.id)
+      if (songIndex >= 0) {
+        self.queue.songs.splice(songIndex, 1)
+      }
+      self.queue.songs.splice(self.currTrackIndex + 1, 0, song)
+    },
+    insertManyToQueue(songs: SongSnapshotIn[]) {
+      songs.forEach((song) => {
+        const songIndex = self.queue.songs.findIndex(({ id }) => id === song.id)
+        if (songIndex >= 0) {
+          self.queue.songs.splice(songIndex, 1)
+        }
+      })
+      songs.forEach((song, index) => {
+        self.queue.songs.splice(self.currTrackIndex + index + 1, 0, song)
+      })
+    },
   }))
   .actions((self) => ({
     replaceTrack(trackSnapshot: TrackSnapshot) {
+      trackSnapshot.playing = true
       self.tracks.pop()
       self.addTrack(trackSnapshot)
+    },
+  }))
+  .actions((self) => ({
+    tryReplaceTrack(
+      trackSnapshot: TrackSnapshot,
+      options?: {
+        privilege?: PrivilegeSnapshotIn | undefined
+      },
+    ) {
+      const isPlaying = self.currTrack?.song.id === trackSnapshot.song.id
+      const unavailable = !(options?.privilege?.cp ?? true)
+      const canReplace = !(isPlaying || unavailable)
+      if (canReplace) self.replaceTrack(trackSnapshot)
     },
   }))
   .actions((self) => ({
@@ -70,7 +104,6 @@ export const Player = types
       const index = mod(nth, self.queue.songs.length)
       self.replaceTrack({
         song: getSnapshot(self.queue.songs[index]),
-        playing: true,
       })
     },
   }))

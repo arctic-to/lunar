@@ -33,12 +33,9 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
         played: undefined,
       })
 
-      player.replaceTrack({
+      player.insertOneToQueue(historySongSnapshot)
+      player.tryReplaceTrack({
         song: historySongSnapshot,
-        playing: true,
-      })
-      player.replaceQueue({
-        songs: [historySongSnapshot],
       })
     }, [playing, unavailable, historySong, player])
 
