@@ -15,7 +15,7 @@ export const History: React.VFC = observer(() => {
     <div className={styles.container}>
       {history.aggregatedSongs.map((aggregatedSong, index) => (
         <AggregatedSong
-          key={Number(aggregatedSong.songs[0].played)}
+          key={Number(aggregatedSong.songs[0].playedAt)}
           aggregatedSong={aggregatedSong}
           playing={index === history.aggregatedSongs.length - 1}
           active={activeSongIndexes.includes(index)}

@@ -139,7 +139,8 @@ export const Player = types
           break
         }
         case OrderEnum.Shuffle: {
-          self.playNth(Math.floor(Math.random() * self.queue.songs.length))
+          const [recentPlayedSong] = self.history.aggregatedSongs.slice(-2)
+          self.replaceTrack({ song: recentPlayedSong.songSnapshot })
           break
         }
       }

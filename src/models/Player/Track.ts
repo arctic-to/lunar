@@ -6,7 +6,7 @@ import { fetcher } from '@/data/netease'
 import { Song } from './Song'
 
 export const Track = types
-  .model({
+  .model('Track', {
     song: Song,
     playing: false,
     songUrl: '',

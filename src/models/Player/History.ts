@@ -1,11 +1,12 @@
-import { Instance, SnapshotIn, types } from 'mobx-state-tree'
+import { Instance, SnapshotIn, types, getSnapshot } from 'mobx-state-tree'
 
 import { Song, SongSnapshotIn } from './Song'
 
 export const HistorySong = types.compose(
+  'HistorySong',
   Song,
   types.model({
-    played: types.optional(types.Date, () => new Date()),
+    playedAt: types.optional(types.Date, () => new Date()),
   }),
 )
 export type HistorySongSnapshotIn = SnapshotIn<typeof HistorySong>
@@ -13,10 +14,11 @@ export type HistorySongInstance = Instance<typeof HistorySong>
 
 export interface AggregatedSong {
   songs: HistorySongInstance[]
+  songSnapshot: SongSnapshotIn
 }
 
 export const History = types
-  .model({
+  .model('History', {
     songs: types.array(HistorySong),
   })
   .views((self) => ({
@@ -28,7 +30,12 @@ export const History = types
         if (song.id === lastAggregatedSong?.songs[0].id) {
           lastAggregatedSong?.songs.push(song)
         } else {
-          lastAggregatedSong = { songs: [song] }
+          lastAggregatedSong = {
+            songs: [song],
+            songSnapshot: Object.assign({}, getSnapshot(song), {
+              playedAt: undefined,
+            }),
+          }
           _aggregatedSongs.push(lastAggregatedSong)
         }
       })

@@ -1,6 +1,5 @@
 import c from 'classnames'
 import { observer } from 'mobx-react-lite'
-import { getSnapshot } from 'mobx-state-tree'
 import { MouseEventHandler, useCallback } from 'react'
 
 import { Artists } from '@/components'
@@ -29,15 +28,11 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
       if (playing) return
       if (unavailable) return
 
-      const historySongSnapshot = Object.assign({}, getSnapshot(historySong), {
-        played: undefined,
-      })
-
-      player.insertOneToQueue(historySongSnapshot)
+      player.insertOneToQueue(aggregatedSong.songSnapshot)
       player.tryReplaceTrack({
-        song: historySongSnapshot,
+        song: aggregatedSong.songSnapshot,
       })
-    }, [playing, unavailable, historySong, player])
+    }, [playing, unavailable, player, aggregatedSong.songSnapshot])
 
     return (
       <div

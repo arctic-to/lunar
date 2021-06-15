@@ -4,8 +4,8 @@ import { useState, useCallback } from 'react'
 import { PrivilegeSnapshotIn, SongSnapshotIn, usePlayer } from '@/models'
 
 export function useSonglist<T extends SongSnapshotIn>(
-  songs: T[],
-  privilegeMap: Map<number, PrivilegeSnapshotIn>,
+  songs?: T[],
+  privilegeMap?: Map<number, PrivilegeSnapshotIn>,
 ) {
   const player = usePlayer()
   const [activeSongIndexes, setActiveSongIndexes] = useState<number[]>([])
@@ -32,6 +32,8 @@ export function useSonglist<T extends SongSnapshotIn>(
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
+      if (!songs || !privilegeMap) return
+
       switch (e.code) {
         case 'Enter': {
           const selectedSongs = songs.filter((_, index) =>
