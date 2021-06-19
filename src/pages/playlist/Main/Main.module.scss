@@ -2,9 +2,13 @@
 
 .container {
   header {
-    height: 30px;
+    height: 46px;
     display: flex;
     justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background-color: color.$grey3;
+    z-index: 1;
   }
   .right {
     display: flex;
