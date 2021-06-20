@@ -12,5 +12,8 @@
   input {
     width: 128px;
     @include typography.b1;
+    &::placeholder {
+      color: color.$grey7;
+    }
   }
 }

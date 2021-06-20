@@ -1,9 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { useUserAccount, LoginSchema, login } from '@/data'
+
+import styles from './LoginForm.module.scss'
 
 const schema = yup.object().shape({
   phone: yup.string().required(),
@@ -24,12 +26,21 @@ export const LoginForm: React.VFC = () => {
   )
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input name="phone" ref={register} />
-      <p>{errors.phone?.message}</p>
-      <input name="password" ref={register} />
-      <p>{errors.password?.message}</p>
-      <input type="submit" />
+    <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
+      <div>
+        <input name="phone" placeholder="手机号" ref={register} />
+        {errors.phone && <p>请填写手机号</p>}
+      </div>
+      <div>
+        <input
+          type="password"
+          name="password"
+          placeholder="密码"
+          ref={register}
+        />
+        {errors.password && <p>请填写密码</p>}
+      </div>
+      <input type="submit" value="登录" />
     </form>
   )
 }
