@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useCallback } from 'react'
 
+import { VirtualList } from '@/components'
 import { useSonglist } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
 
@@ -37,11 +39,10 @@ export function Songlist<T extends SongSnapshotIn>({
     })
   }, [songs, privileges])
 
-  return (
-    <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
-      {hideHeader || <Header />}
-
-      {songs.map((song, index) => (
+  const renderRow = useCallback(
+    (index: number) => {
+      const song = songs[index]
+      return (
         <SongContainer
           key={song.id}
           index={index}
@@ -61,7 +62,24 @@ export function Songlist<T extends SongSnapshotIn>({
           </div>
           {getExtraContent?.(song)}
         </SongContainer>
-      ))}
+      )
+    },
+    [
+      activeSongIndexes,
+      displayTags,
+      getExtraContent,
+      privilegeMap,
+      resetActiveSongIndexes,
+      songs,
+    ],
+  )
+
+  return (
+    <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
+      {!hideHeader && <Header key="Header" />}
+      <VirtualList rowCount={songs.length} rowHeight={displayTags ? 64 : 36}>
+        {renderRow}
+      </VirtualList>
     </div>
   )
 }
