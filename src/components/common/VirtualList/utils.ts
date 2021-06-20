@@ -23,6 +23,6 @@ export function calcDistanceToAncestor(
   ancestor: HTMLElement,
 ) {
   const elementTop = element.getBoundingClientRect().top
-  const ancestorTop = ancestor.getBoundingClientRect().top
+  const ancestorTop = ancestor.firstElementChild!.getBoundingClientRect().top
   return elementTop - ancestorTop
 }

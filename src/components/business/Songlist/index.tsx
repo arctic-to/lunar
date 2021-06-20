@@ -17,6 +17,7 @@ type SonglistProps<T> = {
   getExtraContent?: (song: T) => React.ReactNode
   hideHeader?: boolean
   displayTags?: boolean
+  virtual?: boolean
 }
 
 export function Songlist<T extends SongSnapshotIn>({
@@ -25,6 +26,7 @@ export function Songlist<T extends SongSnapshotIn>({
   getExtraContent,
   hideHeader = false,
   displayTags = false,
+  virtual = false,
 }: SonglistProps<T>) {
   const [privilegeMap, setPrivilegeMap] = useState<
     Map<number, PrivilegeSnapshotIn>
@@ -77,9 +79,13 @@ export function Songlist<T extends SongSnapshotIn>({
   return (
     <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
       {!hideHeader && <Header key="Header" />}
-      <VirtualList rowCount={songs.length} rowHeight={displayTags ? 64 : 36}>
-        {renderRow}
-      </VirtualList>
+      {virtual ? (
+        <VirtualList rowCount={songs.length} rowHeight={displayTags ? 64 : 36}>
+          {renderRow}
+        </VirtualList>
+      ) : (
+        songs.map((_, index) => renderRow(index))
+      )}
     </div>
   )
 }
