@@ -3,9 +3,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRef } from 'react'
 import { useCallback } from 'react'
 
+import { calcDistanceToAncestor, getScrollableAncestor } from '@/utils'
+
 import styles from './VirtualList.module.scss'
 import { EMPTY_RANGE, intersect, Range } from './range'
-import { calcDistanceToAncestor, getScrollableParent } from './utils'
 
 export type VirtualListProps = {
   rowCount: number
@@ -52,7 +53,7 @@ export const VirtualList: React.FC<VirtualListProps> = ({
 
   useEffect(() => {
     if (!ref.current) return
-    const scrollableAncestor = getScrollableParent(ref.current)
+    const scrollableAncestor = getScrollableAncestor(ref.current)
     if (!scrollableAncestor) return
 
     scrollableAncestor.addEventListener('scroll', handleScroll)

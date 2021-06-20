@@ -7,7 +7,7 @@ const isScrollable = function (ele: HTMLElement) {
   return hasScrollableContent && !isOverflowHidden
 }
 
-export function getScrollableParent(
+export function getScrollableAncestor(
   ele: HTMLElement | null,
 ): HTMLElement | null {
   if (!ele) return null
@@ -15,7 +15,7 @@ export function getScrollableParent(
     ? document.body
     : isScrollable(ele)
     ? ele
-    : getScrollableParent(ele.parentElement)
+    : getScrollableAncestor(ele.parentElement)
 }
 
 export function calcDistanceToAncestor(
