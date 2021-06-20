@@ -3,6 +3,7 @@ import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { usePlaylistDetail } from '@/data'
 import { getMst } from '@/stores'
+import { getScrollableAncestor } from '@/utils'
 
 import Header from './Header'
 import Main from './Main'
@@ -13,7 +14,7 @@ import { PlaylistStore } from './playlist.store'
 export const Playlist: React.FC = () => {
   const id = useId()
   const [node, setNode] = useState<HTMLDivElement | null>(null)
-  const scrollableElement = useMemo(() => node?.parentElement, [node])
+  const scrollableAncestor = useMemo(() => getScrollableAncestor(node), [node])
 
   const { scrollTop, handleScroll } = getMst(PlaylistStore, {
     scope: id,
@@ -24,15 +25,20 @@ export const Playlist: React.FC = () => {
   // TODO: Remove scroll restoration logic after Next.js fix it
   // https://github.com/vercel/next.js/issues/20951#issuecomment-758785612
   useLayoutEffect(() => {
-    if (scrollableElement) scrollableElement.scrollTop = scrollTop
+    if (!scrollableAncestor) return
+    scrollableAncestor.scrollTop = scrollTop
+    return () => {
+      scrollableAncestor.scrollTop = 0
+    }
     // Update scrollTop only after the page has been mounted
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scrollableElement])
+  }, [scrollableAncestor])
 
   useEffect(() => {
-    scrollableElement?.addEventListener('scroll', handleScroll)
-    return () => scrollableElement?.removeEventListener('scroll', handleScroll)
-  }, [handleScroll, scrollableElement])
+    if (!scrollableAncestor) return
+    scrollableAncestor.addEventListener('scroll', handleScroll)
+    return () => scrollableAncestor.removeEventListener('scroll', handleScroll)
+  }, [handleScroll, scrollableAncestor])
 
   if (!data) return null
 

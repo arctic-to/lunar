@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { useCallback } from 'react'
 
+import { VirtualList } from '@/components'
 import { useSonglist } from '@/hooks'
 import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
 
@@ -15,6 +17,7 @@ type SonglistProps<T> = {
   getExtraContent?: (song: T) => React.ReactNode
   hideHeader?: boolean
   displayTags?: boolean
+  virtual?: boolean
 }
 
 export function Songlist<T extends SongSnapshotIn>({
@@ -23,6 +26,7 @@ export function Songlist<T extends SongSnapshotIn>({
   getExtraContent,
   hideHeader = false,
   displayTags = false,
+  virtual = false,
 }: SonglistProps<T>) {
   const [privilegeMap, setPrivilegeMap] = useState<
     Map<number, PrivilegeSnapshotIn>
@@ -37,11 +41,10 @@ export function Songlist<T extends SongSnapshotIn>({
     })
   }, [songs, privileges])
 
-  return (
-    <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
-      {hideHeader || <Header />}
-
-      {songs.map((song, index) => (
+  const renderRow = useCallback(
+    (index: number) => {
+      const song = songs[index]
+      return (
         <SongContainer
           key={song.id}
           index={index}
@@ -61,7 +64,28 @@ export function Songlist<T extends SongSnapshotIn>({
           </div>
           {getExtraContent?.(song)}
         </SongContainer>
-      ))}
+      )
+    },
+    [
+      activeSongIndexes,
+      displayTags,
+      getExtraContent,
+      privilegeMap,
+      resetActiveSongIndexes,
+      songs,
+    ],
+  )
+
+  return (
+    <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
+      {!hideHeader && <Header key="Header" />}
+      {virtual ? (
+        <VirtualList rowCount={songs.length} rowHeight={displayTags ? 64 : 36}>
+          {renderRow}
+        </VirtualList>
+      ) : (
+        songs.map((_, index) => renderRow(index))
+      )}
     </div>
   )
 }

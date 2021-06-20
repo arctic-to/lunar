@@ -1,5 +1,5 @@
 import { range } from 'lodash'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
 import { PrivilegeSnapshotIn, SongSnapshotIn, usePlayer } from '@/models'
 
@@ -9,6 +9,8 @@ export function useSonglist<T extends SongSnapshotIn>(
 ) {
   const player = usePlayer()
   const [activeSongIndexes, setActiveSongIndexes] = useState<number[]>([])
+
+  useEffect(() => setActiveSongIndexes([]), [songs])
 
   const resetActiveSongIndexes = useCallback(
     (index: number) => (e: React.MouseEvent) => {
