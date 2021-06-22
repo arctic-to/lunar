@@ -1,0 +1,18 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.body {
+  padding: 8px;
+}
+
+/** draggable element and all mouse event (include :hover) conflict */
+.hover {
+  background-color: color.$overlay1;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}

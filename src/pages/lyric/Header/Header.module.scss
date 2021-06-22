@@ -1,0 +1,38 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  @include mixin.center-container;
+  padding: 8px;
+  gap: 16px;
+  color: color.$grey9;
+  svg {
+    font-size: 18px;
+  }
+  .text_button {
+    text-align: center;
+    width: 18px;
+  }
+}
+
+.button_group {
+  display: flex;
+  gap: 8px;
+}
+
+.button_container {
+  @include mixin.center-container;
+  width: 24px;
+  height: 24px;
+  border-radius: 2px;
+  cursor: pointer;
+  &:hover {
+    background-color: color.$highlight4;
+  }
+}
+
+.divider {
+  width: 2px;
+  height: 100%;
+  background-color: color.$grey8;
+}

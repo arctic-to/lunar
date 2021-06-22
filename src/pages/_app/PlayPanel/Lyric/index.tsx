@@ -15,32 +15,32 @@ export const Lyric: React.VFC = observer(() => {
   }, [lyric, win])
 
   useEffect(() => {
-    if (!lyric.opened) return
-    setWin(
-      new remote.BrowserWindow({
-        ...lyric.bounds,
-        frame: false,
-        acceptFirstMouse: true,
-        transparent: true,
-        alwaysOnTop: true,
-        webPreferences: {
-          nodeIntegration: true,
-          enableRemoteModule: true,
-          devTools: false,
-        },
-      }),
-    )
-  }, [lyric.bounds, lyric.opened])
+    if (win) return
+    const _win = new remote.BrowserWindow({
+      ...lyric.bounds,
+      frame: false,
+      acceptFirstMouse: true,
+      fullscreenable: false,
+      minimizable: false,
+      maximizable: false,
+      transparent: true,
+      alwaysOnTop: true,
+      skipTaskbar: true,
+      show: false,
+      webPreferences: {
+        nodeIntegration: true,
+        enableRemoteModule: true,
+        devTools: false,
+      },
+    })
+    _win.loadURL('http://localhost:3000/lyric')
+    setWin(_win)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
-    if (lyric.opened) return
-    win?.close()
-    setWin(null)
+    lyric.opened ? win?.show() : win?.hide()
   }, [lyric.opened, win])
-
-  useEffect(() => {
-    win?.loadURL('http://localhost:3000/lyric')
-  }, [win])
 
   useEffect(() => {
     win?.on('moved', updateBounds)

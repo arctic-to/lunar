@@ -32,7 +32,7 @@ export const Lyric: React.FC<LyricProps> = observer(
     }, [])
 
     useEffect(() => {
-      const currSentenceIndex = parsedLyric?.findIndex((sentence) =>
+      const currSentenceIndex = parsedLyric.findIndex((sentence) =>
         inRange(
           currentTime ?? 0,
           sentence.begin,
@@ -66,22 +66,21 @@ export const Lyric: React.FC<LyricProps> = observer(
 
     return (
       <div className={styles.container} ref={ref}>
-        {parsedLyric &&
-          parsedLyric.map((sentence, index) => (
-            <div key={index} className={c(styles.lyric)}>
-              <div className={styles.row_container}>
-                <span className={styles.row} onClick={copy}>
-                  {sentence.content}
-                </span>
-                {!noTimestamp && <IoMdLocate onClick={jump(sentence.begin)} />}
-              </div>
-              {sentence.translation && (
-                <span className={styles.translation} onClick={copy}>
-                  {sentence.translation}
-                </span>
-              )}
+        {parsedLyric.map((sentence, index) => (
+          <div key={index} className={c(styles.lyric)}>
+            <div className={styles.row_container}>
+              <span className={styles.row} onClick={copy}>
+                {sentence.content}
+              </span>
+              {!noTimestamp && <IoMdLocate onClick={jump(sentence.begin)} />}
             </div>
-          ))}
+            {sentence.translation && (
+              <span className={styles.translation} onClick={copy}>
+                {sentence.translation}
+              </span>
+            )}
+          </div>
+        ))}
       </div>
     )
   },

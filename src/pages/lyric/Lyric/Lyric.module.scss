@@ -1,0 +1,31 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  @include mixin.center-container(v);
+  @include mixin.draggable;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.lyric_container {
+  padding: 8px 16px;
+  @include mixin.center-container(v);
+  flex-direction: column;
+  gap: 4px;
+  color: color.$grey9;
+  @include mixin.stroke(color.$grey8, 0.5px);
+  text-align: center;
+
+  &.current {
+    color: color.$blue1;
+  }
+}
+
+.lyric {
+  font-size: 32px;
+}
+
+.translation {
+  font-size: 24px;
+}
