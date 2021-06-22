@@ -10,7 +10,7 @@
   "scripts": {
     "--------------------------Dev Scripts------------------------": "",
     "dev:renderer": "next dev",
-    "watch:main": "tsc -w src/main.ts --esModuleInterop --outDir build",
+    "watch:main": "tsc -w src/main/main.ts --esModuleInterop --outDir build",
     "dev:main": "wait-on http://localhost:3000 && nodemon --watch ./build --exec electron .",
     "predev": "rimraf ./build",
     "dev": "concurrently yarn:watch:main yarn:dev:*",
@@ -22,7 +22,7 @@
     "format": "prettier --write src/**/*.{ts,tsx}",
     "--------------------------Build Scripts-----------------------": "",
     "build:renderer": "next build && next export -o build",
-    "build:main": "tsc src/main.ts --esModuleInterop --outDir build",
+    "build:main": "tsc src/main/main.ts --esModuleInterop --outDir build",
     "build": "yarn run build:renderer && yarn run build:main",
     "--------------------------Prod Scripts (Unused)---------------": "",
     "start:renderer": "next start",

@@ -2,7 +2,7 @@
   "extends": "hitoka/tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
-    "baseUrl": "src",
+    "baseUrl": "src/renderer",
     "outDir": "build",
     "allowJs": true,
     "noEmit": true,
