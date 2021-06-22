@@ -2,7 +2,11 @@ import c from 'classnames'
 import { ipcRenderer, remote } from 'electron'
 import { inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { applyAction, applySnapshot } from 'mobx-state-tree'
+import {
+  applyAction,
+  applySnapshot,
+  ISerializedActionCall,
+} from 'mobx-state-tree'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useLyric } from '@/data'
@@ -29,9 +33,12 @@ export const OsdLyric: React.VFC = observer(() => {
   }, [player])
 
   useEffect(() => {
-    ipcRenderer.on('store:player:action', (event, action) => {
-      applyAction(player, action)
-    })
+    ipcRenderer.on(
+      'window:main:action',
+      (event, action: ISerializedActionCall) => {
+        applyAction(player, action)
+      },
+    )
   }, [player])
 
   useEffect(() => {

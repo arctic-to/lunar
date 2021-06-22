@@ -58,7 +58,7 @@ export const Buttons: React.VFC = observer(() => {
       </div>
       <div className={styles.right}>
         <IconLyric
-          className={c({ [styles.active]: lyric.opened })}
+          className={c({ [styles.active]: lyric.show })}
           onClick={lyric.toggle}
         />
         <Like songId={currentTrack?.song.id} />

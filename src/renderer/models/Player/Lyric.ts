@@ -11,7 +11,7 @@ type RectangleSnapshotOut = SnapshotOut<typeof Rectangle>
 
 export const Lyric = types
   .model('Lyric', {
-    opened: false,
+    show: false,
     bounds: types.optional(Rectangle, {
       width: 1200,
       height: 200,
@@ -19,7 +19,7 @@ export const Lyric = types
   })
   .actions((self) => ({
     toggle() {
-      self.opened = !self.opened
+      self.show = !self.show
     },
     setPosition([x, y]: number[]) {
       self.bounds.x = x

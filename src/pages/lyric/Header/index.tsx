@@ -29,10 +29,12 @@ export const Header: React.FC<HeaderProps> = ({ hidden }) => {
       style={{ visibility: hidden ? 'hidden' : undefined }}
     >
       {withDivider(
-        buttonGroups.map((buttonGroup) => (
-          <div className={styles.button_group}>
-            {buttonGroup.map((button) => (
-              <div className={styles.button_container}>{button}</div>
+        buttonGroups.map((buttonGroup, index) => (
+          <div key={index} className={styles.button_group}>
+            {buttonGroup.map((button, index) => (
+              <div key={index} className={styles.button_container}>
+                {button}
+              </div>
             ))}
           </div>
         )),
