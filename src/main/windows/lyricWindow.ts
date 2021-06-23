@@ -18,6 +18,8 @@ export function createLyricWindow(playerSnapshot: any) {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
+      // https://github.com/electron/electron/issues/28034#issuecomment-792871937
+      contextIsolation: false,
       // devTools: false,
     },
   })
