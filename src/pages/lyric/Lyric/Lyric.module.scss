@@ -3,9 +3,7 @@
 
 .container {
   @include mixin.center-container(v);
-  @include mixin.draggable;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .lyric_container {

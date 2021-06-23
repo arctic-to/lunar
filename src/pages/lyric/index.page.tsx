@@ -9,8 +9,9 @@ import { useLyric } from '@/data'
 import { useCurrentTrack, usePlayer } from '@/models'
 import { parseLyric } from '@/utils'
 
+import Fallback from './Fallback'
 import Header from './Header'
-import { Lyric } from './Lyric'
+import Lyric from './Lyric'
 import styles from './OsdLyric.module.scss'
 
 export const OsdLyric: React.VFC = observer(() => {
@@ -58,15 +59,18 @@ export const OsdLyric: React.VFC = observer(() => {
   }, [data])
 
   const { parsedLyric, noTimestamp } = result || {}
+  const canRenderLyric = parsedLyric && !noTimestamp
 
   return (
     <div className={styles.container}>
       <Header hidden={!hovering} />
-      {!parsedLyric || noTimestamp ? (
-        <div>{currentTrack?.song.name}</div>
-      ) : (
-        <Lyric parsedLyric={parsedLyric} />
-      )}
+      <div className={styles.main}>
+        {canRenderLyric ? (
+          <Lyric parsedLyric={parsedLyric!} />
+        ) : (
+          <Fallback song={currentTrack?.song} />
+        )}
+      </div>
     </div>
   )
 })
