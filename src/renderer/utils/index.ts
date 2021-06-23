@@ -1,4 +1,5 @@
 export * from './dom'
+export * from './isEnv'
 export * from './parseLyric'
 export * from './parseLyricString'
 export * from './withDivider'

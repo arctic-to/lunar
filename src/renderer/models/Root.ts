@@ -7,6 +7,8 @@ import {
   castToSnapshot,
 } from 'mobx-state-tree'
 
+import { isDev } from '@/utils'
+
 import { Platform, platform } from './Platform'
 import { Player, player } from './Player'
 import { View, view } from './View'
@@ -50,7 +52,7 @@ function getInitialSnapshot() {
 export function observeRootStore() {
   onSnapshot(rootStore, (snapshot) => {
     // eslint-disable-next-line no-console
-    console.log(snapshot)
+    if (isDev) console.log(snapshot)
     localStorage.setItem('rootStore', JSON.stringify(snapshot))
   })
 }

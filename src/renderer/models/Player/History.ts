@@ -43,6 +43,11 @@ export const History = types
       return _aggregatedSongs
     },
   }))
+  .views((self) => ({
+    get recentPlayedSong() {
+      return self.aggregatedSongs.slice(-2)[0].songSnapshot
+    },
+  }))
   .actions((self) => ({
     push(song: SongSnapshotIn) {
       self.songs.push(song)

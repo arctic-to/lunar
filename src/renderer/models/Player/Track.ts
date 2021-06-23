@@ -101,5 +101,5 @@ export const Track = types
     },
   }))
 
-export type TrackSnapshot = SnapshotIn<typeof Track>
+export type TrackSnapshotIn = SnapshotIn<typeof Track>
 export type TrackInstance = Instance<typeof Track>

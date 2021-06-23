@@ -1,11 +1,17 @@
-import { applySnapshot, getSnapshot, SnapshotOut, types } from 'mobx-state-tree'
+import {
+  applySnapshot,
+  getSnapshot,
+  SnapshotOut,
+  types,
+  cast,
+} from 'mobx-state-tree'
 
 import { History, history } from './History'
 import { Lyric, lyric } from './Lyric'
 import { PrivilegeSnapshotIn } from './Privilege'
 import { Queue, queue, QueueSnapshotIn } from './Queue'
 import { SongSnapshotIn } from './Song'
-import { Track, TrackSnapshot } from './Track'
+import { Track, TrackSnapshotIn } from './Track'
 
 export enum OrderEnum {
   Repeat = 'Repeat',
@@ -40,7 +46,7 @@ export const Player = types
   }))
   // base actions
   .actions((self) => ({
-    addTrack(trackSnapshot: TrackSnapshot) {
+    addTrack(trackSnapshot: TrackSnapshotIn) {
       self.tracks.push(trackSnapshot)
       self.history.push(trackSnapshot.song)
     },
@@ -73,15 +79,15 @@ export const Player = types
     },
   }))
   .actions((self) => ({
-    replaceTrack(trackSnapshot: TrackSnapshot) {
+    replaceTrack(trackSnapshot: TrackSnapshotIn) {
       trackSnapshot.playing = true
-      self.tracks.pop()
-      self.addTrack(trackSnapshot)
+      self.tracks.replace([cast(trackSnapshot)])
+      self.history.push(trackSnapshot.song)
     },
   }))
   .actions((self) => ({
     tryReplaceTrack(
-      trackSnapshot: TrackSnapshot,
+      trackSnapshot: TrackSnapshotIn,
       options?: {
         privilege?: PrivilegeSnapshotIn | undefined
       },
@@ -101,7 +107,7 @@ export const Player = types
     },
     playNth(nth: number) {
       const mod = (n: number, m: number) => ((n % m) + m) % m
-      const index = mod(nth, self.queue.songs.length)
+      const index = mod(nth, self.queue.size)
       self.replaceTrack({
         song: getSnapshot(self.queue.songs[index]),
       })
@@ -116,21 +122,6 @@ export const Player = types
     },
   }))
   .actions((self) => ({
-    handleEnded() {
-      switch (self.order) {
-        case OrderEnum.Repeat: {
-          self.playNextSibling()
-          break
-        }
-        case OrderEnum.Shuffle: {
-          self.playNth(Math.floor(Math.random() * self.queue.songs.length))
-          break
-        }
-        case OrderEnum.RepeatOne: {
-          self.playNth(self.currTrackIndex)
-        }
-      }
-    },
     playPrev() {
       switch (self.order) {
         case OrderEnum.RepeatOne:
@@ -139,22 +130,9 @@ export const Player = types
           break
         }
         case OrderEnum.Shuffle: {
-          const [recentPlayedSong] = self.history.aggregatedSongs.slice(-2)
-          self.replaceTrack({ song: recentPlayedSong.songSnapshot })
-          break
-        }
-      }
-    },
-    playNext() {
-      switch (self.order) {
-        case OrderEnum.RepeatOne:
-        case OrderEnum.Repeat: {
-          self.playNextSibling()
-          break
-        }
-        case OrderEnum.Shuffle: {
-          self.playNth(Math.floor(Math.random() * self.queue.songs.length))
-          break
+          self.replaceTrack({
+            song: self.history.recentPlayedSong,
+          })
         }
       }
     },
