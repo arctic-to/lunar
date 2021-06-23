@@ -1,10 +1,8 @@
-import { BrowserWindow, ipcMain } from 'electron'
+import { BrowserWindow } from 'electron'
 import isDev from 'electron-is-dev'
 
-let win: BrowserWindow | null = null
-
 export function createMainWindow() {
-  win = new BrowserWindow({
+  const win = new BrowserWindow({
     width: 1600,
     minWidth: 1000,
     height: 800,
@@ -14,18 +12,12 @@ export function createMainWindow() {
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
-      // https://github.com/electron/electron/issues/28034#issuecomment-792871937
-      contextIsolation: false,
+      contextIsolation: false, // https://github.com/electron/electron/issues/28034#issuecomment-792871937
+      partition: 'persist: rootStore', // https://github.com/electron/electron/issues/24365#issuecomment-688494227
     },
   })
 
   win.loadURL(isDev ? 'http://localhost:3000' : 'app://./index.html')
 
-  win.on('closed', () => {
-    win = null
-  })
-
-  ipcMain.on('window:action:lyric', (_, action) => {
-    win?.webContents.send('window:action:lyric', action)
-  })
+  return win
 }

@@ -13,7 +13,7 @@ import SongCard from './SongCard'
 export const PlayPanel: React.FC = observer(() => {
   const player = usePlayer()
   useEffect(() => {
-    ipcRenderer.send('lyric:create', getSnapshot(player))
+    ipcRenderer.send('window:lyric:create', getSnapshot(player))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -24,6 +24,18 @@ export const PlayPanel: React.FC = observer(() => {
       ipcRenderer.send('window:lyric:hide')
     }
   }, [player.lyric.show])
+
+  useEffect(() => {
+    const updateBounds = (
+      event: Electron.IpcRendererEvent,
+      bounds: Electron.Rectangle,
+    ) => {
+      player.lyric.setBounds(bounds)
+    }
+    ipcRenderer.on('window:lyric:move', updateBounds)
+    ipcRenderer.on('window:lyric:resize', updateBounds)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     return onAction(player, (action) => {

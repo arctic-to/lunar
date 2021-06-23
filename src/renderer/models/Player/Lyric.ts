@@ -21,10 +21,6 @@ export const Lyric = types
     toggle() {
       self.show = !self.show
     },
-    setPosition([x, y]: number[]) {
-      self.bounds.x = x
-      self.bounds.y = y
-    },
     setBounds(bounds: RectangleSnapshotOut) {
       self.bounds = bounds
     },

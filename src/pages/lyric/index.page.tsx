@@ -2,15 +2,11 @@ import c from 'classnames'
 import { ipcRenderer, remote } from 'electron'
 import { inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import {
-  applyAction,
-  applySnapshot,
-  ISerializedActionCall,
-} from 'mobx-state-tree'
+import { applyAction, ISerializedActionCall } from 'mobx-state-tree'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useLyric } from '@/data'
-import { useCurrentTrack, usePlayer, PlayerSnapshotOut } from '@/models'
+import { useCurrentTrack, usePlayer } from '@/models'
 import { parseLyric } from '@/utils'
 
 import Header from './Header'
@@ -22,15 +18,6 @@ export const OsdLyric: React.VFC = observer(() => {
   const player = usePlayer()
   const currentTrack = useCurrentTrack()
   const { data } = useLyric(currentTrack?.song.id ?? null)
-
-  useEffect(() => {
-    ipcRenderer.on(
-      'store:player:init',
-      (event, playerSnapshot: PlayerSnapshotOut) => {
-        applySnapshot(player, playerSnapshot)
-      },
-    )
-  }, [player])
 
   useEffect(() => {
     ipcRenderer.on(

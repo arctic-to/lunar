@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import type { AppProps /*, AppContext */ } from 'next/app'
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { RootStoreContext, initRootStore, rootStore } from '@/models'
 
@@ -19,11 +19,15 @@ const pagesWithoutLayout = ['/lyric']
 function MyApp(appProps: AppProps) {
   const { Component, pageProps } = appProps
   const { pathname } = useRouter()
+  const [readyToRender, setReadyToRender] = useState(false)
   const withoutLayout = pagesWithoutLayout.includes(pathname)
 
   useEffect(() => {
     initRootStore()
+    setReadyToRender(true)
   }, [])
+
+  if (!readyToRender) return null
 
   return (
     <RootStoreContext.Provider value={rootStore}>

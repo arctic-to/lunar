@@ -47,20 +47,20 @@ function getInitialSnapshot() {
   return json
 }
 
-export function initRootStore() {
-  if (initialized) return
-  const snapshot = getInitialSnapshot()
-  applySnapshot(rootStore, snapshot)
-  observeRootStore()
-  initialized = true
-}
-
 export function observeRootStore() {
   onSnapshot(rootStore, (snapshot) => {
     // eslint-disable-next-line no-console
     console.log(snapshot)
     localStorage.setItem('rootStore', JSON.stringify(snapshot))
   })
+}
+
+export function initRootStore() {
+  if (initialized) return
+  const snapshot = getInitialSnapshot()
+  applySnapshot(rootStore, snapshot)
+  observeRootStore()
+  initialized = true
 }
 
 export type RootStoreInstance = Instance<typeof RootStore>
