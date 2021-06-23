@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { MouseEventHandler, useCallback } from 'react'
 
 import { Artists } from '@/components'
-import { useLiked, usePlaying } from '@/hooks'
+import { useLiked } from '@/hooks'
 import { SongSnapshotIn, usePlayer } from '@/models'
 import { PrivilegeSnapshotIn } from '@/models'
 
@@ -19,20 +19,19 @@ export type SongProps = {
 
 export const Song: React.VFC<SongProps> = observer(
   ({ song, privilege, active, onClick, onDoubleClick }) => {
-    const player = usePlayer()
+    const { isInTrack, tryReplaceTrack } = usePlayer()
     const liked = useLiked(song.id)
-    const playing = usePlaying(song)
     const unavailable = !(privilege?.cp ?? true)
 
     const handleDoubleClick = useCallback(() => {
-      player.tryReplaceTrack({ song }, { privilege })
+      tryReplaceTrack({ song }, { privilege })
       onDoubleClick?.()
-    }, [onDoubleClick, player, privilege, song])
+    }, [onDoubleClick, privilege, song, tryReplaceTrack])
 
     return (
       <div
         className={c(styles.container, {
-          [styles.playing]: playing,
+          [styles.in_track]: isInTrack(song),
           [styles.active]: active,
           [styles.liked]: liked,
           [styles.unavailable]: unavailable,

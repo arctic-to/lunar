@@ -7,8 +7,7 @@ import Album from '@/components/business/Album'
 import Artists from '@/components/business/Artists'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
-import { usePlaying } from '@/hooks'
-import { PrivilegeSnapshotIn, SongSnapshotIn } from '@/models'
+import { PrivilegeSnapshotIn, SongSnapshotIn, usePlayer } from '@/models'
 
 import styles from './SongBase.module.scss'
 
@@ -19,13 +18,13 @@ export type SongBaseProps = {
 }
 export const SongBase: React.FC<SongBaseProps> = observer(
   ({ index, song, privilege }) => {
-    const playing = usePlaying(song)
+    const { isInTrack } = usePlayer()
     const unavailable = !(privilege?.cp ?? true)
 
     return (
       <div
         className={c(styles.container, {
-          [styles.playing]: playing,
+          [styles.in_track]: isInTrack(song),
           [styles.unavailable]: unavailable,
         })}
       >

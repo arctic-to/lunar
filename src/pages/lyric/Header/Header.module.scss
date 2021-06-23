@@ -29,6 +29,9 @@
   &:hover {
     background-color: color.$highlight4;
   }
+  .active {
+    color: color.$green1;
+  }
 }
 
 .divider {

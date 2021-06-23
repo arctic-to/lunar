@@ -43,4 +43,8 @@ ipcMain.once('window:lyric:create', (_, playerSnapshot) => {
   ipcMain.on('window:main:action', (_, action) => {
     lyricWin?.webContents.send('window:main:action', action)
   })
+
+  ipcMain.on('window:lyric:action', (_, action) => {
+    mainWin?.webContents.send('window:lyric:action', action)
+  })
 })

@@ -1,8 +1,14 @@
 import { ipcRenderer } from 'electron'
 import { observer } from 'mobx-react-lite'
-import { onAction, getSnapshot } from 'mobx-state-tree'
+import {
+  onAction,
+  getSnapshot,
+  applyAction,
+  ISerializedActionCall,
+} from 'mobx-state-tree'
 import { useEffect } from 'react'
 
+import { __LYRIC__PROCESS__ } from '@/ipc'
 import { usePlayer } from '@/models'
 
 import CentralController from './CentralController'
@@ -39,6 +45,7 @@ export const PlayPanel: React.FC = observer(() => {
 
   useEffect(() => {
     return onAction(player, (action) => {
+      if (action.name.startsWith(__LYRIC__PROCESS__)) return
       /**
        * Variables store time (like `currentTime`) should be calculated by other
        * variables, instead of sync them.
@@ -49,6 +56,16 @@ export const PlayPanel: React.FC = observer(() => {
       }
     })
   }, [player])
+
+  useEffect(() => {
+    ipcRenderer.on(
+      'window:lyric:action',
+      (event, action: ISerializedActionCall) => {
+        applyAction(player, action)
+      },
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className={styles['play-panel']}>

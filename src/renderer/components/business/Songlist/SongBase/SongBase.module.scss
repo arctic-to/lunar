@@ -7,7 +7,7 @@
   @include mixin.center-container(v);
   @include common.layout;
 
-  &.playing {
+  &.in_track {
     .index,
     .name {
       color: color.$song-playing;

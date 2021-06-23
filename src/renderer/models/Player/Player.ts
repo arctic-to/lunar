@@ -43,6 +43,9 @@ export const Player = types
         (song) => song.id === self.currTrack?.song.id,
       )
     },
+    isInTrack(song: SongSnapshotIn) {
+      return self.currTrack?.song.id === song.id
+    },
   }))
   // base actions
   .actions((self) => ({
@@ -92,9 +95,9 @@ export const Player = types
         privilege?: PrivilegeSnapshotIn | undefined
       },
     ) {
-      const isPlaying = self.currTrack?.song.id === trackSnapshot.song.id
+      const isInTrack = self.isInTrack(trackSnapshot.song)
       const unavailable = !(options?.privilege?.cp ?? true)
-      const canReplace = !(isPlaying || unavailable)
+      const canReplace = !(isInTrack || unavailable)
       if (canReplace) self.replaceTrack(trackSnapshot)
     },
   }))
@@ -147,6 +150,17 @@ export const Player = types
     repeatOne() {
       self.order = OrderEnum.RepeatOne
     },
+  }))
+  // actions on osd lyric process
+  .actions((self) => ({
+    __LYRIC__PROCESS__Play__: self.play,
+    __LYRIC__PROCESS__Pause__: self.pause,
+    __LYRIC__PROCESS__PlayNth__: self.playNth,
+    __LYRIC__PROCESS__PlayNextSibling__: self.playNextSibling,
+    __LYRIC__PROCESS__PlayPrev__: self.playPrev,
+    __LYRIC__PROCESS__Repeat__: self.repeat,
+    __LYRIC__PROCESS__Shuffle__: self.shuffle,
+    __LYRIC__PROCESS__RepeatOne__: self.repeatOne,
   }))
 
 export type PlayerSnapshotOut = SnapshotOut<typeof Player>

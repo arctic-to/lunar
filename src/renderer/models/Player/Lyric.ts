@@ -25,5 +25,9 @@ export const Lyric = types
       self.bounds = bounds
     },
   }))
+  // actions on osd lyric process
+  .actions((self) => ({
+    __LYRIC__PROCESS__TOGGLE__: self.toggle,
+  }))
 
 export const lyric = Lyric.create()

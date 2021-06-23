@@ -2,10 +2,11 @@ import c from 'classnames'
 import { ipcRenderer, remote } from 'electron'
 import { inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { applyAction, ISerializedActionCall } from 'mobx-state-tree'
+import { applyAction, ISerializedActionCall, onAction } from 'mobx-state-tree'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useLyric } from '@/data'
+import { __LYRIC__PROCESS__ } from '@/ipc'
 import { useCurrentTrack, usePlayer } from '@/models'
 import { parseLyric } from '@/utils'
 
@@ -19,6 +20,16 @@ export const OsdLyric: React.VFC = observer(() => {
   const player = usePlayer()
   const currentTrack = useCurrentTrack()
   const { data } = useLyric(currentTrack?.song.id ?? null)
+
+  useEffect(() => {
+    return onAction(player, (action) => {
+      const isAcceptable = action.name.startsWith(__LYRIC__PROCESS__)
+      if (isAcceptable) {
+        ipcRenderer.send('window:lyric:action', action)
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     ipcRenderer.on(
