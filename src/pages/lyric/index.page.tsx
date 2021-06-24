@@ -3,12 +3,10 @@ import { ipcRenderer, remote } from 'electron'
 import { inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
 import { applyAction, ISerializedActionCall, onAction } from 'mobx-state-tree'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import { useLyric } from '@/data'
 import { __LYRIC__PROCESS__ } from '@/ipc'
-import { useCurrentTrack, usePlayer } from '@/models'
-import { parseLyric } from '@/utils'
+import { usePlayer } from '@/models'
 
 import Fallback from './Fallback'
 import Header from './Header'
@@ -18,8 +16,8 @@ import styles from './OsdLyric.module.scss'
 export const OsdLyric: React.VFC = observer(() => {
   const [hovering, setHovering] = useState(false)
   const player = usePlayer()
-  const currentTrack = useCurrentTrack()
-  const { data } = useLyric(currentTrack?.song.id ?? null)
+  const { lyricStore, song } = player.currTrack ?? {}
+  const { parsedLyrics, noTimestamp } = lyricStore ?? {}
 
   useEffect(() => {
     return onAction(player, (action) => {
@@ -58,21 +56,16 @@ export const OsdLyric: React.VFC = observer(() => {
     })
   }, [hovering])
 
-  const result = useMemo(() => {
-    if (data && !data.nolyric && !data.uncollected) return parseLyric(data)
-  }, [data])
-
-  const { parsedLyric, noTimestamp } = result || {}
-  const canRenderLyric = parsedLyric && !noTimestamp
+  const canRenderLyric = parsedLyrics && !noTimestamp
 
   return (
     <div className={styles.container}>
       <Header hidden={!hovering} />
       <div className={styles.main}>
         {canRenderLyric ? (
-          <Lyric parsedLyric={parsedLyric!} />
+          <Lyric parsedLyric={parsedLyrics!} />
         ) : (
-          <Fallback song={currentTrack?.song} />
+          <Fallback song={song} />
         )}
       </div>
     </div>

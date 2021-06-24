@@ -52,5 +52,9 @@ export function parseLyricString(rawLyric: string) {
         duration: nextSentence ? nextSentence.begin - sentence.begin : 0,
       }
     })
-    .filter((sentence) => sentence.content)
+    .filter((sentence) => sentence.content) as {
+    duration: number
+    begin: number
+    content: string
+  }[]
 }

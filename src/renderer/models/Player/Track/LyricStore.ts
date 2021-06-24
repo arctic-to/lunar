@@ -1,28 +1,13 @@
 import { SnapshotIn, types } from 'mobx-state-tree'
-import qs from 'qs'
-import useSWR from 'swr'
-import { Maybe } from 'yup/lib/types'
 
-import { fetcher } from '../fetcher'
-
-export function useLyric(id: Maybe<number | string>) {
-  const { data, error } = useSWR<LyricResponseSnapshotIn>(
-    id ? `/lyric?${qs.stringify({ id })}` : null,
-    fetcher,
-  )
-
-  return {
-    loading: !data && !error,
-    data,
-    error,
-  }
-}
-
-type LyricResponseSnapshotIn = SnapshotIn<typeof LyricResponse>
-const LyricResponse = types.model('LyricResponse', {
+export type LyricResponseSnapshotIn = SnapshotIn<typeof LyricResponse>
+export const LyricResponse = types.model('LyricResponse', {
+  code: types.number,
   sgc: types.boolean,
   sfy: types.boolean,
   qfy: types.boolean,
+
+  // lyric case
   lrc: types.maybe(
     types.model({
       version: types.number,
@@ -41,9 +26,23 @@ const LyricResponse = types.model('LyricResponse', {
       lyric: types.string,
     }),
   ),
+
+  // no lyric case
   nolyric: types.maybe(types.boolean),
   uncollected: types.maybe(types.boolean),
   needDesc: types.maybe(types.boolean),
-  briefDesc: types.null,
-  code: types.number,
+  briefDesc: types.maybe(types.null),
+})
+
+const ParsedLyric = types.model({
+  translation: types.maybe(types.string),
+  duration: types.number,
+  begin: types.number,
+  content: types.string,
+})
+
+export const LyricStore = types.model({
+  parsedLyrics: types.maybeNull(types.array(ParsedLyric)),
+  noTimestamp: types.boolean,
+  raw: LyricResponse,
 })

@@ -2,8 +2,11 @@ import { types, flow, SnapshotIn, Instance } from 'mobx-state-tree'
 import { SECOND } from 'unit-of-time'
 
 import { fetcher } from '@/data/netease'
+import { parseLyric } from '@/utils'
 
-import { Song } from './Song'
+import { Song } from '../Song'
+
+import { LyricResponseSnapshotIn, LyricStore } from './LyricStore'
 
 export const Track = types
   .model('Track', {
@@ -13,6 +16,7 @@ export const Track = types
     currentTime: 0, // ms
     currentTimeSetTimes: 0, // Times of setting current time manually
     volume: 1, // Independent volume for every track
+    lyricStore: types.maybeNull(LyricStore),
   })
   .views((self) => ({
     get percentage() {
@@ -48,11 +52,21 @@ export const Track = types
   }))
   .actions((self) => ({
     fetchSongUrl: flow(function* () {
-      const id = self.song.id
       const {
         data: [song],
-      } = yield fetcher(`/song/url?id=${id}`)
+      } = yield fetcher(`/song/url?id=${self.song.id}`)
       self.songUrl = song.url || ''
+    }),
+    fetchLyrics: flow(function* () {
+      const response: LyricResponseSnapshotIn = yield fetcher(
+        `/lyric?id=${self.song.id}`,
+      )
+      const result = parseLyric(response)
+
+      self.lyricStore = LyricStore.create({
+        ...result,
+        raw: response,
+      })
     }),
   }))
   .volatile(() => ({
@@ -91,6 +105,9 @@ export const Track = types
     afterCreate() {
       if (!self.songUrl) {
         self.fetchSongUrl()
+      }
+      if (!self.lyricStore) {
+        self.fetchLyrics()
       }
     },
     beforeDestroy() {
