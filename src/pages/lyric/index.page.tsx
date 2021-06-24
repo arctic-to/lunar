@@ -41,13 +41,6 @@ export const OsdLyric: React.VFC = observer(() => {
   }, [player])
 
   useEffect(() => {
-    if (!currentTrack) return
-    currentTrack.playing
-      ? currentTrack.currentTimeObserver(100)()
-      : currentTrack.unobserveCurrentTime()
-  }, [currentTrack, currentTrack?.playing])
-
-  useEffect(() => {
     const win = remote.getCurrentWindow()
     setInterval(() => {
       const bounds = win.getBounds()

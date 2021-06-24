@@ -46,14 +46,7 @@ export const PlayPanel: React.FC = observer(() => {
   useEffect(() => {
     return onAction(player, (action) => {
       if (action.name.startsWith(__LYRIC__PROCESS__)) return
-      /**
-       * Variables store time (like `currentTime`) should be calculated by other
-       * variables, instead of sync them.
-       */
-      const excludedActions = ['_setCurrentTime', 'setTimeoutID']
-      if (!excludedActions.includes(action.name)) {
-        ipcRenderer.send('window:main:action', action)
-      }
+      ipcRenderer.send('window:main:action', action)
     })
   }, [player])
 
