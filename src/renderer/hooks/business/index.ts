@@ -1,2 +1,2 @@
-export * from './usePlayNext'
-export * from './useShufflePlay'
+export * from './useNextTrackIndex'
+export * from './useShufflePlayIndex'

@@ -12,8 +12,6 @@ import {
   RiSkipForwardFill,
 } from 'react-icons/ri'
 
-import { usePlayNext } from '@/hooks'
-import { Renderer } from '@/ipc'
 import { OrderEnum, usePlayer } from '@/models'
 import { withDivider } from '@/utils'
 
@@ -29,12 +27,12 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
     currTrack,
     __LYRIC__PROCESS__Pause__,
     __LYRIC__PROCESS__PlayPrev__,
+    __LYRIC__PROCESS__PlayNext__,
     __LYRIC__PROCESS__Play__,
     __LYRIC__PROCESS__RepeatOne__,
     __LYRIC__PROCESS__Repeat__,
     __LYRIC__PROCESS__Shuffle__,
   } = usePlayer()
-  const playNext = usePlayNext(Renderer.Lyric)
 
   const buttonGroups = useMemo(
     () => [
@@ -45,7 +43,7 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
         ) : (
           <RiPlayFill onClick={__LYRIC__PROCESS__Play__} />
         ),
-        <RiSkipForwardFill onClick={playNext} />,
+        <RiSkipForwardFill onClick={__LYRIC__PROCESS__PlayNext__} />,
       ],
       [
         <RiRepeat2Line
@@ -64,19 +62,19 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
       ['文', 'あ', 'ɪ'].map((t) => (
         <div className={styles.text_button}>{t}</div>
       )),
-      [<IoClose onClick={lyric.__LYRIC__PROCESS__TOGGLE__} />],
+      [<IoClose onClick={lyric.__LYRIC__PROCESS__Toggle__} />],
     ],
     [
       __LYRIC__PROCESS__Pause__,
+      __LYRIC__PROCESS__PlayNext__,
       __LYRIC__PROCESS__PlayPrev__,
       __LYRIC__PROCESS__Play__,
       __LYRIC__PROCESS__RepeatOne__,
       __LYRIC__PROCESS__Repeat__,
       __LYRIC__PROCESS__Shuffle__,
       currTrack?.playing,
-      lyric.__LYRIC__PROCESS__TOGGLE__,
+      lyric.__LYRIC__PROCESS__Toggle__,
       order,
-      playNext,
     ],
   )
 

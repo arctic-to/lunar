@@ -27,7 +27,7 @@ export const Lyric = types
   }))
   // actions on osd lyric process
   .actions((self) => ({
-    __LYRIC__PROCESS__TOGGLE__: self.toggle,
+    __LYRIC__PROCESS__Toggle__: self.toggle,
   }))
 
 export const lyric = Lyric.create()

@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
+import { getSnapshot } from 'mobx-state-tree'
 import { useCallback, useEffect, useRef } from 'react'
 
-import { useShufflePlay } from '@/hooks'
+import { useNextTrackIndex } from '@/hooks'
 import { OrderEnum, useCurrentTrack, usePlayer } from '@/models'
 
 import Buttons from './Buttons'
@@ -10,26 +11,30 @@ import ProgressSlider from './ProgressSlider'
 
 export const CentralController: React.VFC = observer(() => {
   const ref = useRef<HTMLAudioElement>(null)
-  const { order, playNextSibling, playNth, currTrackIndex, volume } =
-    usePlayer()
+  const { order, playNext, replay, volume, setNextTrack, queue } = usePlayer()
   const currentTrack = useCurrentTrack()
-  const shufflePlay = useShufflePlay()
+  const nextTrackIndex = useNextTrackIndex()
 
   const handleEnded = useCallback(() => {
     switch (order) {
-      case OrderEnum.Repeat: {
-        playNextSibling()
-        break
-      }
+      case OrderEnum.Repeat:
       case OrderEnum.Shuffle: {
-        shufflePlay()
+        playNext()
         break
       }
       case OrderEnum.RepeatOne: {
-        playNth(currTrackIndex)
+        replay()
       }
     }
-  }, [currTrackIndex, order, playNextSibling, playNth, shufflePlay])
+  }, [order, playNext, replay])
+
+  useEffect(() => {
+    if (currentTrack?.song) {
+      setNextTrack({
+        song: getSnapshot(queue.modGet(nextTrackIndex)),
+      })
+    }
+  }, [currentTrack?.song, nextTrackIndex, queue, setNextTrack])
 
   useEffect(() => {
     if (currentTrack && ref.current) {

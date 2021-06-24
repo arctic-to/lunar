@@ -1,5 +1,7 @@
 import { SnapshotIn, types } from 'mobx-state-tree'
 
+import { mod } from '@/utils'
+
 import { Song } from './Song'
 
 export const Queue = types
@@ -9,6 +11,11 @@ export const Queue = types
   .views((self) => ({
     get size() {
       return self.songs.length
+    },
+  }))
+  .views((self) => ({
+    modGet(n: number) {
+      return self.songs[mod(n, self.size)]
     },
   }))
 

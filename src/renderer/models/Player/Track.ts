@@ -89,7 +89,9 @@ export const Track = types
   // hooks
   .actions((self) => ({
     afterCreate() {
-      self.fetchSongUrl()
+      if (!self.songUrl) {
+        self.fetchSongUrl()
+      }
     },
     beforeDestroy() {
       self.pause()

@@ -22,6 +22,7 @@ export enum OrderEnum {
 export const Player = types
   .model('Player', {
     tracks: types.array(Track),
+    nextTracks: types.array(Track),
     queue: Queue,
     history: History,
     volume: 0.5, // [0, 1]
@@ -87,6 +88,11 @@ export const Player = types
       self.tracks.replace([cast(trackSnapshot)])
       self.history.push(trackSnapshot.song)
     },
+    setNextTrack(trackSnapshot: TrackSnapshotIn) {
+      // Create instance manually, otherwise mst will creat it
+      // automatically but lazily.
+      self.nextTracks.replace([Track.create(trackSnapshot)])
+    },
   }))
   .actions((self) => ({
     tryReplaceTrack(
@@ -109,19 +115,9 @@ export const Player = types
       self.currTrack?.pause()
     },
     playNth(nth: number) {
-      const mod = (n: number, m: number) => ((n % m) + m) % m
-      const index = mod(nth, self.queue.size)
       self.replaceTrack({
-        song: getSnapshot(self.queue.songs[index]),
+        song: getSnapshot(self.queue.modGet(nth)),
       })
-    },
-  }))
-  .actions((self) => ({
-    playPrevSibling() {
-      self.playNth(self.currTrackIndex - 1)
-    },
-    playNextSibling() {
-      self.playNth(self.currTrackIndex + 1)
     },
   }))
   .actions((self) => ({
@@ -129,7 +125,7 @@ export const Player = types
       switch (self.order) {
         case OrderEnum.RepeatOne:
         case OrderEnum.Repeat: {
-          self.playPrevSibling()
+          self.playNth(self.currTrackIndex - 1)
           break
         }
         case OrderEnum.Shuffle: {
@@ -138,6 +134,12 @@ export const Player = types
           })
         }
       }
+    },
+    playNext() {
+      self.replaceTrack({ ...getSnapshot(self.nextTracks[0]) })
+    },
+    replay() {
+      self.playNth(self.currTrackIndex)
     },
   }))
   .actions((self) => ({
@@ -156,8 +158,8 @@ export const Player = types
     __LYRIC__PROCESS__Play__: self.play,
     __LYRIC__PROCESS__Pause__: self.pause,
     __LYRIC__PROCESS__PlayNth__: self.playNth,
-    __LYRIC__PROCESS__PlayNextSibling__: self.playNextSibling,
     __LYRIC__PROCESS__PlayPrev__: self.playPrev,
+    __LYRIC__PROCESS__PlayNext__: self.playNext,
     __LYRIC__PROCESS__Repeat__: self.repeat,
     __LYRIC__PROCESS__Shuffle__: self.shuffle,
     __LYRIC__PROCESS__RepeatOne__: self.repeatOne,

@@ -12,7 +12,6 @@ import {
 } from 'react-icons/ri'
 
 import { Like } from '@/components'
-import { usePlayNext } from '@/hooks'
 import { IconLyric } from '@/icons'
 import { OrderEnum, useCurrentTrack, usePlayer } from '@/models'
 
@@ -20,9 +19,17 @@ import styles from './Buttons.module.scss'
 
 export const Buttons: React.VFC = observer(() => {
   const currentTrack = useCurrentTrack()
-  const playNext = usePlayNext()
-  const { play, pause, playPrev, order, repeat, shuffle, repeatOne, lyric } =
-    usePlayer()
+  const {
+    play,
+    pause,
+    playPrev,
+    playNext,
+    order,
+    repeat,
+    shuffle,
+    repeatOne,
+    lyric,
+  } = usePlayer()
 
   return (
     <div className={styles.container}>
