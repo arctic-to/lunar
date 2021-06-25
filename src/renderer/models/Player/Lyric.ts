@@ -16,6 +16,8 @@ export const Lyric = types
       width: 1200,
       height: 200,
     }),
+    translation: true,
+    phonetic: false,
   })
   .actions((self) => ({
     toggle() {
@@ -24,10 +26,18 @@ export const Lyric = types
     setBounds(bounds: RectangleSnapshotOut) {
       self.bounds = bounds
     },
+    toggleTranlation() {
+      self.translation = !self.translation
+    },
+    togglePhonetic() {
+      self.phonetic = !self.phonetic
+    },
   }))
   // actions on osd lyric process
   .actions((self) => ({
     __LYRIC__PROCESS__Toggle__: self.toggle,
+    __LYRIC__PROCESS__ToggleTranslation__: self.toggleTranlation,
+    __LYRIC__PROCESS__TogglePhonetic__: self.togglePhonetic,
   }))
 
 export const lyric = Lyric.create()

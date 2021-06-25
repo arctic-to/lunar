@@ -23,7 +23,7 @@ export const Main: React.FC = observer(() => {
     <div className={styles.container}>
       {info && <span className={styles.info}>{info}</span>}
       {parsedLyrics && (
-        <Lyric parsedLyric={parsedLyrics} noTimestamp={noTimestamp!} />
+        <Lyric parsedLyrics={parsedLyrics} noTimestamp={noTimestamp!} />
       )}
     </div>
   )

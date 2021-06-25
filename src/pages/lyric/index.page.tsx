@@ -2,16 +2,24 @@ import c from 'classnames'
 import { ipcRenderer, remote } from 'electron'
 import { inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { applyAction, ISerializedActionCall, onAction } from 'mobx-state-tree'
+import {
+  applyAction,
+  applyPatch,
+  IJsonPatch,
+  ISerializedActionCall,
+  onAction,
+} from 'mobx-state-tree'
 import React, { useEffect, useState } from 'react'
 
-import { __LYRIC__PROCESS__ } from '@/ipc'
+import { Renderer, __LYRIC__PROCESS__ } from '@/ipc'
 import { usePlayer } from '@/models'
 
 import Fallback from './Fallback'
 import Header from './Header'
 import Lyric from './Lyric'
 import styles from './OsdLyric.module.scss'
+
+process.env.RENDERER = Renderer.Lyric
 
 export const OsdLyric: React.VFC = observer(() => {
   const [hovering, setHovering] = useState(false)
@@ -30,6 +38,9 @@ export const OsdLyric: React.VFC = observer(() => {
   }, [])
 
   useEffect(() => {
+    ipcRenderer.on('window:main:patch', (event, patch: IJsonPatch) => {
+      applyPatch(player, patch)
+    })
     ipcRenderer.on(
       'window:main:action',
       (event, action: ISerializedActionCall) => {
@@ -63,7 +74,7 @@ export const OsdLyric: React.VFC = observer(() => {
       <Header hidden={!hovering} />
       <div className={styles.main}>
         {canRenderLyric ? (
-          <Lyric parsedLyric={parsedLyrics!} />
+          <Lyric parsedLyrics={parsedLyrics!} />
         ) : (
           <Fallback song={song} />
         )}

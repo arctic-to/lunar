@@ -1,7 +1,16 @@
-import { types, flow, SnapshotIn, Instance } from 'mobx-state-tree'
+import {
+  types,
+  flow,
+  SnapshotIn,
+  Instance,
+  cast,
+  isAlive,
+} from 'mobx-state-tree'
+import { AsyncReturnType } from 'type-fest'
 import { SECOND } from 'unit-of-time'
 
 import { fetcher } from '@/data/netease'
+import { Renderer } from '@/ipc'
 import { parseLyric } from '@/utils'
 
 import { Song } from '../Song'
@@ -55,18 +64,26 @@ export const Track = types
       const {
         data: [song],
       } = yield fetcher(`/song/url?id=${self.song.id}`)
-      self.songUrl = song.url || ''
+
+      if (isAlive(self)) {
+        self.songUrl = song.url || ''
+      }
     }),
     fetchLyrics: flow(function* () {
       const response: LyricResponseSnapshotIn = yield fetcher(
         `/lyric?id=${self.song.id}`,
       )
-      const result = parseLyric(response)
+      const result: AsyncReturnType<typeof parseLyric> = yield parseLyric(
+        response,
+      )
 
-      self.lyricStore = LyricStore.create({
-        ...result,
-        raw: response,
-      })
+      // Maybe the node has been destroyed if we switch songs in a flash.
+      if (isAlive(self)) {
+        self.lyricStore = cast({
+          ...result,
+          raw: response,
+        })
+      }
     }),
   }))
   .volatile(() => ({
@@ -103,6 +120,8 @@ export const Track = types
   // hooks
   .actions((self) => ({
     afterCreate() {
+      if (process.env.RENDERER === Renderer.Lyric) return
+
       if (!self.songUrl) {
         self.fetchSongUrl()
       }

@@ -40,6 +40,10 @@ ipcMain.once('window:lyric:create', (_, playerSnapshot) => {
   ipcMain.on('window:lyric:show', () => lyricWin?.show())
   ipcMain.on('window:lyric:hide', () => lyricWin?.hide())
 
+  ipcMain.on('window:main:patch', (_, patch) => {
+    lyricWin?.webContents.send('window:main:patch', patch)
+  })
+
   ipcMain.on('window:main:action', (_, action) => {
     lyricWin?.webContents.send('window:main:action', action)
   })

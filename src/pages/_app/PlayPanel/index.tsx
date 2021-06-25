@@ -5,6 +5,7 @@ import {
   getSnapshot,
   applyAction,
   ISerializedActionCall,
+  onPatch,
 } from 'mobx-state-tree'
 import { useEffect } from 'react'
 
@@ -42,6 +43,18 @@ export const PlayPanel: React.FC = observer(() => {
     ipcRenderer.on('window:lyric:resize', updateBounds)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    return onPatch(player, (patch) => {
+      const acceptableProp = ['songUrl', 'lyricStore']
+      const isAcceptable = acceptableProp.some((propName) =>
+        patch.path.endsWith(propName),
+      )
+      if (isAcceptable) {
+        ipcRenderer.send('window:main:patch', patch)
+      }
+    })
+  }, [player])
 
   useEffect(() => {
     return onAction(player, (action) => {

@@ -1,23 +1,29 @@
 import c from 'classnames'
-import { inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { IoMdLocate } from 'react-icons/io'
 
+import { useLyricAnimation } from '@/hooks'
 import { useCurrentTrack } from '@/models'
 import { ParsedLyric } from '@/utils'
 
 import styles from './Lyric.module.scss'
 
 interface LyricProps {
-  parsedLyric: ParsedLyric
+  parsedLyrics: ParsedLyric[]
   noTimestamp: boolean
 }
 
 export const Lyric: React.FC<LyricProps> = observer(
-  ({ parsedLyric, noTimestamp }) => {
+  ({ parsedLyrics, noTimestamp }) => {
     const ref = useRef<HTMLDivElement>(null)
-    const { currentTime, setCurrentTime, play } = useCurrentTrack() ?? {}
+    const { setCurrentTime, play } = useCurrentTrack() ?? {}
+
+    useLyricAnimation({
+      containerRef: ref,
+      parsedLyrics,
+      currentLyricStyle: styles.current,
+    })
 
     const jump = useCallback(
       (begin: number) => () => {
@@ -31,52 +37,19 @@ export const Lyric: React.FC<LyricProps> = observer(
       navigator.clipboard.writeText(e.currentTarget.textContent ?? '')
     }, [])
 
-    useEffect(() => {
-      const currSentenceIndex = parsedLyric.findIndex((sentence) =>
-        inRange(
-          currentTime ?? 0,
-          sentence.begin,
-          sentence.begin + sentence.duration,
-        ),
-      )
-
-      if (currSentenceIndex === undefined) return
-      if (!ref.current) return
-
-      const currSentenceElement = ref.current.children[currSentenceIndex]
-
-      if (currSentenceElement) {
-        const isHighlight = currSentenceElement.classList.contains(
-          styles.current,
-        )
-        if (isHighlight) return
-
-        Array.from(ref.current.children).forEach((child) =>
-          child.classList.remove(styles.current),
-        )
-        currSentenceElement.classList.add(styles.current)
-        window.requestAnimationFrame(() => {
-          currSentenceElement.scrollIntoView({
-            block: 'center',
-            behavior: 'smooth',
-          })
-        })
-      }
-    }, [currentTime, parsedLyric])
-
     return (
       <div className={styles.container} ref={ref}>
-        {parsedLyric.map((sentence, index) => (
+        {parsedLyrics.map((lyric, index) => (
           <div key={index} className={c(styles.lyric)}>
             <div className={styles.row_container}>
               <span className={styles.row} onClick={copy}>
-                {sentence.content}
+                {lyric.content}
               </span>
-              {!noTimestamp && <IoMdLocate onClick={jump(sentence.begin)} />}
+              {!noTimestamp && <IoMdLocate onClick={jump(lyric.begin)} />}
             </div>
-            {sentence.translation && (
+            {lyric.translation && (
               <span className={styles.translation} onClick={copy}>
-                {sentence.translation}
+                {lyric.translation}
               </span>
             )}
           </div>

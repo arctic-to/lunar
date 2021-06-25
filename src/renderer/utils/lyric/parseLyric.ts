@@ -1,4 +1,7 @@
-import { parseLyricString } from './parseLyricString'
+import { AsyncReturnType } from 'type-fest'
+
+import { phoneticizeLyric } from './phoneticizeLyric'
+import { segmentLyric } from './segmentLyric'
 
 type LyricResponse = {
   lrc?:
@@ -13,14 +16,11 @@ type LyricResponse = {
     | undefined
 }
 
-export type ParsedLyric = {
-  translation: string | undefined
-  duration: number
-  begin: number
-  content: string | undefined
-}[]
+export type ParsedLyric = NonNullable<
+  AsyncReturnType<typeof parseLyric>['parsedLyrics']
+>[0]
 
-export function parseLyric({ lrc, tlyric }: LyricResponse) {
+export async function parseLyric({ lrc, tlyric }: LyricResponse) {
   if (!(lrc && tlyric)) {
     return {
       parsedLyrics: null,
@@ -28,15 +28,15 @@ export function parseLyric({ lrc, tlyric }: LyricResponse) {
     }
   }
 
-  const lyricObj = parseLyricString(lrc.lyric)
-  const tlyricObj = parseLyricString(tlyric.lyric)
+  const lyrics = await phoneticizeLyric(segmentLyric(lrc.lyric))
+  const tlyrics = segmentLyric(tlyric.lyric)
 
-  const parsedLyrics = lyricObj.map((sentence) => {
-    const translation = tlyricObj.find(
-      (tSentence) => tSentence.begin === sentence.begin,
+  const parsedLyrics = lyrics.map((lyric) => {
+    const translation = tlyrics.find(
+      (tlyric) => tlyric.begin === lyric.begin,
     )?.content
     return {
-      ...sentence,
+      ...lyric,
       translation,
     }
   })

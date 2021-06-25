@@ -39,6 +39,8 @@
     "electron-debug": "^3.2.0",
     "electron-is-dev": "^2.0.0",
     "electron-serve": "^1.1.0",
+    "kuroshiro": "^1.2.0",
+    "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "lodash": "^4.17.20",
     "mobx": "6.0.4",
     "mobx-react-lite": "3.1.6",
@@ -52,6 +54,8 @@
     "react-use": "^15.3.4",
     "sass": "^1.30.0",
     "swr": "^0.3.11",
+    "ts-toolbelt": "^9.6.0",
+    "type-fest": "^1.2.1",
     "unit-of-time": "^0.1.2",
     "yup": "^0.32.8"
   },

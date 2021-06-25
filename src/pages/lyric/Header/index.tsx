@@ -59,9 +59,24 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
           onClick={__LYRIC__PROCESS__RepeatOne__}
         />,
       ],
-      ['文', 'あ', 'ɪ'].map((t) => (
-        <div className={styles.text_button}>{t}</div>
-      )),
+      [
+        <div
+          className={c(styles.text_button, {
+            [styles.active]: lyric.translation,
+          })}
+          onClick={lyric.__LYRIC__PROCESS__ToggleTranslation__}
+        >
+          译
+        </div>,
+        <div
+          className={c(styles.text_button, {
+            [styles.active]: lyric.phonetic,
+          })}
+          onClick={lyric.__LYRIC__PROCESS__TogglePhonetic__}
+        >
+          ɪ
+        </div>,
+      ],
       [<IoClose onClick={lyric.__LYRIC__PROCESS__Toggle__} />],
     ],
     [
@@ -73,7 +88,11 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
       __LYRIC__PROCESS__Repeat__,
       __LYRIC__PROCESS__Shuffle__,
       currTrack?.playing,
+      lyric.__LYRIC__PROCESS__TogglePhonetic__,
+      lyric.__LYRIC__PROCESS__ToggleTranslation__,
       lyric.__LYRIC__PROCESS__Toggle__,
+      lyric.phonetic,
+      lyric.translation,
       order,
     ],
   )
