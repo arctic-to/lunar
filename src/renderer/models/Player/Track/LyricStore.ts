@@ -29,6 +29,7 @@ const ParsedLyric = types.model({
   phonetic: types.maybe(types.string),
   duration: types.number,
   begin: types.number,
+  timestamp: types.maybe(types.string),
   content: types.string,
 })
 

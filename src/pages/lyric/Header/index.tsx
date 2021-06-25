@@ -12,15 +12,17 @@ import {
   RiSkipForwardFill,
 } from 'react-icons/ri'
 
+import IconOverlay from '@/icons/Overlay'
+import IconTranslate from '@/icons/Translate'
 import { OrderEnum, usePlayer } from '@/models'
 import { withDivider } from '@/utils'
 
 import styles from './Header.module.scss'
 
 interface HeaderProps {
-  hidden: boolean
+  hovering: boolean
 }
-export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
+export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
   const {
     order,
     lyric,
@@ -60,14 +62,12 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
         />,
       ],
       [
-        <div
+        <IconTranslate
           className={c(styles.text_button, {
             [styles.active]: lyric.translation,
           })}
           onClick={lyric.__LYRIC__PROCESS__ToggleTranslation__}
-        >
-          译
-        </div>,
+        />,
         <div
           className={c(styles.text_button, {
             [styles.active]: lyric.phonetic,
@@ -77,7 +77,15 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
           ɪ
         </div>,
       ],
-      [<IoClose onClick={lyric.__LYRIC__PROCESS__Toggle__} />],
+      [
+        <IconOverlay
+          className={c({
+            [styles.active]: lyric.overlay,
+          })}
+          onClick={lyric.__LYRIC__PROCESS__ToggleOverlay__}
+        />,
+        <IoClose onClick={lyric.__LYRIC__PROCESS__Toggle__} />,
+      ],
     ],
     [
       __LYRIC__PROCESS__Pause__,
@@ -88,19 +96,23 @@ export const Header: React.FC<HeaderProps> = observer(({ hidden }) => {
       __LYRIC__PROCESS__Repeat__,
       __LYRIC__PROCESS__Shuffle__,
       currTrack?.playing,
+      lyric.__LYRIC__PROCESS__ToggleOverlay__,
       lyric.__LYRIC__PROCESS__TogglePhonetic__,
       lyric.__LYRIC__PROCESS__ToggleTranslation__,
       lyric.__LYRIC__PROCESS__Toggle__,
+      lyric.overlay,
       lyric.phonetic,
       lyric.translation,
       order,
     ],
   )
 
+  const visible = lyric.overlay || hovering
+
   return (
     <div
       className={styles.container}
-      style={{ visibility: hidden ? 'hidden' : undefined }}
+      style={{ visibility: visible ? undefined : 'hidden' }}
     >
       {withDivider(
         buttonGroups.map((buttonGroup, index) => (

@@ -61,17 +61,16 @@ export const OsdLyric: React.VFC = observer(() => {
     })
   }, [])
 
-  useEffect(() => {
-    window.document.body.className = c(styles.body, {
-      [styles.hover]: hovering,
-    })
-  }, [hovering])
-
   const canRenderLyric = parsedLyrics && !noTimestamp
+  const displayOverlay = player.lyric.overlay || hovering
 
   return (
-    <div className={styles.container}>
-      <Header hidden={!hovering} />
+    <div
+      className={c(styles.body, styles.container, {
+        [styles.overlay]: displayOverlay,
+      })}
+    >
+      <Header hovering={hovering} />
       <div className={styles.main}>
         {canRenderLyric ? (
           <Lyric parsedLyrics={parsedLyrics!} />
