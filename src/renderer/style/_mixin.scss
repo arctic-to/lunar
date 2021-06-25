@@ -1,0 +1,66 @@
+@use 'color';
+
+@mixin draggable {
+  -webkit-app-region: drag;
+}
+
+@mixin self-draggable {
+  -webkit-app-region: drag;
+
+  > * {
+    -webkit-app-region: no-drag;
+  }
+}
+
+@mixin central {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@mixin ellipsis($n: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if $n == 1 {
+    max-width: 100%;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $n;
+    -webkit-box-orient: vertical;
+  }
+}
+
+@mixin scrollbar($width) {
+  &::-webkit-scrollbar {
+    width: $width * 1px;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: color.$scrollbar;
+    &:hover {
+      background-color: color.$scrollbar--hover;
+    }
+  }
+}
+
+@mixin shadow {
+  box-shadow: 0 8px 16px color.$overlay1;
+}
+
+// https://github.com/selfishprimate/gerillass/blob/master/scss/library/_center.scss
+@mixin center-container($axis: 'both') {
+  display: flex;
+  @if $axis == 'both' or $axis == 'v' {
+    align-items: center;
+  }
+  @if $axis == 'both' or $axis == 'h' {
+    justify-content: center;
+  }
+}
+
+// https://stackoverflow.com/a/47511171/13151903
+@mixin stroke($color: #000, $size: 1px) {
+  text-shadow: -#{$size} -#{$size} 0 $color, 0 -#{$size} 0 $color,
+    #{$size} -#{$size} 0 $color, #{$size} 0 0 $color, #{$size} #{$size} 0 $color,
+    0 #{$size} 0 $color, -#{$size} #{$size} 0 $color, -#{$size} 0 0 $color;
+}

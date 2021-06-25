@@ -1,0 +1,9 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  font-size: 32px;
+  color: color.$grey9;
+  @include mixin.stroke(color.$grey8, 0.5px);
+  text-align: center;
+}

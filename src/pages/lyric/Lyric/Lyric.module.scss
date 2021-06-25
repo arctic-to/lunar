@@ -1,0 +1,44 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+@mixin lyric-text($color1, $color2, $stroke-color) {
+  font-weight: bold;
+  -webkit-text-stroke: 0.5px $stroke-color;
+  background: -webkit-linear-gradient(
+    $color1,
+    $color2 60%,
+    $color1 80%,
+    $color2
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container {
+  @include mixin.center-container(v);
+  flex-direction: column;
+}
+
+.lyric_container {
+  padding: 8px 16px;
+  @include mixin.center-container(v);
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.lyric {
+  font-size: 36px;
+}
+
+.translation {
+  font-size: 28px;
+}
+
+.lyric,
+.translation {
+  @include lyric-text(#fff, #ddd, #333);
+  .current & {
+    @include lyric-text(#ffefef, #ffa0a0, #c70000);
+  }
+}

@@ -1,0 +1,21 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  padding: 8px;
+
+  /** draggable element and all mouse event (include :hover) conflict */
+  &.overlay {
+    background-color: color.$overlay1;
+  }
+}
+
+.main {
+  flex: 1;
+  overflow: hidden;
+  @include mixin.draggable;
+}

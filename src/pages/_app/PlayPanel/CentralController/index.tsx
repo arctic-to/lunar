@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { useEffect, useRef } from 'react'
+import { getSnapshot } from 'mobx-state-tree'
+import { useCallback, useEffect, useRef } from 'react'
 
-import { useCurrentTrack, usePlayer } from '@/models'
+import { useNextTrackIndex } from '@/hooks'
+import { OrderEnum, useCurrentTrack, usePlayer } from '@/models'
 
 import Buttons from './Buttons'
 import styles from './CentralController.module.scss'
@@ -9,17 +11,39 @@ import ProgressSlider from './ProgressSlider'
 
 export const CentralController: React.VFC = observer(() => {
   const ref = useRef<HTMLAudioElement>(null)
-  const player = usePlayer()
+  const { order, playNext, replay, volume, setNextTrack, queue } = usePlayer()
   const currentTrack = useCurrentTrack()
+  const nextTrackIndex = useNextTrackIndex()
+
+  const handleEnded = useCallback(() => {
+    switch (order) {
+      case OrderEnum.Repeat:
+      case OrderEnum.Shuffle: {
+        playNext()
+        break
+      }
+      case OrderEnum.RepeatOne: {
+        replay()
+      }
+    }
+  }, [order, playNext, replay])
+
+  useEffect(() => {
+    if (currentTrack?.song) {
+      setNextTrack({
+        song: getSnapshot(queue.modGet(nextTrackIndex)),
+      })
+    }
+  }, [currentTrack?.song, nextTrackIndex, queue, setNextTrack])
 
   useEffect(() => {
     if (currentTrack && ref.current) {
-      ref.current.addEventListener('ended', player.handleEnded)
       // Should replace previous event handler
+      ref.current.onended = handleEnded
       ref.current.onplay = currentTrack.currentTimeObserver()
       ref.current.onpause = currentTrack.unobserveCurrentTime
     }
-  }, [currentTrack, player.handleEnded])
+  }, [currentTrack, handleEnded])
 
   useEffect(() => {
     /** `currentTime` can be set when <audio> has non-empty `src`(currentTrack.songUrl). */
@@ -34,9 +58,9 @@ export const CentralController: React.VFC = observer(() => {
 
   useEffect(() => {
     if (currentTrack && ref.current) {
-      ref.current.volume = player.volume * currentTrack.volume
+      ref.current.volume = volume * currentTrack.volume
     }
-  }, [currentTrack, currentTrack?.volume, player.volume])
+  }, [currentTrack, currentTrack?.volume, volume])
 
   useEffect(() => {
     if (!(currentTrack && currentTrack.songUrl && ref.current)) return
