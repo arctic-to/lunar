@@ -5,6 +5,7 @@ import { MouseEventHandler, useCallback } from 'react'
 import { Artists } from '@/components'
 import { useLiked } from '@/hooks'
 import { usePlayer, AggregatedSong as AggregatedSongType } from '@/models'
+import { isSongAvailable } from '@/stores'
 
 import prefixStyles from './AggregatedSong.module.scss'
 import styles from './Song.module.scss'
@@ -21,18 +22,15 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
     const player = usePlayer()
     const [historySong] = aggregatedSong.songs
     const liked = useLiked(historySong.id)
-    const unavailable = historySong.noCopyrightRcmd
+    const available = isSongAvailable(historySong)
     const count = aggregatedSong.songs.length
 
     const handleDoubleClick = useCallback(() => {
-      if (playing) return
-      if (unavailable) return
-
       player.insertOneToQueue(aggregatedSong.songSnapshot)
       player.tryReplaceTrack({
         song: aggregatedSong.songSnapshot,
       })
-    }, [playing, unavailable, player, aggregatedSong.songSnapshot])
+    }, [player, aggregatedSong.songSnapshot])
 
     return (
       <div
@@ -40,7 +38,7 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
           [styles.playing]: playing,
           [styles.active]: active,
           [styles.liked]: liked,
-          [styles.unavailable]: unavailable,
+          [styles.unavailable]: !available,
         })}
         onClick={onClick}
         onDoubleClick={handleDoubleClick}

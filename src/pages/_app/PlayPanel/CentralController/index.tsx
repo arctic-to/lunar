@@ -29,7 +29,7 @@ export const CentralController: React.VFC = observer(() => {
   }, [order, playNext, replay])
 
   useEffect(() => {
-    if (currentTrack?.song) {
+    if (currentTrack?.song && queue.size) {
       setNextTrack({
         song: getSnapshot(queue.modGet(nextTrackIndex)),
       })

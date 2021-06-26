@@ -34,17 +34,11 @@ export const Daily: React.VFC = observer(() => {
     [data, date],
   )
   const songDetail = useSongDetail(dailySongIds)
-  const specificDailySongs = useMemo(
-    () => songDetail.data?.songs,
-    [songDetail.data?.songs],
-  )
+  const specificDailySongs = songDetail.data?.songs
 
   const latestDailySongs = useRecommedSongs().data?.data.dailySongs
 
-  const dailySongs = useMemo(
-    () => (isLatest ? latestDailySongs : specificDailySongs),
-    [isLatest, latestDailySongs, specificDailySongs],
-  )
+  const dailySongs = isLatest ? latestDailySongs : specificDailySongs
 
   const updatePlayQueue = useCallback(() => {
     player.replaceQueue({

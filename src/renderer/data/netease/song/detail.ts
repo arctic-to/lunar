@@ -12,7 +12,7 @@ const privilegeStore = getMst(PrivilegeStore)
 
 export function useSongDetail(songIds: Maybe<number[]>) {
   const { data, error } = useSWR<SongDetailResponseSnapshot>(
-    songIds ? `/song/detail?ids=${songIds.join()}` : null,
+    songIds?.length ? `/song/detail?ids=${songIds.join()}` : null,
     fetcher,
   )
 

@@ -11,6 +11,7 @@ import { SECOND } from 'unit-of-time'
 
 import { fetcher } from '@/data/netease/fetcher'
 import { Renderer } from '@/ipc'
+import { getUnofficialSongUrl } from '@/stores/Privilege.store'
 import { parseLyric } from '@/utils'
 
 import { Song } from '../Song'
@@ -123,7 +124,12 @@ export const Track = types
       if (process.env.RENDERER === Renderer.Lyric) return
 
       if (!self.songUrl) {
-        self.fetchSongUrl()
+        const unofficialSongUrl = getUnofficialSongUrl(self.song)
+        if (unofficialSongUrl) {
+          self.songUrl = unofficialSongUrl
+        } else {
+          self.fetchSongUrl()
+        }
       }
       if (!self.lyricStore) {
         self.fetchLyrics()
