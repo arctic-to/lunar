@@ -1,14 +1,15 @@
 import c from 'classnames'
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { HiLockClosed, HiLockOpen } from 'react-icons/hi'
 
 import Album from '@/components/business/Album'
 import Artists from '@/components/business/Artists'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
 import { SongSnapshotIn, usePlayer } from '@/models'
-import { isSongAvailable } from '@/stores'
+import { getSongSourceKind, SongSourceKind } from '@/stores'
 
 import styles from './SongBase.module.scss'
 
@@ -18,17 +19,27 @@ export type SongBaseProps = {
 }
 export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
   const { isInTrack } = usePlayer()
-  const available = isSongAvailable(song)
+  const songSourceKind = getSongSourceKind(song)
+  const unavailable = songSourceKind === SongSourceKind.None
+
+  const prefixIconMap = useMemo(
+    () => ({
+      [SongSourceKind.Netease]: <Like songId={song.id} />,
+      [SongSourceKind.Unofficial]: <HiLockOpen className={styles.unlock} />,
+      [SongSourceKind.None]: <HiLockClosed className={styles.lock} />,
+    }),
+    [song.id],
+  )
 
   return (
     <div
       className={c(styles.container, {
         [styles.in_track]: isInTrack(song),
-        [styles.unavailable]: !available,
+        [styles.unavailable]: unavailable,
       })}
     >
       <span className={styles.index}>{index + 1}</span>
-      <Like songId={song.id} />
+      {prefixIconMap[songSourceKind]}
       <span className={styles.name}>{song.name}</span>
       <Artists className={styles.artist} song={song} />
       <Album className={styles.album} album={song.al} />

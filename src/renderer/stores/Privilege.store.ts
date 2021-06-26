@@ -6,10 +6,6 @@ import { SongSnapshotIn } from '@/models/Player/Song'
 
 import { getMst } from './getMst'
 
-function isSongAvailableOfficially(privilege?: PrivilegeSnapshotIn) {
-  return (privilege?.st ?? -1) >= 0
-}
-
 type UnofficialSongSourceSnapshot = SnapshotOut<typeof UnofficialSongSource>
 const UnofficialSongSource = types.model({
   size: types.number,
@@ -38,10 +34,9 @@ export const PrivilegeStore = types
       songs.forEach((song, index) => {
         if (self.songPrivilegeMap.has(String(song.id))) return
 
-        const privilege = privilges[index]
-        self.songPrivilegeMap.set(String(song.id), privilege)
+        self.songPrivilegeMap.set(String(song.id), privilges[index])
 
-        if (!isSongAvailableOfficially(privilege)) {
+        if (!isSongAvailableOfficially(song)) {
           match(song.id, ['qq', 'kuwo', 'migu'], {
             ...song,
             album: song.al,
@@ -56,10 +51,30 @@ export const PrivilegeStore = types
 
 const { songPrivilegeMap, unofficialSongSourceMap } = getMst(PrivilegeStore)
 
-export function isSongAvailable(song: SongSnapshotIn) {
+function isSongAvailableOfficially(song: SongSnapshotIn) {
   const privilege = songPrivilegeMap.get(String(song.id))
-  const unofficialSongUrl = unofficialSongSourceMap.get(String(song.id))
-  return isSongAvailableOfficially(privilege) || unofficialSongUrl
+  return (privilege?.st ?? -1) >= 0
+}
+
+export enum SongSourceKind {
+  Netease,
+  Unofficial,
+  None,
+}
+
+export function getSongSourceKind(song: SongSnapshotIn) {
+  switch (true) {
+    case isSongAvailableOfficially(song):
+      return SongSourceKind.Netease
+    case unofficialSongSourceMap.has(String(song.id)):
+      return SongSourceKind.Unofficial
+    default:
+      return SongSourceKind.None
+  }
+}
+
+export function isSongAvailable(song: SongSnapshotIn) {
+  return getSongSourceKind(song) !== SongSourceKind.None
 }
 
 export function getUnofficialSongUrl(song: SongSnapshotIn) {
