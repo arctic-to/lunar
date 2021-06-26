@@ -1,16 +1,28 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
 import qs from 'qs'
+import { useEffect } from 'react'
 import useSWR from 'swr'
 
-import { HotSong } from '@/models/Platform/Netease'
+import { Privilege, Track } from '@/models/Platform/Netease'
+import { getMst, PrivilegeStore } from '@/stores'
 
 import { fetcher } from '../fetcher'
+const privilegeStore = getMst(PrivilegeStore)
 
 export function useArtists(id?: string) {
   const { data, error } = useSWR<ArtistsResponseSnapshot>(
     id ? `/artists?${qs.stringify({ id })}` : null,
     fetcher,
   )
+
+  useEffect(() => {
+    if (data) {
+      privilegeStore.setSongPrivilegeMap(
+        data.hotSongs,
+        data.hotSongs.map((song) => song.privilege),
+      )
+    }
+  }, [data])
 
   return {
     loading: !data && !error,
@@ -41,7 +53,15 @@ const ArtistsResponse = types.model('ArtistsResponse', {
     img1v1Id_str: types.string,
     mvSize: types.number,
   }),
-  hotSongs: types.array(HotSong),
+  hotSongs: types.array(
+    types.compose(
+      'HotSong',
+      Track,
+      types.model({
+        privilege: Privilege,
+      }),
+    ),
+  ),
   more: types.boolean,
   code: types.number,
 })

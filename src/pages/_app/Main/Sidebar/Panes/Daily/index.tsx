@@ -45,11 +45,6 @@ export const Daily: React.VFC = observer(() => {
     () => (isLatest ? latestDailySongs : specificDailySongs),
     [isLatest, latestDailySongs, specificDailySongs],
   )
-  const privileges = useMemo(() => {
-    return isLatest
-      ? latestDailySongs?.map((dailySong) => dailySong.privilege)
-      : songDetail.data?.privileges
-  }, [isLatest, latestDailySongs, songDetail.data?.privileges])
 
   const updatePlayQueue = useCallback(() => {
     player.replaceQueue({
@@ -95,7 +90,6 @@ export const Daily: React.VFC = observer(() => {
           <Song
             key={song.id}
             song={song}
-            privilege={privileges?.[index]}
             active={activeSongIndexes.includes(index)}
             onClick={resetActiveSongIndexes(index)}
             onDoubleClick={updatePlayQueue}

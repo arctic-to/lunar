@@ -9,7 +9,7 @@ import {
 import { AsyncReturnType } from 'type-fest'
 import { SECOND } from 'unit-of-time'
 
-import { fetcher } from '@/data/netease'
+import { fetcher } from '@/data/netease/fetcher'
 import { Renderer } from '@/ipc'
 import { parseLyric } from '@/utils'
 

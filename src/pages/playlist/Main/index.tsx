@@ -23,7 +23,7 @@ import { filterTracksByKeyword, filterTracksByTags } from './utils'
 
 export type MainProps = { data: PlaylistDetailResponseSnapshotOut }
 export const Main: React.FC<MainProps> = observer(({ data }) => {
-  const { playlist, privileges } = data
+  const { playlist } = data
   const { keyword, handleInputChange, tags, setSongTagMap, selectedTagIds } =
     getMst(PlaylistStore, {
       scope: playlist.id,
@@ -92,7 +92,7 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
         </div>
       </header>
 
-      <Songlist songs={tracks} privileges={privileges} displayTags virtual />
+      <Songlist songs={tracks} displayTags virtual />
     </div>
   )
 })

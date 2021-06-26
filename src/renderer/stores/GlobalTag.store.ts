@@ -27,4 +27,3 @@ export const GlobalTagStore = types
   }))
 
 export type TagInstance = Instance<typeof Tag>
-export const globalTagStore = GlobalTagStore.create()

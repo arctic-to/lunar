@@ -2,19 +2,18 @@ import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo, MouseEventHandler, useCallback } from 'react'
 
-import { PrivilegeSnapshotIn, SongSnapshotIn, usePlayer } from '@/models'
+import { SongSnapshotIn, usePlayer } from '@/models'
 
 import styles from './SongContainer.module.scss'
 
 export type SongContainerProps = {
   index: number
   songs: SongSnapshotIn[]
-  privilege: PrivilegeSnapshotIn | undefined
   active: boolean
   onClick: MouseEventHandler
 }
 export const SongContainer: React.FC<SongContainerProps> = observer(
-  ({ index, songs, privilege, active, onClick, children }) => {
+  ({ index, songs, active, onClick, children }) => {
     const player = usePlayer()
     const song = useMemo(() => songs[index], [index, songs])
 
@@ -25,9 +24,9 @@ export const SongContainer: React.FC<SongContainerProps> = observer(
         } else {
           player.replaceQueue({ songs })
         }
-        player.tryReplaceTrack({ song }, { privilege })
+        player.tryReplaceTrack({ song })
       },
-      [player, privilege, song, songs],
+      [player, song, songs],
     )
 
     return (

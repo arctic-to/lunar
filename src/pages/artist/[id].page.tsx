@@ -39,10 +39,7 @@ export const Artist: React.FC = () => {
         </div>
       </div>
 
-      <Songlist
-        songs={data.hotSongs}
-        privileges={data.hotSongs.map((hotSong) => hotSong.privilege)}
-      />
+      <Songlist songs={data.hotSongs} />
     </div>
   )
 }

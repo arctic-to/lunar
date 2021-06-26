@@ -1,5 +1,6 @@
-import { SnapshotIn, types } from 'mobx-state-tree'
+import { SnapshotOut, types } from 'mobx-state-tree'
 import qs from 'qs'
+import { useEffect } from 'react'
 import useSWR from 'swr'
 
 import {
@@ -9,6 +10,9 @@ import {
   SongResult,
   UserResult,
 } from '@/models/Platform/Netease'
+import { getMst, PrivilegeStore } from '@/stores'
+
+const privilegeStore = getMst(PrivilegeStore)
 
 import { fetcher } from '../fetcher'
 
@@ -28,6 +32,13 @@ interface Params {
   offset?: number
   type?: SearchTypeEnum
 }
+
+function hasSongsProp(
+  data: CloudSearchResponse,
+): data is CloudSearchSongResponseSnapshot | CloudSearchLyricResponseSnapshot {
+  return 'songs' in data.result
+}
+
 export function useCloudSearch({
   keywords,
   limit = 30,
@@ -41,6 +52,15 @@ export function useCloudSearch({
     fetcher,
   )
 
+  useEffect(() => {
+    if (data && hasSongsProp(data)) {
+      privilegeStore.setSongPrivilegeMap(
+        data.result.songs,
+        data.result.songs.map((song) => song.privilege),
+      )
+    }
+  }, [data])
+
   return {
     loading: !data && !error,
     data,
@@ -48,7 +68,7 @@ export function useCloudSearch({
   }
 }
 
-export type CloudSearchSongResponseSnapshotIn = SnapshotIn<
+export type CloudSearchSongResponseSnapshot = SnapshotOut<
   typeof CloudSearchSongResponse
 >
 const CloudSearchSongResponse = types.model('CloudSearchSongResponse', {
@@ -59,7 +79,7 @@ const CloudSearchSongResponse = types.model('CloudSearchSongResponse', {
   code: types.number,
 })
 
-export type CloudSearchArtistResponseSnapshotIn = SnapshotIn<
+export type CloudSearchArtistResponseSnapshot = SnapshotOut<
   typeof CloudSearchArtistResponse
 >
 const CloudSearchArtistResponse = types.model('CloudSearchArtistResponse', {
@@ -70,7 +90,7 @@ const CloudSearchArtistResponse = types.model('CloudSearchArtistResponse', {
   code: types.number,
 })
 
-export type CloudSearchPlaylistResponseSnapshotIn = SnapshotIn<
+export type CloudSearchPlaylistResponseSnapshot = SnapshotOut<
   typeof CloudSearchPlaylistResponse
 >
 const CloudSearchPlaylistResponse = types.model('CloudSearchPlaylistResponse', {
@@ -81,7 +101,7 @@ const CloudSearchPlaylistResponse = types.model('CloudSearchPlaylistResponse', {
   code: types.number,
 })
 
-export type CloudSearchUserResponseSnapshotIn = SnapshotIn<
+export type CloudSearchUserResponseSnapshot = SnapshotOut<
   typeof CloudSearchUserResponse
 >
 const CloudSearchUserResponse = types.model('CloudSearchUserResponse', {
@@ -92,7 +112,7 @@ const CloudSearchUserResponse = types.model('CloudSearchUserResponse', {
   code: types.number,
 })
 
-export type CloudSearchLyricResponseSnapshotIn = SnapshotIn<
+export type CloudSearchLyricResponseSnapshot = SnapshotOut<
   typeof CloudSearchLyricResponse
 >
 const CloudSearchLyricResponse = types.model('CloudSearchLyricResponse', {
@@ -104,8 +124,8 @@ const CloudSearchLyricResponse = types.model('CloudSearchLyricResponse', {
 })
 
 export type CloudSearchResponse =
-  | CloudSearchSongResponseSnapshotIn
-  | CloudSearchArtistResponseSnapshotIn
-  | CloudSearchPlaylistResponseSnapshotIn
-  | CloudSearchUserResponseSnapshotIn
-  | CloudSearchLyricResponseSnapshotIn
+  | CloudSearchSongResponseSnapshot
+  | CloudSearchArtistResponseSnapshot
+  | CloudSearchPlaylistResponseSnapshot
+  | CloudSearchUserResponseSnapshot
+  | CloudSearchLyricResponseSnapshot

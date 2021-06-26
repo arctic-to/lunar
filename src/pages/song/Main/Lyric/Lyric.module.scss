@@ -35,6 +35,7 @@
   .translation {
     padding: 0 8px;
     transition: 0.3s all;
+    text-align: center;
     &:hover {
       background-color: color.$highlight2;
     }

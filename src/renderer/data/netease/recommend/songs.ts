@@ -1,15 +1,28 @@
-import { SnapshotIn, types } from 'mobx-state-tree'
+import { SnapshotOut, types } from 'mobx-state-tree'
+import { useEffect } from 'react'
 import useSWR from 'swr'
 
-import { DailySong } from '@/models/Platform/Netease'
+import { Privilege, Track } from '@/models/Platform/Netease'
+import { getMst, PrivilegeStore } from '@/stores'
 
 import { fetcher } from '../fetcher'
+
+const privilegeStore = getMst(PrivilegeStore)
 
 export function useRecommedSongs() {
   const { data, error } = useSWR<RecommedSongsResponseSnapshot>(
     '/recommend/songs',
     fetcher,
   )
+
+  useEffect(() => {
+    if (data) {
+      privilegeStore.setSongPrivilegeMap(
+        data.data.dailySongs,
+        data.data.dailySongs.map((dailySong) => dailySong.privilege),
+      )
+    }
+  }, [data])
 
   return {
     loading: !data && !error,
@@ -18,11 +31,21 @@ export function useRecommedSongs() {
   }
 }
 
-type RecommedSongsResponseSnapshot = SnapshotIn<typeof RecommedSongsResponse>
+type RecommedSongsResponseSnapshot = SnapshotOut<typeof RecommedSongsResponse>
 const RecommedSongsResponse = types.model('RecommedSongsResponse', {
   code: types.number,
   data: types.model({
-    dailySongs: types.array(DailySong),
+    dailySongs: types.array(
+      types.compose(
+        'DailySong',
+        Track,
+        types.model({
+          reason: types.string,
+          privilege: Privilege,
+          alg: types.string,
+        }),
+      ),
+    ),
     orderSongs: types.array(types.frozen()),
     recommendReasons: types.array(
       types.model({
