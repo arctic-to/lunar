@@ -1,26 +1,45 @@
+import { chunk } from 'lodash'
 import { SnapshotOut, types } from 'mobx-state-tree'
-import { useEffect } from 'react'
-import useSWR from 'swr'
-import { Maybe } from 'yup/lib/types'
+import { useEffect, useState, useMemo } from 'react'
 
+import { SongSnapshotOut } from '@/models'
 import { Privilege, Track } from '@/models/Platform/Netease'
 import { getMst, PrivilegeStore } from '@/stores'
 
-import { fetcher } from '../fetcher'
+import { axios } from '../fetcher'
 
+const CHUNK_SIZE = 500
 const privilegeStore = getMst(PrivilegeStore)
 
-export function useSongDetail(songIds: Maybe<number[]>) {
-  const { data, error } = useSWR<SongDetailResponseSnapshot>(
-    songIds?.length ? `/song/detail?ids=${songIds.join()}` : null,
-    fetcher,
-  )
+export function useSongDetail(songIds: number[] | undefined) {
+  const idStr = songIds?.join()
+  const [error, setError] = useState()
+  const [songChunks, setSongChunks] = useState<SongSnapshotOut[][]>([])
+  const data = useMemo(() => songChunks.flat(), [songChunks])
 
   useEffect(() => {
-    if (data) {
-      privilegeStore.setSongPrivilegeMap(data.songs, data.privileges)
-    }
-  }, [data])
+    if (!idStr) return
+    const ids = idStr.split(',')
+    const idChunks = chunk(ids, CHUNK_SIZE)
+
+    idChunks.forEach((idChunk, index) => {
+      axios
+        .post<SongDetailResponseSnapshot>(
+          `/song/detail?timestamp=${Date.now()}`,
+          { ids: idChunk.join() },
+          { withCredentials: true },
+        )
+        .then(({ data }) => {
+          setSongChunks((prevSongChunks) => {
+            const _prevSongChunks = [...prevSongChunks]
+            _prevSongChunks[index] = data.songs
+            return _prevSongChunks
+          })
+          privilegeStore.setSongPrivilegeMap(data.songs, data.privileges)
+        })
+        .catch((err) => setError(err))
+    })
+  }, [idStr])
 
   return {
     loading: !data && !error,

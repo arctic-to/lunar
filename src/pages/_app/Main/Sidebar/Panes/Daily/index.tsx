@@ -34,7 +34,7 @@ export const Daily: React.VFC = observer(() => {
     [data, date],
   )
   const songDetail = useSongDetail(dailySongIds)
-  const specificDailySongs = songDetail.data?.songs
+  const specificDailySongs = songDetail.data
 
   const latestDailySongs = useRecommedSongs().data?.data.dailySongs
 
