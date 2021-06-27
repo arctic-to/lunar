@@ -1,7 +1,7 @@
 import React from 'react'
 import { useCallback } from 'react'
 
-import { VirtualList } from '@/components'
+import { VirtualList } from '@/components/common'
 import { useSonglist } from '@/hooks'
 import { SongSnapshotIn } from '@/models'
 

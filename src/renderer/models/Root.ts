@@ -39,7 +39,9 @@ export const defaultSnapshot = {
 }
 
 let initialized = false
-export const rootStore = RootStore.create(defaultSnapshot)
+
+export type RootStoreInstance = Instance<typeof RootStore>
+export const rootStore: RootStoreInstance = RootStore.create(defaultSnapshot)
 
 function getInitialSnapshot() {
   const serializedSnapshot = localStorage.getItem('rootStore')
@@ -64,5 +66,3 @@ export function initRootStore() {
   observeRootStore()
   initialized = true
 }
-
-export type RootStoreInstance = Instance<typeof RootStore>

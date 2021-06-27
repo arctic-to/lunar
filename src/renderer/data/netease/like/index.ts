@@ -5,7 +5,7 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
 import { useCallback } from 'react'
 
-import { trackNeteaseCloudMusicLikeSong } from '@/data'
+import { trackNeteaseCloudMusicLikeSong } from '@/data/api'
 import { usePlatform } from '@/models'
 
 import { fetcher } from '../fetcher'

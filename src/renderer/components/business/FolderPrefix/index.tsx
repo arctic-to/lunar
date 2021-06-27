@@ -1,7 +1,7 @@
 import React from 'react'
 import { VscChevronRight, VscChevronDown } from 'react-icons/vsc'
 
-import { Loader } from '@/components'
+import { Loader } from '@/components/common'
 
 export type FolderPrefixProps = {
   folded: boolean
