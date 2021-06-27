@@ -1,10 +1,14 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
 import qs from 'qs'
+import { useEffect } from 'react'
 import useSWR from 'swr'
 
 import { Track, Privilege } from '@/models/Platform/Netease'
+import { getMst, PrivilegeStore } from '@/stores'
 
 import { fetcher } from '../fetcher'
+
+const privilegeStore = getMst(PrivilegeStore)
 
 export enum RecordType {
   All,
@@ -16,6 +20,15 @@ export function useUserRecord(uid?: string, type?: RecordType) {
     uid ? `/user/record?${qs.stringify({ uid, type })}` : null,
     fetcher,
   )
+
+  useEffect(() => {
+    if (data) {
+      privilegeStore.setSongPrivilegeMap(
+        data.weekData.map((data) => data.song),
+        data.weekData.map((data) => data.song.privilege),
+      )
+    }
+  }, [data])
 
   return {
     loading: !data && !error,

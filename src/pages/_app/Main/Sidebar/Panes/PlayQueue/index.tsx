@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { VirtualList } from '@/components'
+import { useSongDetail } from '@/data'
 import { useSonglist } from '@/hooks'
 import { usePlayer } from '@/models'
 
@@ -10,9 +11,20 @@ import { Song } from '../../components'
 
 import styles from './PlayQueue.module.scss'
 
+let inited = false
+
 export const PlayQueue: React.VFC = observer(() => {
   const { songs } = usePlayer().queue
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
+
+  // Load privileges when app starts
+  const songIds = useMemo(() => {
+    if (!inited) {
+      inited = true
+      return songs.map((song) => song.id)
+    }
+  }, [songs])
+  useSongDetail(songIds)
 
   const renderRow = useCallback(
     (index: number) => {

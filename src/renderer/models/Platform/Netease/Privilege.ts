@@ -16,14 +16,16 @@ export const Privilege = types.model('Privilege', {
   toast: types.boolean,
   flag: types.number,
   preSell: types.boolean,
-  playMaxbr: types.number,
-  downloadMaxbr: types.number,
+  playMaxbr: types.maybe(types.number),
+  downloadMaxbr: types.maybe(types.number),
   /** Add for `/song/detail` */
-  rscl: types.maybe(types.number),
-  freeTrialPrivilege: types.model({
-    resConsumable: types.boolean,
-    userConsumable: types.boolean,
-  }),
+  rscl: types.maybeNull(types.maybe(types.number)),
+  freeTrialPrivilege: types.maybe(
+    types.model({
+      resConsumable: types.boolean,
+      userConsumable: types.boolean,
+    }),
+  ),
   chargeInfoList: types.array(
     types.model({
       rate: types.number,

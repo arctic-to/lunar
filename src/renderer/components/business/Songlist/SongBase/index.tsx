@@ -1,47 +1,56 @@
 import c from 'classnames'
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { HiLockClosed, HiLockOpen } from 'react-icons/hi'
 
 import Album from '@/components/business/Album'
 import Artists from '@/components/business/Artists'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
-import { PrivilegeSnapshotIn, SongSnapshotIn, usePlayer } from '@/models'
+import { SongSnapshotIn, usePlayer } from '@/models'
+import { getSongSourceKind, SongSourceKind } from '@/stores'
 
 import styles from './SongBase.module.scss'
 
 export type SongBaseProps = {
   index: number
   song: SongSnapshotIn
-  privilege: PrivilegeSnapshotIn | undefined
 }
-export const SongBase: React.FC<SongBaseProps> = observer(
-  ({ index, song, privilege }) => {
-    const { isInTrack } = usePlayer()
-    const unavailable = !(privilege?.cp ?? true)
+export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
+  const { isInTrack } = usePlayer()
+  const songSourceKind = getSongSourceKind(song)
+  const unavailable = songSourceKind === SongSourceKind.None
 
-    return (
-      <div
-        className={c(styles.container, {
-          [styles.in_track]: isInTrack(song),
-          [styles.unavailable]: unavailable,
-        })}
-      >
-        <span className={styles.index}>{index + 1}</span>
-        <Like songId={song.id} />
-        <span className={styles.name}>{song.name}</span>
-        <Artists className={styles.artist} song={song} />
-        <Album className={styles.album} album={song.al} />
-        <span className={styles.duration}>
-          {dayjs.duration(song.dt).format('mm:ss')}
-        </span>
-        <span className={styles.pop}>
-          <ProgressBar percentage={song.pop / 100} />
-        </span>
-      </div>
-    )
-  },
-)
+  const prefixIconMap = useMemo(
+    () => ({
+      [SongSourceKind.Netease]: <Like songId={song.id} />,
+      [SongSourceKind.Unofficial]: <HiLockOpen className={styles.unlock} />,
+      [SongSourceKind.None]: <HiLockClosed className={styles.lock} />,
+    }),
+    [song.id],
+  )
+
+  return (
+    <div
+      className={c(styles.container, {
+        [styles.in_track]: isInTrack(song),
+        [styles.unavailable]: unavailable,
+      })}
+    >
+      <span className={styles.index}>{index + 1}</span>
+      {prefixIconMap[songSourceKind]}
+      <span className={styles.name}>{song.name}</span>
+      <Artists className={styles.artist} song={song} />
+      <Album className={styles.album} album={song.al} />
+      <span className={styles.duration}>
+        {dayjs.duration(song.dt).format('mm:ss')}
+      </span>
+      <span className={styles.pop}>
+        <ProgressBar percentage={song.pop / 100} />
+      </span>
+    </div>
+  )
+})
 
 export default SongBase

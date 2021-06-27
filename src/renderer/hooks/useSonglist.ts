@@ -1,12 +1,9 @@
 import { range } from 'lodash'
 import { useState, useCallback, useEffect } from 'react'
 
-import { PrivilegeSnapshotIn, SongSnapshotIn, usePlayer } from '@/models'
+import { SongSnapshotIn, usePlayer } from '@/models'
 
-export function useSonglist<T extends SongSnapshotIn>(
-  songs?: T[],
-  privilegeMap?: Map<number, PrivilegeSnapshotIn>,
-) {
+export function useSonglist<T extends SongSnapshotIn>(songs?: T[]) {
   const player = usePlayer()
   const [activeSongIndexes, setActiveSongIndexes] = useState<number[]>([])
 
@@ -34,7 +31,7 @@ export function useSonglist<T extends SongSnapshotIn>(
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (!songs || !privilegeMap) return
+      if (!songs) return
 
       switch (e.code) {
         case 'Enter': {
@@ -47,10 +44,7 @@ export function useSonglist<T extends SongSnapshotIn>(
             player.replaceQueue({ songs: selectedSongs })
           }
 
-          player.tryReplaceTrack(
-            { song: selectedSongs[0] },
-            { privilege: privilegeMap.get(selectedSongs[0].id) },
-          )
+          player.tryReplaceTrack({ song: selectedSongs[0] })
           break
         }
         case 'KeyA': {
@@ -67,7 +61,7 @@ export function useSonglist<T extends SongSnapshotIn>(
         }
       }
     },
-    [activeSongIndexes, player, privilegeMap, songs],
+    [activeSongIndexes, player, songs],
   )
 
   return {

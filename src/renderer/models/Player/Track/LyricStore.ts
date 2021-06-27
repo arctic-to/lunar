@@ -1,6 +1,6 @@
 import { SnapshotIn, types } from 'mobx-state-tree'
 
-const Lrc = types.model({
+const Lrc = types.model('Lrc', {
   version: types.number,
   lyric: types.string,
 })
@@ -24,7 +24,7 @@ export const LyricResponse = types.model('LyricResponse', {
   briefDesc: types.maybe(types.null),
 })
 
-const ParsedLyric = types.model({
+const ParsedLyric = types.model('ParsedLyric', {
   translation: types.maybe(types.string),
   phonetic: types.maybe(types.string),
   duration: types.number,
@@ -33,7 +33,7 @@ const ParsedLyric = types.model({
   content: types.string,
 })
 
-export const LyricStore = types.model({
+export const LyricStore = types.model('LyricStore', {
   parsedLyrics: types.maybeNull(types.array(ParsedLyric)),
   noTimestamp: types.boolean,
   raw: LyricResponse,

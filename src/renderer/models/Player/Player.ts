@@ -6,9 +6,10 @@ import {
   cast,
 } from 'mobx-state-tree'
 
+import { isSongAvailable } from '@/stores/Privilege.store'
+
 import { History, history } from './History'
 import { Lyric, lyric } from './Lyric'
-import { PrivilegeSnapshotIn } from './Privilege'
 import { Queue, queue, QueueSnapshotIn } from './Queue'
 import { SongSnapshotIn } from './Song'
 import { Track, TrackSnapshotIn } from './Track'
@@ -61,14 +62,19 @@ export const Player = types
       self.volume = percentage * 1
     },
     replaceQueue(queueSnapshot: QueueSnapshotIn) {
-      applySnapshot(self.queue, queueSnapshot)
+      applySnapshot(self.queue, {
+        ...queueSnapshot,
+        songs: queueSnapshot.songs?.filter(isSongAvailable),
+      })
     },
     insertOneToQueue(song: SongSnapshotIn) {
       const songIndex = self.queue.songs.findIndex(({ id }) => id === song.id)
       if (songIndex >= 0) {
         self.queue.songs.splice(songIndex, 1)
       }
-      self.queue.songs.splice(self.currTrackIndex + 1, 0, song)
+      if (isSongAvailable(song)) {
+        self.queue.songs.splice(self.currTrackIndex + 1, 0, song)
+      }
     },
     insertManyToQueue(songs: SongSnapshotIn[]) {
       songs.forEach((song) => {
@@ -77,7 +83,7 @@ export const Player = types
           self.queue.songs.splice(songIndex, 1)
         }
       })
-      songs.forEach((song, index) => {
+      songs.filter(isSongAvailable).forEach((song, index) => {
         self.queue.songs.splice(self.currTrackIndex + index + 1, 0, song)
       })
     },
@@ -89,21 +95,15 @@ export const Player = types
       self.history.push(trackSnapshot.song)
     },
     setNextTrack(trackSnapshot: TrackSnapshotIn) {
-      // Create instance manually, otherwise mst will creat it
-      // automatically but lazily.
+      // Create instance manually, otherwise mst will reconcile it.
       self.nextTracks.replace([Track.create(trackSnapshot)])
     },
   }))
   .actions((self) => ({
-    tryReplaceTrack(
-      trackSnapshot: TrackSnapshotIn,
-      options?: {
-        privilege?: PrivilegeSnapshotIn | undefined
-      },
-    ) {
+    tryReplaceTrack(trackSnapshot: TrackSnapshotIn) {
       const isInTrack = self.isInTrack(trackSnapshot.song)
-      const unavailable = !(options?.privilege?.cp ?? true)
-      const canReplace = !(isInTrack || unavailable)
+      const available = isSongAvailable(trackSnapshot.song)
+      const canReplace = !isInTrack && available
       if (canReplace) self.replaceTrack(trackSnapshot)
     },
   }))

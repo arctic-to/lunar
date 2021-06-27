@@ -21,11 +21,7 @@ export const Recent: React.FC = () => {
     <div>
       <div className={styles.subtitle}>最近在听</div>
       <div>
-        <Songlist
-          songs={songs}
-          privileges={songs.map((song) => song.privilege)}
-          hideHeader
-        />
+        <Songlist songs={songs} hideHeader />
       </div>
     </div>
   )

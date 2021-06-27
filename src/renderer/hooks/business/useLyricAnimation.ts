@@ -1,5 +1,6 @@
 import { inRange } from 'lodash'
-import { RefObject, useEffect } from 'react'
+import { clone } from 'mobx-state-tree'
+import { RefObject, useEffect, useMemo } from 'react'
 
 import { useCurrentTrack } from '@/models'
 import { ParsedLyric } from '@/utils'
@@ -12,10 +13,13 @@ interface props {
 
 export function useLyricAnimation({
   containerRef,
-  parsedLyrics,
+  parsedLyrics: _parsedLyrics,
   currentLyricStyle,
 }: props) {
   const { currentTime } = useCurrentTrack() ?? {}
+
+  // https://github.com/arctic-to/lunar/issues/9
+  const parsedLyrics = useMemo(() => clone(_parsedLyrics), [_parsedLyrics])
 
   useEffect(() => {
     const container = containerRef.current

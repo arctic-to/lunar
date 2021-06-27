@@ -5,28 +5,27 @@ import { MouseEventHandler, useCallback } from 'react'
 import { Artists } from '@/components'
 import { useLiked } from '@/hooks'
 import { SongSnapshotIn, usePlayer } from '@/models'
-import { PrivilegeSnapshotIn } from '@/models'
+import { isSongAvailable } from '@/stores'
 
 import styles from './Song.module.scss'
 
 export type SongProps = {
   song: SongSnapshotIn
-  privilege?: PrivilegeSnapshotIn
   active: boolean
   onClick: MouseEventHandler
   onDoubleClick?: () => void
 }
 
 export const Song: React.VFC<SongProps> = observer(
-  ({ song, privilege, active, onClick, onDoubleClick }) => {
+  ({ song, active, onClick, onDoubleClick }) => {
     const { isInTrack, tryReplaceTrack } = usePlayer()
     const liked = useLiked(song.id)
-    const unavailable = !(privilege?.cp ?? true)
+    const available = isSongAvailable(song)
 
     const handleDoubleClick = useCallback(() => {
-      tryReplaceTrack({ song }, { privilege })
+      tryReplaceTrack({ song })
       onDoubleClick?.()
-    }, [onDoubleClick, privilege, song, tryReplaceTrack])
+    }, [onDoubleClick, song, tryReplaceTrack])
 
     return (
       <div
@@ -34,7 +33,7 @@ export const Song: React.VFC<SongProps> = observer(
           [styles.in_track]: isInTrack(song),
           [styles.active]: active,
           [styles.liked]: liked,
-          [styles.unavailable]: unavailable,
+          [styles.unavailable]: !available,
         })}
         onClick={onClick}
         onDoubleClick={handleDoubleClick}

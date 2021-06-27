@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
 
+import { useSongDetail } from '@/data'
 import { useSonglist } from '@/hooks'
 import { usePlayer } from '@/models'
 
@@ -7,9 +9,20 @@ import { AggregatedSong } from '../../components'
 
 import styles from './History.module.scss'
 
+let inited = false
+
 export const History: React.VFC = observer(() => {
   const { history } = usePlayer()
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
+
+  // Load privileges when app starts
+  const songIds = useMemo(() => {
+    if (!inited) {
+      inited = true
+      return history.aggregatedSongs.map(({ songSnapshot }) => songSnapshot.id)
+    }
+  }, [history.aggregatedSongs])
+  useSongDetail(songIds)
 
   return (
     <div className={styles.container}>
