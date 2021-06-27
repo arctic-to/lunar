@@ -95,8 +95,7 @@ export const Player = types
       self.history.push(trackSnapshot.song)
     },
     setNextTrack(trackSnapshot: TrackSnapshotIn) {
-      // Create instance manually, otherwise mst will creat it
-      // automatically but lazily.
+      // Create instance manually, otherwise mst will reconcile it.
       self.nextTracks.replace([Track.create(trackSnapshot)])
     },
   }))

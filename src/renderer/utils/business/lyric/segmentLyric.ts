@@ -11,7 +11,7 @@ interface RawLyric {
 // https://stackoverflow.com/a/34789675/13151903
 // https://regex101.com/r/WToTPn/1
 const regex =
-  /(?<timestamp>\[(?<m>\d+):(?<s>\d+)\.(?<ms>\d+)\])?(?:(?=\[\d+:\d+\.\d+\])|(?<content>.*))/gs
+  /(?<timestamp>\[(?<m>\d+):(?<s>\d+)(?:\.(?<ms>\d+))?\])?(?:(?=\[\d+:\d+\.\d+\])|(?<content>.*))/gs
 
 interface _SegmentedLyric extends RawLyric {
   duration: number

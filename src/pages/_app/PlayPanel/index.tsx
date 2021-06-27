@@ -1,15 +1,13 @@
 import { ipcRenderer } from 'electron'
 import { observer } from 'mobx-react-lite'
 import {
-  onAction,
   getSnapshot,
   applyAction,
   ISerializedActionCall,
-  onPatch,
+  onSnapshot,
 } from 'mobx-state-tree'
 import { useEffect } from 'react'
 
-import { __LYRIC__PROCESS__ } from '@/ipc'
 import { usePlayer } from '@/models'
 
 import CentralController from './CentralController'
@@ -45,21 +43,8 @@ export const PlayPanel: React.FC = observer(() => {
   }, [])
 
   useEffect(() => {
-    return onPatch(player, (patch) => {
-      const acceptableProp = ['songUrl', 'lyricStore']
-      const isAcceptable = acceptableProp.some((propName) =>
-        patch.path.endsWith(propName),
-      )
-      if (isAcceptable) {
-        ipcRenderer.send('window:main:patch', patch)
-      }
-    })
-  }, [player])
-
-  useEffect(() => {
-    return onAction(player, (action) => {
-      if (action.name.startsWith(__LYRIC__PROCESS__)) return
-      ipcRenderer.send('window:main:action', action)
+    return onSnapshot(player, (snapshot) => {
+      ipcRenderer.send('window:main:snapshot', snapshot)
     })
   }, [player])
 

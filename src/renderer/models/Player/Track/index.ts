@@ -79,6 +79,7 @@ export const Track = types
       )
 
       // Maybe the node has been destroyed if we switch songs in a flash.
+      // https://github.com/mobxjs/mobx-state-tree/issues/912#issuecomment-404465245
       if (isAlive(self)) {
         self.lyricStore = cast({
           ...result,
@@ -121,6 +122,10 @@ export const Track = types
   // hooks
   .actions((self) => ({
     afterCreate() {
+      // Reconciliation will not work if its parent is not reconciled,
+      // as we use `onSnapshot/applySnapshot` to sync main renderer state
+      // to lyric renderer, the whole `player` tree will be recreated,
+      // therefore all lifecycle hooks will be fired.
       if (process.env.RENDERER === Renderer.Lyric) return
 
       if (!self.songUrl) {

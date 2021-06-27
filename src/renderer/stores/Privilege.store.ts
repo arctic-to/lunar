@@ -7,7 +7,7 @@ import { SongSnapshotIn } from '@/models/Player/Song'
 import { getMst } from './getMst'
 
 type UnofficialSongSourceSnapshot = SnapshotOut<typeof UnofficialSongSource>
-const UnofficialSongSource = types.model({
+const UnofficialSongSource = types.model('UnofficialSongSource', {
   size: types.number,
   br: types.number,
   url: types.string,
