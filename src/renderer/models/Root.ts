@@ -1,3 +1,5 @@
+import storage from 'electron-json-storage'
+import { isEmpty } from 'lodash'
 import {
   types,
   Instance,
@@ -44,18 +46,19 @@ export type RootStoreInstance = Instance<typeof RootStore>
 export const rootStore: RootStoreInstance = RootStore.create(defaultSnapshot)
 
 function getInitialSnapshot() {
-  const serializedSnapshot = localStorage.getItem('rootStore')
-  if (!serializedSnapshot) return defaultSnapshot
-  const json = JSON.parse(serializedSnapshot)
-  if (!RootStore.is(json)) return defaultSnapshot
-  return json
+  const snapshot = storage.getSync('app_state')
+  return !isEmpty(snapshot) && RootStore.is(snapshot)
+    ? snapshot
+    : defaultSnapshot
 }
 
-export function observeRootStore() {
+function observeRootStore() {
   onSnapshot(rootStore, (snapshot) => {
+    storage.set('app_state', snapshot, (err) => {
+      if (err) throw err
+    })
     // eslint-disable-next-line no-console
     if (isDev) console.log(snapshot)
-    localStorage.setItem('rootStore', JSON.stringify(snapshot))
   })
 }
 

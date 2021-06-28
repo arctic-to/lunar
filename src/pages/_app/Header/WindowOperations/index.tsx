@@ -16,7 +16,7 @@ export default function WindowOperations() {
   const [isMaximized, setIsMaximized] = useState(false)
 
   useEffect(() => {
-    setWin(remote.BrowserWindow.getFocusedWindow())
+    setWin(remote.getCurrentWindow())
   }, [])
 
   useEffect(() => {

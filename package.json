@@ -10,7 +10,7 @@
   "scripts": {
     "--------------------------Dev Scripts------------------------": "",
     "dev:renderer": "next dev",
-    "watch:main": "tsc -w src/main/main.ts --esModuleInterop --outDir build",
+    "watch:main": "tsc -p src/main -w",
     "dev:main": "wait-on http://localhost:3000 && nodemon --watch ./build --exec electron .",
     "predev": "rimraf ./build",
     "dev": "concurrently yarn:watch:main yarn:dev:*",
@@ -22,7 +22,7 @@
     "format": "prettier --write src/**/*.{ts,tsx}",
     "--------------------------Build Scripts-----------------------": "",
     "build:renderer": "next build && next export -o build",
-    "build:main": "tsc src/main/main.ts --esModuleInterop --outDir build",
+    "build:main": "tsc -p src/main",
     "build": "yarn run build:renderer && yarn run build:main",
     "--------------------------Prod Scripts (Unused)---------------": "",
     "start:renderer": "next start",
@@ -39,6 +39,7 @@
     "dayjs": "^1.9.8",
     "electron-debug": "^3.2.0",
     "electron-is-dev": "^2.0.0",
+    "electron-json-storage": "^4.5.0",
     "electron-serve": "^1.1.0",
     "kuroshiro": "^1.2.0",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
@@ -62,6 +63,7 @@
     "yup": "^0.32.8"
   },
   "devDependencies": {
+    "@types/electron-json-storage": "^4.5.0",
     "@types/jest": "^26.0.19",
     "@types/lodash": "^4.14.167",
     "@types/node": "^14.14.12",
