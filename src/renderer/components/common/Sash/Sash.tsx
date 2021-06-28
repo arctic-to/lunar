@@ -9,14 +9,26 @@ interface SashProps {
   onMouseMove?: (pane1Width: number, pane2Width: number) => void
 }
 
+const SASH_WIDTH = 4
+const HALF_WIDTH = SASH_WIDTH / 2
+
+// The position of sash should always be calculated by the inflexiable pane.
+const calcSashRight = (inflexiblePane: HTMLElement) => {
+  const { left } = inflexiblePane.getBoundingClientRect()
+  const { right } = inflexiblePane.parentElement!.getBoundingClientRect()
+  return right - left - HALF_WIDTH
+}
+
+/**
+ * Now we assume that the left pane is flexiable, and the right pane
+ * is inflexiable, it might be more configurable in the future.
+ */
 export const Sash: React.VFC<SashProps> = ({
-  pane1,
-  pane2,
+  pane1, // flexible pane
+  pane2, // inflexible pane (has a fix width when window is resizing)
   min,
   onMouseMove,
 }) => {
-  const WIDTH = 4
-  const HALF_WIDTH = WIDTH / 2
   const shouldRender = Boolean(pane1 && pane2)
 
   const sashRef = useRef<HTMLDivElement>(null)
@@ -25,16 +37,11 @@ export const Sash: React.VFC<SashProps> = ({
   const startWidth1Ref = useRef<number>()
   const startWidth2Ref = useRef<number>()
 
-  const correctSashLeft = useCallback(
-    (left: number) => left - HALF_WIDTH,
-    [HALF_WIDTH],
-  )
-
   useEffect(() => {
-    if (sashRef.current && pane1 && shouldRender) {
-      sashRef.current.style.left = `${correctSashLeft(pane1.clientWidth)}px`
+    if (sashRef.current && pane2 && shouldRender) {
+      sashRef.current.style.right = `${calcSashRight(pane2)}px`
     }
-  }, [correctSashLeft, pane1, shouldRender])
+  }, [pane2, shouldRender])
 
   const handleMouseMove = useCallback(
     ({ clientX }: MouseEvent) => {
@@ -64,15 +71,15 @@ export const Sash: React.VFC<SashProps> = ({
             pane1Width = containerWidth - pane2Width
           }
 
-          const sashLeft = correctSashLeft(pane1Width)
+          const sashRight = calcSashRight(pane2)
           pane1.style.width = `${pane1Width}px`
           pane2.style.width = `${pane2Width}px`
-          sashRef.current.style.left = `${sashLeft}px`
+          sashRef.current.style.right = `${sashRight}px`
           onMouseMove?.(pane1Width, pane2Width)
         }
       })
     },
-    [correctSashLeft, min, onMouseMove, pane1, pane2],
+    [min, onMouseMove, pane1, pane2],
   )
 
   const handleMouseUp = useCallback(() => {
@@ -100,7 +107,7 @@ export const Sash: React.VFC<SashProps> = ({
       className={styles.sash}
       ref={sashRef}
       onMouseDown={handleMouseDown}
-      style={{ width: WIDTH }}
+      style={{ width: SASH_WIDTH }}
     />
   )
 }
