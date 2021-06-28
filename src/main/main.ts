@@ -16,6 +16,9 @@ if (isDev) {
 
 app.on('ready', () => {
   mainWin = createMainWindow()
+  mainWin.on('close', () => {
+    lyricWin?.close()
+  })
   mainWin.once('closed', () => (mainWin = null))
 })
 
