@@ -1,21 +1,24 @@
 import { SnapshotOut, types } from 'mobx-state-tree'
-import useSWR from 'swr'
+import { useEffect, useState } from 'react'
 
 import { Account, Profile } from '@/models/Platform/Netease'
 
-import { fetcher } from '../fetcher'
+import { axios } from '../fetcher'
 
 export function useUserAccount() {
-  const { data, error, mutate } = useSWR<UserAccountResponseSnapshot>(
-    '/user/account',
-    fetcher,
-  )
+  const [data, setData] = useState<UserAccountResponseSnapshot>()
+  const [error, setError] = useState()
+
+  useEffect(() => {
+    axios
+      .get<UserAccountResponseSnapshot>(`/user/account?timestamp=${Date.now()}`)
+      .then((res) => setData(res.data))
+      .catch((err) => setError(err))
+  }, [])
 
   return {
-    loading: !data && !error,
     data,
     error,
-    mutate,
   }
 }
 

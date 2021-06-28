@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
-import { useUserAccount, LoginSchema, login } from '@/data'
+import { LoginSchema, login } from '@/data'
+import { usePlatform } from '@/models'
 
 import styles from './LoginForm.module.scss'
 
@@ -12,17 +13,36 @@ const schema = yup.object().shape({
   password: yup.string().required(),
 })
 
-export const LoginForm: React.VFC = () => {
-  const { mutate } = useUserAccount()
+interface LoginFormProps {
+  onSuccess(): void
+}
+
+export const LoginForm: React.VFC<LoginFormProps> = ({ onSuccess }) => {
+  const { netease } = usePlatform()
+  const [loading, setLoading] = useState(false)
+  const [isFailed, setIsFailed] = useState(false)
+
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   })
 
   const onSubmit = useCallback(
     (data: LoginSchema) => {
-      mutate(login(data))
+      setLoading(true)
+      login(data)
+        .then(({ account, profile }) => {
+          netease.setAccount(account)
+          netease.setProfile(profile)
+          onSuccess()
+        })
+        .catch(() => {
+          setIsFailed(true)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
     },
-    [mutate],
+    [netease, onSuccess],
   )
 
   return (
@@ -40,7 +60,8 @@ export const LoginForm: React.VFC = () => {
         />
         {errors.password && <p>请填写密码</p>}
       </div>
-      <input type="submit" value="登录" />
+      {isFailed && <p>登录失败</p>}
+      <input type="submit" value={loading ? '...' : '登录'} />
     </form>
   )
 }

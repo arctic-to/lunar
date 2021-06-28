@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 
 import { useLikelist } from '@/data'
 import { usePlatform } from '@/models'
@@ -11,7 +12,9 @@ export const Statusbar: React.VFC = observer(() => {
 
   const { data } = useLikelist()
 
-  if (data) netease?.setLikelist(data)
+  useEffect(() => {
+    if (data) netease.setLikelist(data)
+  }, [data, netease])
 
   return (
     <div className={styles.container}>
