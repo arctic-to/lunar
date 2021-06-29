@@ -12,7 +12,7 @@ import { SECOND } from 'unit-of-time'
 import { fetcher } from '@/data/netease/fetcher'
 import { Renderer } from '@/ipc'
 import { getUnofficialSongUrl } from '@/stores/Privilege.store'
-import { parseLyric } from '@/utils'
+import { correctPercentage, parseLyric } from '@/utils'
 
 import { Song } from '../Song'
 
@@ -56,7 +56,7 @@ export const Track = types
       self.currentTimeSetTimes++
     },
     setCurrentTimeByPercentage(percentage: number) {
-      self.currentTime = percentage * self.song.dt
+      self.currentTime = correctPercentage(percentage) * self.song.dt
       self.currentTimeSetTimes++
     },
     setVolume(percentage: number) {

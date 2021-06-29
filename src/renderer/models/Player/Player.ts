@@ -7,6 +7,7 @@ import {
 } from 'mobx-state-tree'
 
 import { isSongAvailable } from '@/stores/Privilege.store'
+import { correctPercentage } from '@/utils/common/math'
 
 import { History, history } from './History'
 import { Lyric, lyric } from './Lyric'
@@ -14,7 +15,7 @@ import { Queue, queue, QueueSnapshotIn } from './Queue'
 import { SongSnapshotIn } from './Song'
 import { Track, TrackSnapshotIn } from './Track'
 
-const VOLUMN_STEP = 0.1
+const VOLUME_STEP = 0.1
 
 export enum OrderEnum {
   Repeat = 'Repeat',
@@ -61,13 +62,13 @@ export const Player = types
       self.tracks.clear()
     },
     setVolume(percentage: number) {
-      self.volume = percentage * 1
+      self.volume = correctPercentage(percentage) * 1
     },
     turnUpVolume() {
-      self.volume = Math.min(1, self.volume + VOLUMN_STEP)
+      this.setVolume(self.volume + VOLUME_STEP)
     },
     turnDownVolume() {
-      self.volume = Math.max(0, self.volume - VOLUMN_STEP)
+      this.setVolume(self.volume - VOLUME_STEP)
     },
     replaceQueue(queueSnapshot: QueueSnapshotIn) {
       applySnapshot(self.queue, {

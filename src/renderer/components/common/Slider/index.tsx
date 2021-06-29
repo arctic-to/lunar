@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { correctPercentage } from '@/utils'
+
 import styles from './Slider.module.scss'
 
 export type SliderProps = {
@@ -34,7 +36,7 @@ export const Slider: React.VFC<SliderProps> = ({
       const sliderX = ref.current.getBoundingClientRect().left
       const clickedX = e.clientX
       const diffX = clickedX - sliderX
-      const newPercentage = Math.min(diffX / width, 1)
+      const newPercentage = correctPercentage(diffX / width)
       setInnerPercentage(newPercentage)
 
       return newPercentage
