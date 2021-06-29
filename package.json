@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "--------------------------Dev Scripts------------------------": "",
-    "dev:renderer": "next dev",
+    "dev:renderer": "next dev src/renderer",
     "watch:main": "tsc -p src/main -w",
     "dev:main": "wait-on http://localhost:3000 && nodemon --watch ./build --exec electron .",
     "predev": "rimraf ./build",
@@ -21,7 +21,7 @@
     "lint": "eslint src/**/*.{ts,tsx} --fix",
     "format": "prettier --write src/**/*.{ts,tsx}",
     "--------------------------Build Scripts-----------------------": "",
-    "build:renderer": "next build && next export -o build",
+    "build:renderer": "next build src/renderer && next export src/renderer -o build",
     "build:main": "tsc -p src/main",
     "build": "yarn run build:renderer && yarn run build:main",
     "--------------------------Prod Scripts (Unused)---------------": "",
