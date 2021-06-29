@@ -6,7 +6,7 @@ import { SegmentedLyric } from './segmentLyric'
 
 const kuroshiro = new Kuroshiro()
 const analyzer = new KuromojiAnalyzer({
-  dictPath: 'D:/repo/arctic-to/lunar/node_modules/kuromoji/dict',
+  dictPath: '/kuromoji/dict',
 })
 let hasInited = false
 
