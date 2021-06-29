@@ -22,6 +22,11 @@ export default function WindowOperations() {
   useEffect(() => {
     win?.on('maximize', () => setIsMaximized(true))
     win?.on('unmaximize', () => setIsMaximized(false))
+
+    return () => {
+      win?.removeAllListeners('maximize')
+      win?.removeAllListeners('unmaximize')
+    }
   }, [win])
 
   useEffect(() => {

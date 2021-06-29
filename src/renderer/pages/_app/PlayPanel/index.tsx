@@ -39,6 +39,11 @@ export const PlayPanel: React.FC = observer(() => {
     }
     ipcRenderer.on('window:lyric:move', updateBounds)
     ipcRenderer.on('window:lyric:resize', updateBounds)
+
+    return () => {
+      ipcRenderer.removeAllListeners('window:lyric:move')
+      ipcRenderer.removeAllListeners('window:lyric:resize')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -55,6 +60,10 @@ export const PlayPanel: React.FC = observer(() => {
         applyAction(player, action)
       },
     )
+
+    return () => {
+      ipcRenderer.removeAllListeners('window:lyric:action')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

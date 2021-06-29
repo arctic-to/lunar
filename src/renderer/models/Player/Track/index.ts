@@ -43,6 +43,9 @@ export const Track = types
     pause() {
       self.playing = false
     },
+    toggle() {
+      self.playing = !self.playing
+    },
   }))
   .actions((self) => ({
     _setCurrentTime(currentTime: number) {

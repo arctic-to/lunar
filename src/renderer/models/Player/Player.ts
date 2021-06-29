@@ -14,6 +14,8 @@ import { Queue, queue, QueueSnapshotIn } from './Queue'
 import { SongSnapshotIn } from './Song'
 import { Track, TrackSnapshotIn } from './Track'
 
+const VOLUMN_STEP = 0.1
+
 export enum OrderEnum {
   Repeat = 'Repeat',
   Shuffle = 'Shuffle',
@@ -60,6 +62,12 @@ export const Player = types
     },
     setVolume(percentage: number) {
       self.volume = percentage * 1
+    },
+    turnUpVolume() {
+      self.volume = Math.min(1, self.volume + VOLUMN_STEP)
+    },
+    turnDownVolume() {
+      self.volume = Math.max(0, self.volume - VOLUMN_STEP)
     },
     replaceQueue(queueSnapshot: QueueSnapshotIn) {
       applySnapshot(self.queue, {
@@ -113,6 +121,9 @@ export const Player = types
     },
     pause() {
       self.currTrack?.pause()
+    },
+    toggle() {
+      self.currTrack?.toggle()
     },
     playNth(nth: number) {
       self.replaceTrack({

@@ -25,6 +25,9 @@ export const OsdLyric: React.VFC = observer(() => {
     ipcRenderer.on('window:main:snapshot', (event, snapshot) => {
       applySnapshot(player, snapshot)
     })
+    return () => {
+      ipcRenderer.removeAllListeners('window:main:snapshot')
+    }
   }, [player])
 
   useEffect(() => {

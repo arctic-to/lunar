@@ -27,7 +27,7 @@ export const Lyric = types
     setBounds(bounds: RectangleSnapshotOut) {
       self.bounds = bounds
     },
-    toggleTranlation() {
+    toggleTranslation() {
       self.translation = !self.translation
     },
     togglePhonetic() {
@@ -40,7 +40,7 @@ export const Lyric = types
   // actions on osd lyric process
   .actions((self) => ({
     __LYRIC__PROCESS__Toggle__: self.toggle,
-    __LYRIC__PROCESS__ToggleTranslation__: self.toggleTranlation,
+    __LYRIC__PROCESS__ToggleTranslation__: self.toggleTranslation,
     __LYRIC__PROCESS__TogglePhonetic__: self.togglePhonetic,
     __LYRIC__PROCESS__ToggleOverlay__: self.toggleOverlay,
   }))

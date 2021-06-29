@@ -1,7 +1,9 @@
-import { app, ipcMain } from 'electron'
+import { app, globalShortcut, ipcMain } from 'electron'
 import debug from 'electron-debug'
 import isDev from 'electron-is-dev'
 import serve from 'electron-serve'
+
+import { acceleratorMap } from '../common'
 
 import { createMainWindow, createLyricWindow } from './windows'
 
@@ -20,6 +22,13 @@ app.on('ready', () => {
     lyricWin?.close()
   })
   mainWin.once('closed', () => (mainWin = null))
+
+  // register global shortcuts
+  Object.entries(acceleratorMap).map(([key, accelerator]) => {
+    globalShortcut.register(accelerator, () => {
+      mainWin.webContents.send('shortcut:global', key)
+    })
+  })
 })
 
 app.on('window-all-closed', () => {

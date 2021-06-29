@@ -2,7 +2,7 @@
   "name": "lunar",
   "version": "0.1.0",
   "private": true,
-  "main": "build/main.js",
+  "main": "build/main/main.js",
   "files": [
     "/build/src",
     "!/build/src/**/*.map"
