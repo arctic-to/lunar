@@ -1,0 +1,24 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+
+.container {
+  @include mixin.center-container;
+  gap: 16px;
+  padding-right: 32px;
+
+  svg {
+    font-size: 16px;
+    color: color.$button;
+    cursor: pointer;
+  }
+
+  .play,
+  .pause {
+    font-size: 24px;
+    color: color.$play-button;
+  }
+
+  .active {
+    color: color.$green1;
+  }
+}

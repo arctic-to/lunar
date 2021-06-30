@@ -1,0 +1,14 @@
+@use '~@/style/color';
+
+.container {
+  display: flex;
+  align-items: center;
+  float: right;
+  margin-right: 32px;
+
+  svg {
+    margin-right: 16px;
+    color: color.$grey8;
+    font-size: 20px;
+  }
+}

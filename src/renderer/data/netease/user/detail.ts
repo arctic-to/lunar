@@ -2,7 +2,7 @@ import { SnapshotOut, types } from 'mobx-state-tree'
 import qs from 'qs'
 import useSWR from 'swr'
 
-import { Profile } from '@/models/Platform/Netease'
+import { Binding, Profile } from '@/models/Platform/Netease'
 
 import { fetcher } from '../fetcher'
 
@@ -36,19 +36,7 @@ const UserDetailResponse = types.model('UserDetailResponse', {
   pcSign: types.boolean,
   profile: Profile,
   peopleCanSeeMyPlayRecord: types.boolean,
-  bindings: types.array(
-    types.model({
-      url: types.string,
-      userId: types.number,
-      expiresIn: types.number,
-      refreshTime: types.number,
-      bindingTime: types.number,
-      tokenJsonStr: types.null,
-      expired: types.boolean,
-      id: types.number,
-      type: types.number,
-    }),
-  ),
+  bindings: types.array(Binding),
   adValid: types.boolean,
   code: types.number,
   createTime: types.number,

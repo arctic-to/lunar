@@ -1,0 +1,21 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.container {
+}
+
+.top {
+  @include mixin.center-container;
+  margin-bottom: 12px;
+}
+
+.bottom {
+  @include mixin.center-container;
+  gap: 8px;
+
+  span {
+    color: color.$grey9;
+    @include typography.b3;
+  }
+}

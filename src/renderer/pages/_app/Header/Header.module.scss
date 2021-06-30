@@ -1,0 +1,41 @@
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
+
+.header {
+  height: 30px;
+  background-color: color.$header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @include mixin.self-draggable;
+}
+
+.left {
+  height: 100%;
+  display: flex;
+  .logo {
+    @include mixin.center-container(v);
+    height: 100%;
+    padding: 0px 16px;
+    cursor: pointer;
+    img {
+      width: 20px;
+    }
+  }
+  .router_controller {
+    display: flex;
+    svg {
+      font-size: 20px;
+    }
+  }
+  .search_input {
+    margin-left: 48px;
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}

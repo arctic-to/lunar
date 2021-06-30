@@ -2,6 +2,7 @@
 
 .track {
   background-color: color.$slider-track;
+  border-radius: 1px;
 
   &:hover .slider {
     display: unset;
@@ -12,6 +13,7 @@
   height: 100%;
   background-color: color.$slider-fill;
   position: relative;
+  border-radius: 1px;
 }
 
 .slider {
@@ -22,6 +24,7 @@
   right: 0;
   transform: translateX(50%);
   background-color: color.$slider-slider;
+  border-radius: 1px;
 
   &:active {
     display: unset;
