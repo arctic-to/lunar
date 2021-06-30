@@ -53,6 +53,7 @@ const { songPrivilegeMap, unofficialSongSourceMap } = getMst(PrivilegeStore)
 
 function isSongAvailableOfficially(song: SongSnapshotIn) {
   const privilege = songPrivilegeMap.get(String(song.id))
+  // https://github.com/Binaryify/NeteaseCloudMusicApi/issues/718#issuecomment-610137558
   return (privilege?.st ?? -1) >= 0
 }
 

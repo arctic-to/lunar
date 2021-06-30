@@ -75,36 +75,32 @@ export const Buttons: React.VFC = observer(() => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.left}>
-        <RiRepeat2Line
-          className={c({ [styles.active]: order === OrderEnum.Repeat })}
-          onClick={repeat}
-        />
-        <RiShuffleLine
-          className={c({ [styles.active]: order === OrderEnum.Shuffle })}
-          onClick={shuffle}
-        />
-        <RiRepeatOneLine
-          className={c({ [styles.active]: order === OrderEnum.RepeatOne })}
-          onClick={repeatOne}
-        />
-      </div>
-      <div className={styles.middle}>
-        <RiSkipBackFill onClick={playPrev} />
-        {currentTrack?.playing ? (
-          <RiPauseFill onClick={pause} className={styles.pause} />
-        ) : (
-          <RiPlayFill onClick={play} className={styles.play} />
-        )}
-        <RiSkipForwardFill onClick={playNext} />
-      </div>
-      <div className={styles.right}>
-        <IconLyric
-          className={c({ [styles.active]: lyric.show })}
-          onClick={lyric.toggle}
-        />
-        <Like songId={currentTrack?.song.id} />
-      </div>
+      <RiRepeat2Line
+        className={c({ [styles.active]: order === OrderEnum.Repeat })}
+        onClick={repeat}
+      />
+      <RiShuffleLine
+        className={c({ [styles.active]: order === OrderEnum.Shuffle })}
+        onClick={shuffle}
+      />
+      <RiRepeatOneLine
+        className={c({ [styles.active]: order === OrderEnum.RepeatOne })}
+        onClick={repeatOne}
+      />
+
+      <RiSkipBackFill onClick={playPrev} />
+      {currentTrack?.playing ? (
+        <RiPauseFill onClick={pause} className={styles.pause} />
+      ) : (
+        <RiPlayFill onClick={play} className={styles.play} />
+      )}
+      <RiSkipForwardFill onClick={playNext} />
+
+      <IconLyric
+        className={c({ [styles.active]: lyric.show })}
+        onClick={lyric.toggle}
+      />
+      <Like songId={currentTrack?.song.id} />
     </div>
   )
 })

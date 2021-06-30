@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
 import { useCallback, useEffect, useRef } from 'react'
@@ -74,12 +75,23 @@ export const CentralController: React.VFC = observer(() => {
 
   return (
     <div className={styles.container}>
-      <Buttons />
-      <ProgressSlider />
+      <div className={styles.top}>
+        <Buttons />
+      </div>
+
+      <div className={styles.bottom}>
+        {currentTrack && renderTime(currentTrack.currentTime)}
+        <ProgressSlider />
+        {currentTrack && renderTime(currentTrack.song.dt)}
+      </div>
 
       <audio src={currentTrack?.songUrl} ref={ref} />
     </div>
   )
 })
+
+const renderTime = (timestamp: number) => {
+  return <span>{dayjs(timestamp).format('mm:ss')}</span>
+}
 
 export default CentralController

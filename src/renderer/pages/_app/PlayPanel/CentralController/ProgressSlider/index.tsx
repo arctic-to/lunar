@@ -8,7 +8,7 @@ export const ProgressSlider: React.VFC = observer(() => {
 
   return (
     <Slider
-      width={500}
+      width={460}
       height={12}
       percentage={currentTrack?.percentage}
       onChange={currentTrack?.setCurrentTimeByPercentage}
