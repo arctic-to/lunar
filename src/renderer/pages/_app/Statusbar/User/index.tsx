@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useState } from 'react'
 import { RiUserFollowLine, RiUserLine } from 'react-icons/ri'
+import { Object } from 'ts-toolbelt'
 
 import { Modal } from '@/components'
 import { useUserAccount } from '@/data'
@@ -9,7 +10,7 @@ import { useBoolean } from '@/hooks'
 import { usePlatform } from '@/models'
 import { path } from '@/path'
 
-import LoginForm from './LoginForm'
+import LoginForm, { LoginData } from './LoginForm'
 import styles from './User.module.scss'
 
 export const User = observer(() => {
@@ -21,18 +22,34 @@ export const User = observer(() => {
 
   const { data } = useUserAccount()
 
+  const updateLoginState = useCallback(
+    (data: LoginData) => {
+      netease.setAccount(data.account)
+      netease.setProfile(data.profile)
+      setIsLogined(true)
+    },
+    [netease],
+  )
+
   useEffect(() => {
-    if (data?.profile) setIsLogined(true)
-  }, [data?.profile, setIsLogined])
+    if (data && data.account && data.profile) {
+      updateLoginState(
+        data as Object.NonNullable<typeof data, 'account' | 'profile'>,
+      )
+    }
+  }, [data, updateLoginState])
 
   const gotoProfile = useCallback(() => {
     if (netease.profile) router.push(path.user(netease.profile.userId))
   }, [netease.profile, router])
 
-  const handleSuccess = useCallback(() => {
-    setIsLogined(true)
-    closeModal()
-  }, [closeModal])
+  const handleSuccess = useCallback(
+    (data: LoginData) => {
+      updateLoginState(data)
+      closeModal()
+    },
+    [closeModal, updateLoginState],
+  )
 
   return (
     <div className={styles.container}>

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 
 import { LoginSchema, login } from '@/data'
-import { usePlatform } from '@/models'
+import { AccountSnapshotIn, ProfileSnapshotIn } from '@/models/Platform'
 
 import styles from './LoginForm.module.scss'
 
@@ -13,12 +13,16 @@ const schema = yup.object().shape({
   password: yup.string().required(),
 })
 
+export type LoginData = {
+  account: AccountSnapshotIn
+  profile: ProfileSnapshotIn
+}
+
 interface LoginFormProps {
-  onSuccess(): void
+  onSuccess(data: LoginData): void
 }
 
 export const LoginForm: React.VFC<LoginFormProps> = ({ onSuccess }) => {
-  const { netease } = usePlatform()
   const [loading, setLoading] = useState(false)
   const [isFailed, setIsFailed] = useState(false)
 
@@ -30,10 +34,8 @@ export const LoginForm: React.VFC<LoginFormProps> = ({ onSuccess }) => {
     (data: LoginSchema) => {
       setLoading(true)
       login(data)
-        .then(({ account, profile }) => {
-          netease.setAccount(account)
-          netease.setProfile(profile)
-          onSuccess()
+        .then((data) => {
+          onSuccess(data)
         })
         .catch(() => {
           setIsFailed(true)
@@ -42,7 +44,7 @@ export const LoginForm: React.VFC<LoginFormProps> = ({ onSuccess }) => {
           setLoading(false)
         })
     },
-    [netease, onSuccess],
+    [onSuccess],
   )
 
   return (
