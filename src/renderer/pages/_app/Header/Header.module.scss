@@ -15,9 +15,13 @@
   height: 100%;
   display: flex;
   .logo {
-    width: 60px;
+    @include mixin.center-container(v);
     height: 100%;
-    background-color: color.$green1;
+    padding: 0px 16px;
+    cursor: pointer;
+    img {
+      width: 20px;
+    }
   }
   .router_controller {
     display: flex;

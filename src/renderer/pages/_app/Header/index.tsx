@@ -7,6 +7,7 @@ import { VscChevronLeft, VscChevronRight } from 'react-icons/vsc'
 import { SearchInput } from '@/components'
 import { useHistory } from '@/hooks'
 import { path } from '@/path'
+import { isDev } from '@/utils'
 
 import styles from './Header.module.scss'
 import WindowOperations from './WindowOperations'
@@ -39,7 +40,9 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.left}>
         <Link href="/">
-          <div className={styles.logo}></div>
+          <div className={styles.logo}>
+            <img src={isDev ? '/favicon.dev.png' : '/favicon.png'} />
+          </div>
         </Link>
         <div className={styles.router_controller}>
           <Button onClick={back}>

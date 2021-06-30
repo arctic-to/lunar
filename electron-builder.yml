@@ -2,8 +2,6 @@ appId: to.arctic.lunar
 productName: Lunar
 copyright: Copyright © 2021 pacexy
 files:
-  - from: .
-    filter:
-      - package.json
-      - build
+  - package.json
+  - build
 publish: null
