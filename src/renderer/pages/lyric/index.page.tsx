@@ -18,7 +18,7 @@ process.env.RENDERER = Renderer.Lyric
 export const OsdLyric: React.VFC = observer(() => {
   const [hovering, setHovering] = useState(false)
   const player = usePlayer()
-  const { lyricStore, song } = player.currTrack ?? {}
+  const { lyricStore } = player.currTrack ?? {}
   const { parsedLyrics, noTimestamp } = lyricStore ?? {}
 
   useEffect(() => {
@@ -62,11 +62,7 @@ export const OsdLyric: React.VFC = observer(() => {
     >
       <Header hovering={hovering} />
       <div className={styles.main}>
-        {canRenderLyric ? (
-          <Lyric parsedLyrics={parsedLyrics!} />
-        ) : (
-          <Fallback song={song} />
-        )}
+        {canRenderLyric ? <Lyric parsedLyrics={parsedLyrics!} /> : <Fallback />}
       </div>
     </div>
   )

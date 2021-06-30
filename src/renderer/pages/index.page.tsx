@@ -1,13 +1,17 @@
+import { observer } from 'mobx-react-lite'
 import Head from 'next/head'
+
+import { usePlayer } from '@/models'
 
 import Home from './_home'
 
-export default function Index() {
+export const Index: React.FC = observer(() => {
+  const { currTrack } = usePlayer()
+
   return (
     <div>
       <Head>
-        <title>Lunar</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>{currTrack?.songTitle || 'Lunar'}</title>
         {/* https://www.electronjs.org/docs/tutorial/security#csp-meta-tag */}
         <meta
           httpEquiv="Content-Security-Policy"
@@ -18,4 +22,6 @@ export default function Index() {
       <Home />
     </div>
   )
-}
+})
+
+export default Index

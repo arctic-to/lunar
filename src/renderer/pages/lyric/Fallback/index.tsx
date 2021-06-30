@@ -1,14 +1,12 @@
-import { SongSnapshotIn } from '@/models'
+import { usePlayer } from '@/models'
 
 import styles from './Fallback.module.scss'
 
-export type FallbackProps = { song: SongSnapshotIn | undefined }
-export const Fallback: React.FC<FallbackProps> = ({ song }) => {
+export const Fallback: React.FC = () => {
+  const { currTrack } = usePlayer()
   return (
     <div className={styles.container}>
-      {song
-        ? `${song.name} - ${song.ar?.map((ar) => ar.name).join(' & ')}`
-        : 'No songs in the track.'}
+      {currTrack?.songTitle || 'No songs in the track.'}
     </div>
   )
 }

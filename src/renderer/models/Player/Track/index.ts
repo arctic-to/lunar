@@ -35,6 +35,11 @@ export const Track = types
     get currentTimeInSecond() {
       return self.currentTime / SECOND
     },
+    get songTitle() {
+      return `${self.song.name} - ${self.song.ar
+        .map((ar) => ar.name)
+        .join(' & ')}`
+    },
   }))
   .actions((self) => ({
     play() {

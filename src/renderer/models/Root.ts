@@ -15,6 +15,8 @@ import { Platform, platform } from './Platform'
 import { Player, player } from './Player'
 import { View, view } from './View'
 
+const STORE_FILE = isDev ? 'app_state.dev' : 'app_state'
+
 const RawRootStore = types.model('RawRootStore', {
   player: Player,
   view: View,
@@ -46,7 +48,7 @@ export type RootStoreInstance = Instance<typeof RootStore>
 export const rootStore: RootStoreInstance = RootStore.create(defaultSnapshot)
 
 function getInitialSnapshot() {
-  const snapshot = storage.getSync('app_state')
+  const snapshot = storage.getSync(STORE_FILE)
   return !isEmpty(snapshot) && RootStore.is(snapshot)
     ? snapshot
     : defaultSnapshot
@@ -54,7 +56,7 @@ function getInitialSnapshot() {
 
 function observeRootStore() {
   onSnapshot(rootStore, (snapshot) => {
-    storage.set('app_state', snapshot, (err) => {
+    storage.set(STORE_FILE, snapshot, (err) => {
       if (err) throw err
     })
     // eslint-disable-next-line no-console
