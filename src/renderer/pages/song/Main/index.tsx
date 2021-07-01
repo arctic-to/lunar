@@ -7,8 +7,8 @@ import { Lyric } from './Lyric'
 import styles from './Main.module.scss'
 
 export const Main: React.FC = observer(() => {
-  const lyricStore = usePlayer().track.song?.lyricStore
-  const { parsedLyrics, noTimestamp, raw: data } = lyricStore ?? {}
+  const lyric = usePlayer().track.song?.lyric
+  const { parsedLyrics, noTimestamp, raw: data } = lyric ?? {}
 
   if (data === undefined) return null
   const info = data.nolyric

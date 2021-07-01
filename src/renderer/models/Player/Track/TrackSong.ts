@@ -7,7 +7,7 @@ import { parseLyric } from '@/utils'
 
 import { Song } from '../Song'
 
-import { LyricResponseSnapshotIn, LyricStore } from './LyricStore'
+import { LyricResponseSnapshotIn, Lyric } from './Lyric'
 
 export const TrackSong = types
   .compose(
@@ -15,7 +15,7 @@ export const TrackSong = types
     Song,
     types.model({
       url: '',
-      lyricStore: types.maybeNull(LyricStore),
+      lyric: types.maybeNull(Lyric),
     }),
   )
   .views((self) => ({
@@ -44,7 +44,7 @@ export const TrackSong = types
       // Maybe the node has been destroyed if we switch songs in a flash.
       // https://github.com/mobxjs/mobx-state-tree/issues/912#issuecomment-404465245
       if (isAlive(self)) {
-        self.lyricStore = cast({
+        self.lyric = cast({
           ...result,
           raw: response,
         })
@@ -61,7 +61,7 @@ export const TrackSong = types
           self.fetchSongUrl()
         }
       }
-      if (!self.lyricStore) {
+      if (!self.lyric) {
         self.fetchLyrics()
       }
     },

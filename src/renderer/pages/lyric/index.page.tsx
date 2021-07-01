@@ -18,8 +18,8 @@ process.env.RENDERER = Renderer.Lyric
 export const OsdLyric: React.VFC = observer(() => {
   const [hovering, setHovering] = useState(false)
   const player = usePlayer()
-  const { lyricStore } = player.track.song ?? {}
-  const { parsedLyrics, noTimestamp } = lyricStore ?? {}
+  const { lyric } = player.track.song ?? {}
+  const { parsedLyrics, noTimestamp } = lyric ?? {}
 
   useEffect(() => {
     ipcRenderer.on('window:main:snapshot', (event, snapshot) => {
