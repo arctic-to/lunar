@@ -4,7 +4,7 @@ import React, { useCallback, useRef } from 'react'
 import { IoMdLocate } from 'react-icons/io'
 
 import { useLyricAnimation } from '@/hooks'
-import { useCurrentTrack } from '@/models'
+import { usePlayer } from '@/models'
 import { ParsedLyric } from '@/utils'
 
 import styles from './Lyric.module.scss'
@@ -17,7 +17,7 @@ interface LyricProps {
 export const Lyric: React.FC<LyricProps> = observer(
   ({ parsedLyrics, noTimestamp }) => {
     const ref = useRef<HTMLDivElement>(null)
-    const { setCurrentTime, play } = useCurrentTrack() ?? {}
+    const { setCurrentTime, play } = usePlayer().track
 
     useLyricAnimation({
       containerRef: ref,

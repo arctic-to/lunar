@@ -3,8 +3,8 @@ import { observer } from 'mobx-react-lite'
 import { getSnapshot } from 'mobx-state-tree'
 import { useCallback, useEffect, useRef } from 'react'
 
-import { useNextTrackIndex } from '@/hooks'
-import { OrderEnum, useCurrentTrack, usePlayer } from '@/models'
+import { useNextSongIndex } from '@/hooks'
+import { OrderEnum, usePlayer } from '@/models'
 
 import Buttons from './Buttons'
 import styles from './CentralController.module.scss'
@@ -12,9 +12,8 @@ import ProgressSlider from './ProgressSlider'
 
 export const CentralController: React.VFC = observer(() => {
   const ref = useRef<HTMLAudioElement>(null)
-  const { order, playNext, replay, volume, setNextTrack, queue } = usePlayer()
-  const currentTrack = useCurrentTrack()
-  const nextTrackIndex = useNextTrackIndex()
+  const { order, playNext, replay, track, setNextSong, queue } = usePlayer()
+  const nextSongIndex = useNextSongIndex()
 
   const handleEnded = useCallback(() => {
     switch (order) {
@@ -30,48 +29,47 @@ export const CentralController: React.VFC = observer(() => {
   }, [order, playNext, replay])
 
   useEffect(() => {
-    if (currentTrack?.song && queue.size) {
-      setNextTrack({
-        song: getSnapshot(queue.modGet(nextTrackIndex)),
-      })
+    if (track.song && queue.size) {
+      setNextSong(getSnapshot(queue.modGet(nextSongIndex)))
     }
-  }, [currentTrack?.song, nextTrackIndex, queue, setNextTrack])
+  }, [track.song, nextSongIndex, queue, setNextSong])
 
   useEffect(() => {
-    if (currentTrack && ref.current) {
+    if (track && ref.current) {
       // Should replace previous event handler
       ref.current.onended = handleEnded
-      ref.current.onplay = currentTrack.currentTimeObserver()
-      ref.current.onpause = currentTrack.unobserveCurrentTime
+      ref.current.onplay = track.currentTimeObserver
+      ref.current.onpause = track.unobserveCurrentTime
     }
-  }, [currentTrack, handleEnded])
+  }, [track, handleEnded])
 
   useEffect(() => {
-    /** `currentTime` can be set when <audio> has non-empty `src`(currentTrack.songUrl). */
-    if (currentTrack && currentTrack.songUrl && ref.current) {
-      ref.current.currentTime = currentTrack.currentTimeInSecond
+    /** `currentTime` can be set when <audio> has non-empty `src`(track.song.url). */
+    if (track.song?.url && ref.current) {
+      ref.current.currentTime = track.currentTimeInSecond
     }
     /**
      * Ignore the updates of `currentTimeInSecond`, cause it is
      * updated continually if audio is playing.
      */
-  }, [currentTrack, currentTrack?.songUrl, currentTrack?.currentTimeSetTimes])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [track.song?.url, track.currentTimeSetTimes])
 
   useEffect(() => {
-    if (currentTrack && ref.current) {
-      ref.current.volume = volume * currentTrack.volume
+    if (track && ref.current) {
+      ref.current.volume = track.volume
     }
-  }, [currentTrack, currentTrack?.volume, volume])
+  }, [track, track.volume])
 
   useEffect(() => {
-    if (!(currentTrack && currentTrack.songUrl && ref.current)) return
+    if (!(track.song?.url && ref.current)) return
 
-    if (currentTrack.playing) {
+    if (track.playing) {
       ref.current.play()
     } else {
       ref.current.pause()
     }
-  }, [currentTrack, currentTrack?.playing, currentTrack?.songUrl])
+  }, [track.playing, track.song?.url])
 
   return (
     <div className={styles.container}>
@@ -80,12 +78,12 @@ export const CentralController: React.VFC = observer(() => {
       </div>
 
       <div className={styles.bottom}>
-        {currentTrack && renderTime(currentTrack.currentTime)}
+        {track.song && renderTime(track.currentTime)}
         <ProgressSlider />
-        {currentTrack && renderTime(currentTrack.song.dt)}
+        {track.song && renderTime(track.song.dt)}
       </div>
 
-      <audio src={currentTrack?.songUrl} ref={ref} />
+      <audio src={track.song?.url} ref={ref} />
     </div>
   )
 })

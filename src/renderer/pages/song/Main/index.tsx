@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 
-import { useCurrentTrack } from '@/models'
+import { usePlayer } from '@/models'
 
 import { Lyric } from './Lyric'
 import styles from './Main.module.scss'
 
 export const Main: React.FC = observer(() => {
-  const lyricStore = useCurrentTrack()?.lyricStore
+  const lyricStore = usePlayer().track.song?.lyricStore
   const { parsedLyrics, noTimestamp, raw: data } = lyricStore ?? {}
 
   if (data === undefined) return null

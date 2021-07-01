@@ -17,16 +17,13 @@ import { GlobalShortcut } from '@/../common'
 import { Like } from '@/components'
 import { useLike } from '@/data'
 import { IconLyric } from '@/icons'
-import { OrderEnum, useCurrentTrack, usePlayer } from '@/models'
+import { OrderEnum, usePlayer } from '@/models'
 
 import styles from './Buttons.module.scss'
 
 export const Buttons: React.VFC = observer(() => {
-  const currentTrack = useCurrentTrack()
-  const [like] = useLike(currentTrack?.song.id)
   const {
-    play,
-    pause,
+    track,
     playPrev,
     playNext,
     order,
@@ -34,10 +31,9 @@ export const Buttons: React.VFC = observer(() => {
     shuffle,
     repeatOne,
     lyric,
-    turnDownVolume,
-    turnUpVolume,
-    toggle,
   } = usePlayer()
+  const [like] = useLike(track.song?.id)
+  const { play, pause, turnDownVolume, turnUpVolume, toggle } = track
 
   const actionMap = useMemo(
     () => ({
@@ -89,7 +85,7 @@ export const Buttons: React.VFC = observer(() => {
       />
 
       <RiSkipBackFill onClick={playPrev} />
-      {currentTrack?.playing ? (
+      {track.playing ? (
         <RiPauseFill onClick={pause} className={styles.pause} />
       ) : (
         <RiPlayFill onClick={play} className={styles.play} />
@@ -100,7 +96,7 @@ export const Buttons: React.VFC = observer(() => {
         className={c({ [styles.active]: lyric.show })}
         onClick={lyric.toggle}
       />
-      <Like songId={currentTrack?.song.id} />
+      <Like songId={track.song?.id} />
     </div>
   )
 })

@@ -18,7 +18,7 @@ process.env.RENDERER = Renderer.Lyric
 export const OsdLyric: React.VFC = observer(() => {
   const [hovering, setHovering] = useState(false)
   const player = usePlayer()
-  const { lyricStore } = player.currTrack ?? {}
+  const { lyricStore } = player.track.song ?? {}
   const { parsedLyrics, noTimestamp } = lyricStore ?? {}
 
   useEffect(() => {

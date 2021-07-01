@@ -2,13 +2,13 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 
 import { Album, Artists } from '@/components'
-import { useCurrentTrack } from '@/models'
+import { usePlayer } from '@/models'
 
 import { Main } from './Main'
 import styles from './song.module.scss'
 
 export const Song: React.FC = observer(() => {
-  const { song } = useCurrentTrack() ?? {}
+  const { song } = usePlayer().track
 
   if (!song) return null
 

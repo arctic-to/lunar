@@ -18,19 +18,19 @@ export type SongProps = {
 
 export const Song: React.VFC<SongProps> = observer(
   ({ song, active, onClick, onDoubleClick }) => {
-    const { isInTrack, tryReplaceTrack } = usePlayer()
+    const { isCurrSong, tryReplaceSong } = usePlayer()
     const liked = useLiked(song.id)
     const available = isSongAvailable(song)
 
     const handleDoubleClick = useCallback(() => {
-      tryReplaceTrack({ song })
+      tryReplaceSong(song)
       onDoubleClick?.()
-    }, [onDoubleClick, song, tryReplaceTrack])
+    }, [onDoubleClick, song, tryReplaceSong])
 
     return (
       <div
         className={c(styles.container, {
-          [styles.in_track]: isInTrack(song),
+          [styles.current]: isCurrSong(song),
           [styles.active]: active,
           [styles.liked]: liked,
           [styles.unavailable]: !available,

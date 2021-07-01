@@ -27,9 +27,7 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
 
     const handleDoubleClick = useCallback(() => {
       player.insertOneToQueue(aggregatedSong.songSnapshot)
-      player.tryReplaceTrack({
-        song: aggregatedSong.songSnapshot,
-      })
+      player.tryReplaceSong(aggregatedSong.songSnapshot)
     }, [player, aggregatedSong.songSnapshot])
 
     return (

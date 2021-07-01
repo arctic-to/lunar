@@ -18,7 +18,7 @@ export type SongBaseProps = {
   song: SongSnapshotIn
 }
 export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
-  const { isInTrack } = usePlayer()
+  const { isCurrSong } = usePlayer()
   const songSourceKind = getSongSourceKind(song)
   const unavailable = songSourceKind === SongSourceKind.None
 
@@ -34,7 +34,7 @@ export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
   return (
     <div
       className={c(styles.container, {
-        [styles.in_track]: isInTrack(song),
+        [styles.current]: isCurrSong(song),
         [styles.unavailable]: unavailable,
       })}
     >

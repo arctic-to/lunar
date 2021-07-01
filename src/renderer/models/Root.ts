@@ -5,7 +5,6 @@ import {
   Instance,
   onSnapshot,
   applySnapshot,
-  SnapshotIn,
   castToSnapshot,
 } from 'mobx-state-tree'
 
@@ -17,23 +16,10 @@ import { View, view } from './View'
 
 const STORE_FILE = isDev ? 'app_state.dev' : 'app_state'
 
-const RawRootStore = types.model('RawRootStore', {
+const RootStore = types.model('RootStore', {
   player: Player,
   view: View,
   platform: Platform,
-})
-
-type RawRootStoreSnapshot = SnapshotIn<typeof RawRootStore>
-
-export const RootStore = types.snapshotProcessor(RawRootStore, {
-  preProcessor(snapshot: RawRootStoreSnapshot) {
-    snapshot.player.tracks?.forEach((track) => {
-      track.playing = false
-      track.currentTimeSetTimes = 0
-    })
-
-    return snapshot
-  },
 })
 
 export const defaultSnapshot = {
@@ -49,9 +35,12 @@ export const rootStore: RootStoreInstance = RootStore.create(defaultSnapshot)
 
 function getInitialSnapshot() {
   const snapshot = storage.getSync(STORE_FILE)
-  return !isEmpty(snapshot) && RootStore.is(snapshot)
-    ? snapshot
-    : defaultSnapshot
+  if (!isEmpty(snapshot) && RootStore.is(snapshot)) {
+    snapshot.player.track.playing = false
+    return snapshot
+  } else {
+    return defaultSnapshot
+  }
 }
 
 function observeRootStore() {

@@ -26,11 +26,9 @@ export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
   const {
     order,
     lyric,
-    currTrack,
-    __LYRIC__PROCESS__Pause__,
+    track,
     __LYRIC__PROCESS__PlayPrev__,
     __LYRIC__PROCESS__PlayNext__,
-    __LYRIC__PROCESS__Play__,
     __LYRIC__PROCESS__RepeatOne__,
     __LYRIC__PROCESS__Repeat__,
     __LYRIC__PROCESS__Shuffle__,
@@ -40,10 +38,10 @@ export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
     () => [
       [
         <RiSkipBackFill onClick={__LYRIC__PROCESS__PlayPrev__} />,
-        currTrack?.playing ? (
-          <RiPauseFill onClick={__LYRIC__PROCESS__Pause__} />
+        track.playing ? (
+          <RiPauseFill onClick={track.__LYRIC__PROCESS__Pause__} />
         ) : (
-          <RiPlayFill onClick={__LYRIC__PROCESS__Play__} />
+          <RiPlayFill onClick={track.__LYRIC__PROCESS__Play__} />
         ),
         <RiSkipForwardFill onClick={__LYRIC__PROCESS__PlayNext__} />,
       ],
@@ -88,22 +86,22 @@ export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
       ],
     ],
     [
-      __LYRIC__PROCESS__Pause__,
-      __LYRIC__PROCESS__PlayNext__,
       __LYRIC__PROCESS__PlayPrev__,
-      __LYRIC__PROCESS__Play__,
-      __LYRIC__PROCESS__RepeatOne__,
+      track.playing,
+      track.__LYRIC__PROCESS__Pause__,
+      track.__LYRIC__PROCESS__Play__,
+      __LYRIC__PROCESS__PlayNext__,
+      order,
       __LYRIC__PROCESS__Repeat__,
       __LYRIC__PROCESS__Shuffle__,
-      currTrack?.playing,
-      lyric.__LYRIC__PROCESS__ToggleOverlay__,
-      lyric.__LYRIC__PROCESS__TogglePhonetic__,
-      lyric.__LYRIC__PROCESS__ToggleTranslation__,
-      lyric.__LYRIC__PROCESS__Toggle__,
-      lyric.overlay,
-      lyric.phonetic,
+      __LYRIC__PROCESS__RepeatOne__,
       lyric.translation,
-      order,
+      lyric.__LYRIC__PROCESS__ToggleTranslation__,
+      lyric.phonetic,
+      lyric.__LYRIC__PROCESS__TogglePhonetic__,
+      lyric.overlay,
+      lyric.__LYRIC__PROCESS__ToggleOverlay__,
+      lyric.__LYRIC__PROCESS__Toggle__,
     ],
   )
 
