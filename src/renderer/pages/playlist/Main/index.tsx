@@ -12,7 +12,7 @@ import {
   useSongTags,
 } from '@/data'
 import { useBoolean } from '@/hooks'
-import { usePlatform } from '@/models'
+import { SongSnapshotIn, usePlatform } from '@/models'
 import { getMst } from '@/stores'
 import pageStyles from '@/style/business/page.module.scss'
 
@@ -26,6 +26,9 @@ import { filterTracksByKeyword, filterTracksByTags } from './utils'
 export type MainProps = {
   data: PlaylistDetailResponseSnapshotOut
 }
+
+let cachedTracks: SongSnapshotIn[] | undefined
+
 export const Main: React.FC<MainProps> = observer(({ data }) => {
   const { tracks: initialTracks, trackIds } = data.playlist
   const id = useId()!
@@ -56,13 +59,27 @@ export const Main: React.FC<MainProps> = observer(({ data }) => {
     [initialTracks.length, trackIds],
   )
   const [tracks, setTracks] = useState(initialTracks)
-  const { data: restTracks } = useSongDetail(restTrackIds)
+  const { data: restTracks, isLoaded } = useSongDetail(restTrackIds)
   useEffect(() => {
     setTracks([...initialTracks, ...restTracks])
   }, [initialTracks, restTracks])
 
+  useEffect(() => {
+    if (isLoaded) {
+      cachedTracks = tracks
+    }
+  }, [isLoaded, tracks])
+
+  const tracksToDisplay = useMemo(() => {
+    if (isLoaded || !cachedTracks) {
+      return tracks
+    } else {
+      return cachedTracks
+    }
+  }, [isLoaded, tracks])
+
   const filteredTracks = useMemo(() => {
-    const _tracks = filterTracksByKeyword(tracks, keyword)
+    const _tracks = filterTracksByKeyword(tracksToDisplay, keyword)
     return tags ? filterTracksByTags(_tracks, selectedTagIds) : _tracks
     // The component is rerendered due to `selectedTagIds` change,
     // but `selectedTagIds` is considered as unchanged in hooks.

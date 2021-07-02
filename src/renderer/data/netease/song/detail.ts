@@ -14,6 +14,7 @@ const privilegeStore = getMst(PrivilegeStore)
 export function useSongDetail(songIds: number[] | undefined) {
   const idStr = songIds?.join()
   const [error, setError] = useState()
+  const [isLoaded, setIsLoaded] = useState(false)
   const [songChunks, setSongChunks] = useState<SongSnapshotOut[][]>([])
   const data = useMemo(() => songChunks.flat(), [songChunks])
 
@@ -22,8 +23,8 @@ export function useSongDetail(songIds: number[] | undefined) {
     const ids = idStr.split(',')
     const idChunks = chunk(ids, CHUNK_SIZE)
 
-    idChunks.forEach((idChunk, index) => {
-      axios
+    const promises = idChunks.map((idChunk, index) => {
+      return axios
         .post<SongDetailResponseSnapshot>(
           `/song/detail?timestamp=${Date.now()}`,
           { ids: idChunk.join() },
@@ -39,10 +40,14 @@ export function useSongDetail(songIds: number[] | undefined) {
         })
         .catch((err) => setError(err))
     })
+
+    Promise.all(promises).then(() => {
+      setIsLoaded(true)
+    })
   }, [idStr])
 
   return {
-    loading: !data && !error,
+    isLoaded,
     data,
     error,
   }
