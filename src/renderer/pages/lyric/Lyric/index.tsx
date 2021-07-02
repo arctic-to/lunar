@@ -2,8 +2,9 @@ import { observer } from 'mobx-react-lite'
 import React, { useRef } from 'react'
 
 import { useLyricAnimation } from '@/hooks'
-import { usePlayer } from '@/models'
 import { ParsedLyric } from '@/utils'
+
+import { useLyricStore } from '../store'
 
 import styles from './Lyric.module.scss'
 
@@ -13,12 +14,13 @@ interface LyricProps {
 
 export const Lyric: React.FC<LyricProps> = observer(({ parsedLyrics }) => {
   const ref = useRef<HTMLDivElement>(null)
-  const { lyric } = usePlayer()
+  const { currentTime, phonetic, translation } = useLyricStore()
 
   useLyricAnimation({
     containerRef: ref,
     parsedLyrics,
     currentLyricStyle: styles.current,
+    currentTime,
   })
 
   return (
@@ -26,7 +28,7 @@ export const Lyric: React.FC<LyricProps> = observer(({ parsedLyrics }) => {
       {parsedLyrics.map((parsedLyric, index) => (
         <div key={index} className={styles.lyric_container}>
           <span className={styles.lyric}>
-            {lyric.phonetic && parsedLyric.phonetic ? (
+            {phonetic && parsedLyric.phonetic ? (
               <span
                 dangerouslySetInnerHTML={{ __html: parsedLyric.phonetic }}
               />
@@ -34,7 +36,7 @@ export const Lyric: React.FC<LyricProps> = observer(({ parsedLyrics }) => {
               parsedLyric.content
             )}
           </span>
-          {lyric.translation && parsedLyric.translation && (
+          {translation && parsedLyric.translation && (
             <span className={styles.translation}>
               {parsedLyric.translation}
             </span>

@@ -2,13 +2,13 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 
 import { Artists, Link } from '@/components'
-import { useCurrentTrack } from '@/models'
+import { usePlayer } from '@/models'
 import { path } from '@/path'
 
 import styles from './SongCard.module.scss'
 
 export const SongCard: React.FC = observer(() => {
-  const { song } = useCurrentTrack() ?? {}
+  const { song } = usePlayer().track
 
   return (
     <div className={styles['song-card']}>

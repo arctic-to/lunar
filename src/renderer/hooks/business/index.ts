@@ -1,3 +1,3 @@
 export * from './useLyricAnimation'
-export * from './useNextTrackIndex'
+export * from './useNextSongIndex'
 export * from './useShufflePlayIndex'

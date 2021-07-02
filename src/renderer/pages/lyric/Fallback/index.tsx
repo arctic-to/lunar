@@ -1,12 +1,12 @@
-import { usePlayer } from '@/models'
+import { useLyricStore } from '../store'
 
 import styles from './Fallback.module.scss'
 
 export const Fallback: React.FC = () => {
-  const { currTrack } = usePlayer()
+  const { song } = useLyricStore()
   return (
     <div className={styles.container}>
-      {currTrack?.songTitle || 'No songs in the track.'}
+      {song?.title || 'No songs in the track.'}
     </div>
   )
 }

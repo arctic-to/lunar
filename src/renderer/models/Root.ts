@@ -1,12 +1,12 @@
-import storage from 'electron-json-storage'
+import Store from 'electron-store'
 import { isEmpty } from 'lodash'
 import {
   types,
   Instance,
   onSnapshot,
   applySnapshot,
-  SnapshotIn,
   castToSnapshot,
+  SnapshotOut,
 } from 'mobx-state-tree'
 
 import { isDev } from '@/utils'
@@ -15,25 +15,14 @@ import { Platform, platform } from './Platform'
 import { Player, player } from './Player'
 import { View, view } from './View'
 
-const STORE_FILE = isDev ? 'app_state.dev' : 'app_state'
+const store = new Store<RootStoreSnapshot>({
+  name: isDev ? 'app_state.dev' : 'app_state',
+})
 
-const RawRootStore = types.model('RawRootStore', {
+const RootStore = types.model('RootStore', {
   player: Player,
   view: View,
   platform: Platform,
-})
-
-type RawRootStoreSnapshot = SnapshotIn<typeof RawRootStore>
-
-export const RootStore = types.snapshotProcessor(RawRootStore, {
-  preProcessor(snapshot: RawRootStoreSnapshot) {
-    snapshot.player.tracks?.forEach((track) => {
-      track.playing = false
-      track.currentTimeSetTimes = 0
-    })
-
-    return snapshot
-  },
 })
 
 export const defaultSnapshot = {
@@ -44,21 +33,23 @@ export const defaultSnapshot = {
 
 let initialized = false
 
+export type RootStoreSnapshot = SnapshotOut<typeof RootStore>
 export type RootStoreInstance = Instance<typeof RootStore>
 export const rootStore: RootStoreInstance = RootStore.create(defaultSnapshot)
 
 function getInitialSnapshot() {
-  const snapshot = storage.getSync(STORE_FILE)
-  return !isEmpty(snapshot) && RootStore.is(snapshot)
-    ? snapshot
-    : defaultSnapshot
+  const snapshot = store.store
+  if (!isEmpty(snapshot) && RootStore.is(snapshot)) {
+    snapshot.player.track.playing = false
+    return snapshot
+  } else {
+    return defaultSnapshot
+  }
 }
 
 function observeRootStore() {
   onSnapshot(rootStore, (snapshot) => {
-    storage.set(STORE_FILE, snapshot, (err) => {
-      if (err) throw err
-    })
+    store.store = snapshot
     // eslint-disable-next-line no-console
     if (isDev) console.log(snapshot)
   })

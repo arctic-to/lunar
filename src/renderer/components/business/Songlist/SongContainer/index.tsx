@@ -24,7 +24,7 @@ export const SongContainer: React.FC<SongContainerProps> = observer(
         } else {
           player.replaceQueue({ songs })
         }
-        player.tryReplaceTrack({ song })
+        player.tryReplaceSong(song)
       },
       [player, song, songs],
     )

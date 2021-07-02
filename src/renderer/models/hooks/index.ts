@@ -1,4 +1,3 @@
-export * from './useCurrentTrack'
 export * from './usePlatform'
 export * from './usePlayer'
 export * from './useSidebar'

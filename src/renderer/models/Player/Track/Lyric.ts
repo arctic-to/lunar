@@ -33,7 +33,7 @@ const ParsedLyric = types.model('ParsedLyric', {
   content: types.string,
 })
 
-export const LyricStore = types.model('LyricStore', {
+export const Lyric = types.model('Lyric', {
   parsedLyrics: types.maybeNull(types.array(ParsedLyric)),
   noTimestamp: types.boolean,
   raw: LyricResponse,

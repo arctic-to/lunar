@@ -6,12 +6,12 @@ import { usePlayer } from '@/models'
 import Home from './_home'
 
 export const Index: React.FC = observer(() => {
-  const { currTrack } = usePlayer()
+  const { track } = usePlayer()
 
   return (
     <div>
       <Head>
-        <title>{currTrack?.songTitle || 'Lunar'}</title>
+        <title>{track.song?.title || 'Lunar'}</title>
         {/* https://www.electronjs.org/docs/tutorial/security#csp-meta-tag */}
         <meta
           httpEquiv="Content-Security-Policy"

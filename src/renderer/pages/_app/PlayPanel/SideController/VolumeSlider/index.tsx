@@ -7,15 +7,15 @@ import { usePlayer } from '@/models'
 import styles from './VolumeSlider.module.scss'
 
 export const VolumeSlider: React.VFC = observer(() => {
-  const player = usePlayer()
+  const { track } = usePlayer()
 
   return (
     <div className={styles.container}>
       <RiVolumeDownLine />
       <Slider
         width={80}
-        percentage={player?.volume}
-        onChange={player?.setVolume}
+        percentage={track.volume}
+        onChange={track.setVolume}
         updateWhileMouseMove
       />
     </div>

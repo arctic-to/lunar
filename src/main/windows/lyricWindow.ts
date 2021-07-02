@@ -1,9 +1,13 @@
 import { BrowserWindow } from 'electron'
 import isDev from 'electron-is-dev'
 
-export function createLyricWindow(playerSnapshot: any) {
+import { store } from '../store'
+
+export function createLyricWindow() {
+  const lyric = store.get('lyric')
+
   const win = new BrowserWindow({
-    ...playerSnapshot.lyric.bounds,
+    ...lyric?.bounds,
     frame: false,
     acceptFirstMouse: true,
     fullscreenable: false,
@@ -12,11 +16,12 @@ export function createLyricWindow(playerSnapshot: any) {
     transparent: true,
     alwaysOnTop: true,
     skipTaskbar: true,
-    show: playerSnapshot.lyric.show,
+    show: lyric?.show,
     webPreferences: {
       nodeIntegration: true,
       enableRemoteModule: true,
       contextIsolation: false, // https://github.com/electron/electron/issues/28034#issuecomment-792871937
+      preload: __dirname + '/../preload.js', //https://stackoverflow.com/a/56446019/13151903
     },
   })
 

@@ -17,7 +17,7 @@
   }
   &.liked {
   }
-  &.in_track {
+  &.current {
     .name {
       color: color.$song-playing;
     }

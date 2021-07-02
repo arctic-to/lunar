@@ -44,7 +44,7 @@ export function useSonglist<T extends SongSnapshotIn>(songs?: T[]) {
             player.replaceQueue({ songs: selectedSongs })
           }
 
-          player.tryReplaceTrack({ song: selectedSongs[0] })
+          player.tryReplaceSong(selectedSongs[0])
           break
         }
         case 'KeyA': {
