@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
+    "target": "ES2015",
+    "module": "CommonJS", // electron only supports commonjs
     "esModuleInterop": true,
     "moduleResolution": "node",
     "outDir": "../../build"
   },
-  "files": ["main.ts"]
+  "files": ["main.ts", "preload.ts"]
 }

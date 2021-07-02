@@ -1,6 +1,6 @@
 export * from './Album'
 export * from './History'
-export * from './Lyric'
+export * from './OsdLyric'
 export * from './Player'
 export * from './Playlist'
 export * from './PlaylistDetail'

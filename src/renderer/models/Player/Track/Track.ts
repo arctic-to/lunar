@@ -97,10 +97,6 @@ export const Track = types
       self.unobserveCurrentTime()
     },
   }))
-  .actions((self) => ({
-    __LYRIC__PROCESS__Play__: self.play,
-    __LYRIC__PROCESS__Pause__: self.pause,
-  }))
 
 export type TrackSnapshotIn = SnapshotIn<typeof Track>
 export type TrackInstance = Instance<typeof Track>

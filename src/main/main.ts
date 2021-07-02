@@ -3,8 +3,9 @@ import debug from 'electron-debug'
 import isDev from 'electron-is-dev'
 import serve from 'electron-serve'
 
-import { acceleratorMap } from '../common'
+import { acceleratorMap, Renderer } from '../common'
 
+import { store } from './store'
 import { createMainWindow, createLyricWindow } from './windows'
 
 let mainWin: Electron.BrowserWindow | null = null
@@ -16,17 +17,32 @@ if (isDev) {
   serve({ directory: 'build' })
 }
 
+const updateMainWindowBounds = () => {
+  store.set('main.bounds', mainWin.getBounds())
+}
+const updateLyricWindowBounds = () => {
+  store.set('lyric.bounds', lyricWin.getBounds())
+}
+
 app.on('ready', () => {
+  // main window
   mainWin = createMainWindow()
-  mainWin.on('close', () => {
-    lyricWin?.close()
-  })
+  mainWin.on('close', () => lyricWin.close())
   mainWin.once('closed', () => (mainWin = null))
+  mainWin.on('moved', updateMainWindowBounds)
+  mainWin.on('resized', updateMainWindowBounds)
+
+  // lyric window
+  lyricWin = createLyricWindow()
+  lyricWin.once('closed', () => (lyricWin = null))
+  lyricWin.on('moved', updateLyricWindowBounds)
+  lyricWin.on('resized', updateLyricWindowBounds)
 
   // register global shortcuts
   Object.entries(acceleratorMap).map(([key, accelerator]) => {
     globalShortcut.register(accelerator, () => {
       mainWin.webContents.send('shortcut:global', key)
+      lyricWin.webContents.send('shortcut:global', key)
     })
   })
 })
@@ -37,26 +53,18 @@ app.on('window-all-closed', () => {
   }
 })
 
-ipcMain.once('window:lyric:create', (_, playerSnapshot) => {
-  lyricWin = createLyricWindow(playerSnapshot)
-  lyricWin.once('closed', () => (lyricWin = null))
+ipcMain.on('window:lyric:show', () => {
+  store.set('lyric.show', true)
+  lyricWin.show()
+})
+ipcMain.on('window:lyric:hide', () => {
+  store.set('lyric.show', false)
+  lyricWin.hide()
+})
 
-  lyricWin.on('moved', () => {
-    mainWin?.webContents.send('window:lyric:move', lyricWin?.getBounds())
-  })
-
-  lyricWin.on('resized', () => {
-    mainWin?.webContents.send('window:lyric:resize', lyricWin?.getBounds())
-  })
-
-  ipcMain.on('window:lyric:show', () => lyricWin?.show())
-  ipcMain.on('window:lyric:hide', () => lyricWin?.hide())
-
-  ipcMain.on('window:main:snapshot', (_, snapshot) => {
-    lyricWin?.webContents.send('window:main:snapshot', snapshot)
-  })
-
-  ipcMain.on('window:lyric:action', (_, action) => {
-    mainWin?.webContents.send('window:lyric:action', action)
-  })
+ipcMain.on('lunar:getWebcontentsIds', (event) => {
+  event.returnValue = {
+    [Renderer.Main]: mainWin.webContents.id,
+    [Renderer.Lyric]: lyricWin.webContents.id,
+  }
 })

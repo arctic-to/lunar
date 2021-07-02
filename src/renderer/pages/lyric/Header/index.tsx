@@ -14,8 +14,11 @@ import {
 
 import IconOverlay from '@/icons/Overlay'
 import IconTranslate from '@/icons/Translate'
-import { OrderEnum, usePlayer } from '@/models'
+import { OrderEnum } from '@/models'
 import { withDivider } from '@/utils'
+
+import { useActionIpc } from '../ipc'
+import { useLyricStore } from '../store'
 
 import styles from './Header.module.scss'
 
@@ -24,53 +27,55 @@ interface HeaderProps {
 }
 export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
   const {
+    translation,
+    toggleTranslation,
+    phonetic,
+    togglePhonetic,
+    overlay,
+    toggleOverlay,
     order,
-    lyric,
-    track,
-    __LYRIC__PROCESS__PlayPrev__,
-    __LYRIC__PROCESS__PlayNext__,
-    __LYRIC__PROCESS__RepeatOne__,
-    __LYRIC__PROCESS__Repeat__,
-    __LYRIC__PROCESS__Shuffle__,
-  } = usePlayer()
+    playing,
+  } = useLyricStore()
+
+  const actions = useActionIpc()
 
   const buttonGroups = useMemo(
     () => [
       [
-        <RiSkipBackFill onClick={__LYRIC__PROCESS__PlayPrev__} />,
-        track.playing ? (
-          <RiPauseFill onClick={track.__LYRIC__PROCESS__Pause__} />
+        <RiSkipBackFill onClick={actions.playPrev} />,
+        playing ? (
+          <RiPauseFill onClick={actions.pause} />
         ) : (
-          <RiPlayFill onClick={track.__LYRIC__PROCESS__Play__} />
+          <RiPlayFill onClick={actions.play} />
         ),
-        <RiSkipForwardFill onClick={__LYRIC__PROCESS__PlayNext__} />,
+        <RiSkipForwardFill onClick={actions.playNext} />,
       ],
       [
         <RiRepeat2Line
           className={c({ [styles.active]: order === OrderEnum.Repeat })}
-          onClick={__LYRIC__PROCESS__Repeat__}
+          onClick={actions.repeat}
         />,
         <RiShuffleLine
           className={c({ [styles.active]: order === OrderEnum.Shuffle })}
-          onClick={__LYRIC__PROCESS__Shuffle__}
+          onClick={actions.shuffle}
         />,
         <RiRepeatOneLine
           className={c({ [styles.active]: order === OrderEnum.RepeatOne })}
-          onClick={__LYRIC__PROCESS__RepeatOne__}
+          onClick={actions.repeatOne}
         />,
       ],
       [
         <IconTranslate
-          className={c(styles.text_button, {
-            [styles.active]: lyric.translation,
+          className={c({
+            [styles.active]: translation,
           })}
-          onClick={lyric.__LYRIC__PROCESS__ToggleTranslation__}
+          onClick={toggleTranslation}
         />,
         <div
           className={c(styles.text_button, {
-            [styles.active]: lyric.phonetic,
+            [styles.active]: phonetic,
           })}
-          onClick={lyric.__LYRIC__PROCESS__TogglePhonetic__}
+          onClick={togglePhonetic}
         >
           ɪ
         </div>,
@@ -78,34 +83,34 @@ export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
       [
         <IconOverlay
           className={c({
-            [styles.active]: lyric.overlay,
+            [styles.active]: overlay,
           })}
-          onClick={lyric.__LYRIC__PROCESS__ToggleOverlay__}
+          onClick={toggleOverlay}
         />,
-        <IoClose onClick={lyric.__LYRIC__PROCESS__Toggle__} />,
+        <IoClose onClick={actions.hideLyric} />,
       ],
     ],
     [
-      __LYRIC__PROCESS__PlayPrev__,
-      track.playing,
-      track.__LYRIC__PROCESS__Pause__,
-      track.__LYRIC__PROCESS__Play__,
-      __LYRIC__PROCESS__PlayNext__,
+      actions.playPrev,
+      actions.pause,
+      actions.play,
+      actions.playNext,
+      actions.repeat,
+      actions.shuffle,
+      actions.repeatOne,
+      actions.hideLyric,
+      playing,
       order,
-      __LYRIC__PROCESS__Repeat__,
-      __LYRIC__PROCESS__Shuffle__,
-      __LYRIC__PROCESS__RepeatOne__,
-      lyric.translation,
-      lyric.__LYRIC__PROCESS__ToggleTranslation__,
-      lyric.phonetic,
-      lyric.__LYRIC__PROCESS__TogglePhonetic__,
-      lyric.overlay,
-      lyric.__LYRIC__PROCESS__ToggleOverlay__,
-      lyric.__LYRIC__PROCESS__Toggle__,
+      translation,
+      toggleTranslation,
+      phonetic,
+      togglePhonetic,
+      overlay,
+      toggleOverlay,
     ],
   )
 
-  const visible = lyric.overlay || hovering
+  const visible = overlay || hovering
 
   return (
     <div

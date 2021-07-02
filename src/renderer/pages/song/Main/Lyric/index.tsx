@@ -17,12 +17,13 @@ interface LyricProps {
 export const Lyric: React.FC<LyricProps> = observer(
   ({ parsedLyrics, noTimestamp }) => {
     const ref = useRef<HTMLDivElement>(null)
-    const { setCurrentTime, play } = usePlayer().track
+    const { currentTime, setCurrentTime, play } = usePlayer().track
 
     useLyricAnimation({
       containerRef: ref,
       parsedLyrics,
       currentLyricStyle: styles.current,
+      currentTime,
     })
 
     const jump = useCallback(

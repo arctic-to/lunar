@@ -1,43 +1,25 @@
 import c from 'classnames'
-import { ipcRenderer, remote } from 'electron'
+import { remote } from 'electron'
 import { inRange } from 'lodash'
 import { observer } from 'mobx-react-lite'
-import { applySnapshot, onAction } from 'mobx-state-tree'
 import React, { useEffect, useState } from 'react'
-
-import { Renderer, __LYRIC__PROCESS__ } from '@/ipc'
-import { usePlayer } from '@/models'
 
 import Fallback from './Fallback'
 import Header from './Header'
 import Lyric from './Lyric'
 import styles from './OsdLyric.module.scss'
-
-process.env.RENDERER = Renderer.Lyric
+import { useDependencyIpc } from './ipc'
+import { useGlobalShortcut } from './shortcut'
+import { LyricStoreContext, useCreateLyricStore } from './store'
 
 export const OsdLyric: React.VFC = observer(() => {
   const [hovering, setHovering] = useState(false)
-  const player = usePlayer()
-  const { lyric } = player.track.song ?? {}
-  const { parsedLyrics, noTimestamp } = lyric ?? {}
+  const store = useCreateLyricStore()
 
-  useEffect(() => {
-    ipcRenderer.on('window:main:snapshot', (event, snapshot) => {
-      applySnapshot(player, snapshot)
-    })
-    return () => {
-      ipcRenderer.removeAllListeners('window:main:snapshot')
-    }
-  }, [player])
+  const { parsedLyrics, noTimestamp } = store.song?.lyric ?? {}
 
-  useEffect(() => {
-    return onAction(player, (action) => {
-      const isAcceptable = action.name.startsWith(__LYRIC__PROCESS__)
-      if (isAcceptable) {
-        ipcRenderer.send('window:lyric:action', action)
-      }
-    })
-  }, [player])
+  const initialized = useDependencyIpc(store)
+  useGlobalShortcut(store)
 
   useEffect(() => {
     const win = remote.getCurrentWindow()
@@ -52,19 +34,27 @@ export const OsdLyric: React.VFC = observer(() => {
   }, [])
 
   const canRenderLyric = parsedLyrics && !noTimestamp
-  const displayOverlay = player.lyric.overlay || hovering
+  const displayOverlay = store.overlay || hovering
+
+  if (!initialized) return null
 
   return (
-    <div
-      className={c(styles.body, styles.container, {
-        [styles.overlay]: displayOverlay,
-      })}
-    >
-      <Header hovering={hovering} />
-      <div className={styles.main}>
-        {canRenderLyric ? <Lyric parsedLyrics={parsedLyrics!} /> : <Fallback />}
+    <LyricStoreContext.Provider value={store}>
+      <div
+        className={c(styles.body, styles.container, {
+          [styles.overlay]: displayOverlay,
+        })}
+      >
+        <Header hovering={hovering} />
+        <div className={styles.main}>
+          {canRenderLyric ? (
+            <Lyric parsedLyrics={parsedLyrics!} />
+          ) : (
+            <Fallback />
+          )}
+        </div>
       </div>
-    </div>
+    </LyricStoreContext.Provider>
   )
 })
 

@@ -9,7 +9,7 @@ import {
 import { isSongAvailable } from '@/stores/Privilege.store'
 
 import { History, history } from './History'
-import { Lyric, lyric } from './Lyric'
+import { OsdLyric, osdLyric } from './OsdLyric'
 import { Queue, queue, QueueSnapshotIn } from './Queue'
 import { SongSnapshotIn } from './Song'
 import { Track, track, TrackSong } from './Track'
@@ -25,7 +25,7 @@ export const Player = types
     track: Track,
     queue: Queue,
     history: History,
-    lyric: Lyric,
+    osdLyric: OsdLyric,
     order: types.optional(
       types.enumeration('Order', Object.values(OrderEnum)),
       OrderEnum.Repeat,
@@ -125,15 +125,6 @@ export const Player = types
       self.order = OrderEnum.RepeatOne
     },
   }))
-  // actions on osd lyric process
-  .actions((self) => ({
-    __LYRIC__PROCESS__PlayNth__: self.playNth,
-    __LYRIC__PROCESS__PlayPrev__: self.playPrev,
-    __LYRIC__PROCESS__PlayNext__: self.playNext,
-    __LYRIC__PROCESS__Repeat__: self.repeat,
-    __LYRIC__PROCESS__Shuffle__: self.shuffle,
-    __LYRIC__PROCESS__RepeatOne__: self.repeatOne,
-  }))
 
 export type PlayerSnapshotOut = SnapshotOut<typeof Player>
 
@@ -141,5 +132,5 @@ export const player = Player.create({
   track,
   queue,
   history,
-  lyric,
+  osdLyric,
 })

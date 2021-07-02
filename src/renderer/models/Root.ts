@@ -1,4 +1,4 @@
-import storage from 'electron-json-storage'
+import Store from 'electron-store'
 import { isEmpty } from 'lodash'
 import {
   types,
@@ -6,6 +6,7 @@ import {
   onSnapshot,
   applySnapshot,
   castToSnapshot,
+  SnapshotOut,
 } from 'mobx-state-tree'
 
 import { isDev } from '@/utils'
@@ -14,7 +15,9 @@ import { Platform, platform } from './Platform'
 import { Player, player } from './Player'
 import { View, view } from './View'
 
-const STORE_FILE = isDev ? 'app_state.dev' : 'app_state'
+const store = new Store<RootStoreSnapshot>({
+  name: isDev ? 'app_state.dev' : 'app_state',
+})
 
 const RootStore = types.model('RootStore', {
   player: Player,
@@ -30,11 +33,12 @@ export const defaultSnapshot = {
 
 let initialized = false
 
+export type RootStoreSnapshot = SnapshotOut<typeof RootStore>
 export type RootStoreInstance = Instance<typeof RootStore>
 export const rootStore: RootStoreInstance = RootStore.create(defaultSnapshot)
 
 function getInitialSnapshot() {
-  const snapshot = storage.getSync(STORE_FILE)
+  const snapshot = store.store
   if (!isEmpty(snapshot) && RootStore.is(snapshot)) {
     snapshot.player.track.playing = false
     return snapshot
@@ -45,9 +49,7 @@ function getInitialSnapshot() {
 
 function observeRootStore() {
   onSnapshot(rootStore, (snapshot) => {
-    storage.set(STORE_FILE, snapshot, (err) => {
-      if (err) throw err
-    })
+    store.store = snapshot
     // eslint-disable-next-line no-console
     if (isDev) console.log(snapshot)
   })

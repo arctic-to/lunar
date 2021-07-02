@@ -1,8 +1,6 @@
 import c from 'classnames'
-import { ipcRenderer } from 'electron'
 import { observer } from 'mobx-react-lite'
-import React, { useMemo } from 'react'
-import { useEffect } from 'react'
+import React from 'react'
 import {
   RiRepeat2Line,
   RiShuffleLine,
@@ -13,9 +11,7 @@ import {
   RiSkipForwardFill,
 } from 'react-icons/ri'
 
-import { GlobalShortcut } from '@/../common'
 import { Like } from '@/components'
-import { useLike } from '@/data'
 import { IconLyric } from '@/icons'
 import { OrderEnum, usePlayer } from '@/models'
 
@@ -30,44 +26,9 @@ export const Buttons: React.VFC = observer(() => {
     repeat,
     shuffle,
     repeatOne,
-    lyric,
+    osdLyric,
   } = usePlayer()
-  const [like] = useLike(track.song?.id)
-  const { play, pause, turnDownVolume, turnUpVolume, toggle } = track
-
-  const actionMap = useMemo(
-    () => ({
-      [GlobalShortcut.Like]: like,
-      [GlobalShortcut.PlayPrev]: playPrev,
-      [GlobalShortcut.PlayNext]: playNext,
-      [GlobalShortcut.TurnDownVolume]: turnDownVolume,
-      [GlobalShortcut.TurnUpVolume]: turnUpVolume,
-      [GlobalShortcut.Toggle]: toggle,
-      [GlobalShortcut.ToggleOsdLyric]: lyric.toggle,
-      [GlobalShortcut.ToggleOsdLyricTranslation]: lyric.toggleTranslation,
-      [GlobalShortcut.ToggleOsdLyricPhonetic]: lyric.togglePhonetic,
-    }),
-    [
-      like,
-      lyric.toggle,
-      lyric.togglePhonetic,
-      lyric.toggleTranslation,
-      playNext,
-      playPrev,
-      toggle,
-      turnDownVolume,
-      turnUpVolume,
-    ],
-  )
-
-  useEffect(() => {
-    ipcRenderer.on('shortcut:global', (event, shortcut: GlobalShortcut) => {
-      actionMap[shortcut]()
-    })
-    return () => {
-      ipcRenderer.removeAllListeners('shortcut:global')
-    }
-  }, [actionMap])
+  const { play, pause } = track
 
   return (
     <div className={styles.container}>
@@ -93,8 +54,8 @@ export const Buttons: React.VFC = observer(() => {
       <RiSkipForwardFill onClick={playNext} />
 
       <IconLyric
-        className={c({ [styles.active]: lyric.show })}
-        onClick={lyric.toggle}
+        className={c({ [styles.active]: osdLyric.show })}
+        onClick={osdLyric.toggle}
       />
       <Like songId={track.song?.id} />
     </div>

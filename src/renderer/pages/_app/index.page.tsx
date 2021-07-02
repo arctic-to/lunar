@@ -14,13 +14,18 @@ import Statusbar from './Statusbar'
 
 dayjs.extend(duration)
 
-const pagesWithoutLayout = ['/lyric']
+const otherRendererPaths = ['/lyric']
 
 function MyApp(appProps: AppProps) {
-  const { Component, pageProps } = appProps
   const { pathname } = useRouter()
+  const isOtherRenderer = otherRendererPaths.includes(pathname)
+  const Renderer = isOtherRenderer ? OtherRenderer : MainRenderer
+
+  return <Renderer {...appProps} />
+}
+
+function MainRenderer(appProps: AppProps) {
   const [readyToRender, setReadyToRender] = useState(false)
-  const withoutLayout = pagesWithoutLayout.includes(pathname)
 
   useEffect(() => {
     initRootStore()
@@ -31,18 +36,16 @@ function MyApp(appProps: AppProps) {
 
   return (
     <RootStoreContext.Provider value={rootStore}>
-      {withoutLayout ? (
-        <Component {...pageProps} />
-      ) : (
-        <>
-          <Header />
-          <Main {...appProps} />
-          <PlayPanel />
-          <Statusbar />
-        </>
-      )}
+      <Header />
+      <Main {...appProps} />
+      <PlayPanel />
+      <Statusbar />
     </RootStoreContext.Provider>
   )
+}
+
+function OtherRenderer({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
 }
 
 export default MyApp

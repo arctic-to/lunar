@@ -1,4 +1,4 @@
-import { types, flow, cast, isAlive } from 'mobx-state-tree'
+import { types, flow, cast, isAlive, SnapshotOut } from 'mobx-state-tree'
 import { AsyncReturnType } from 'type-fest'
 
 import { fetcher } from '@/data/netease/fetcher'
@@ -9,20 +9,17 @@ import { Song } from '../Song'
 
 import { LyricResponseSnapshotIn, Lyric } from './Lyric'
 
+export type TrackSongSnapshot = SnapshotOut<typeof TrackSong>
 export const TrackSong = types
   .compose(
     'TrackSong',
     Song,
     types.model({
+      title: '',
       url: '',
       lyric: types.maybeNull(Lyric),
     }),
   )
-  .views((self) => ({
-    get title() {
-      return `${self.name} - ${self.ar.map((ar) => ar.name).join(' & ')}`
-    },
-  }))
   .actions((self) => ({
     fetchSongUrl: flow(function* () {
       const {
@@ -53,6 +50,8 @@ export const TrackSong = types
   }))
   .actions((self) => ({
     afterCreate() {
+      self.title = `${self.name} - ${self.ar.map((ar) => ar.name).join(' & ')}`
+
       if (!self.url) {
         const unofficialSongUrl = getUnofficialSongUrl(self)
         if (unofficialSongUrl) {
