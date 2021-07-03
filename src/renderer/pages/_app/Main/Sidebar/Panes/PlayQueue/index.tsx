@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import { getSnapshot } from 'mobx-state-tree'
 import React, { useCallback, useMemo } from 'react'
 
 import { VirtualList } from '@/components'
@@ -14,39 +13,42 @@ import styles from './PlayQueue.module.scss'
 let inited = false
 
 export const PlayQueue: React.VFC = observer(() => {
-  const { songs } = usePlayer().queue
+  const { queue } = usePlayer()
+  const { songIds } = queue
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
 
   // Load privileges when app starts
-  const songIds = useMemo(() => {
+  const _songIds = useMemo(() => {
     if (!inited) {
       inited = true
-      return songs.map((song) => song.id)
+      return songIds
     }
-  }, [songs])
-  useSongDetail(songIds)
+  }, [songIds])
+  const { isLoaded } = useSongDetail(_songIds)
 
   const renderRow = useCallback(
     (index: number) => {
-      const song = songs[index]
+      const song = queue.modGet(index)!
 
       return (
         <Song
           key={song.id}
-          song={getSnapshot(song)}
+          song={song}
           active={activeSongIndexes.includes(index)}
           onClick={resetActiveSongIndexes(index)}
         />
       )
     },
-    [activeSongIndexes, songs, resetActiveSongIndexes],
+    [queue, activeSongIndexes, resetActiveSongIndexes],
   )
+
+  if (!isLoaded) return null
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>正在播放 ({songs.length})</div>
+      <div className={styles.header}>正在播放 ({queue.size})</div>
       <div className={styles.songlist}>
-        <VirtualList rowCount={songs.length} rowHeight={30}>
+        <VirtualList rowCount={queue.size} rowHeight={30}>
           {renderRow}
         </VirtualList>
       </div>

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import useSWR from 'swr'
 
 import { Track, Privilege } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore } from '@/stores'
+import { getMst, PrivilegeStore, setSongMap } from '@/stores'
 
 import { fetcher } from '../fetcher'
 
@@ -23,8 +23,10 @@ export function useUserRecord(uid?: string, type?: RecordType) {
 
   useEffect(() => {
     if (data) {
+      const songs = data.weekData.map((data) => data.song)
+      setSongMap(songs)
       privilegeStore.setSongPrivilegeMap(
-        data.weekData.map((data) => data.song),
+        songs,
         data.weekData.map((data) => data.song.privilege),
       )
     }

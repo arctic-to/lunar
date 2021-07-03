@@ -53,7 +53,7 @@ export const TrackSong = types
       self.title = `${self.name} - ${self.ar.map((ar) => ar.name).join(' & ')}`
 
       if (!self.url) {
-        const unofficialSongUrl = getUnofficialSongUrl(self)
+        const unofficialSongUrl = getUnofficialSongUrl(self.id)
         if (unofficialSongUrl) {
           self.url = unofficialSongUrl
         } else {

@@ -36,7 +36,7 @@ export const PrivilegeStore = types
 
         self.songPrivilegeMap.set(String(song.id), privilges[index])
 
-        if (!isSongAvailableOfficially(song)) {
+        if (!isSongAvailableOfficially(song.id)) {
           match(song.id, ['qq', 'kuwo', 'migu'], {
             ...song,
             album: song.al,
@@ -51,8 +51,8 @@ export const PrivilegeStore = types
 
 const { songPrivilegeMap, unofficialSongSourceMap } = getMst(PrivilegeStore)
 
-function isSongAvailableOfficially(song: SongSnapshotIn) {
-  const privilege = songPrivilegeMap.get(String(song.id))
+function isSongAvailableOfficially(songId: number) {
+  const privilege = songPrivilegeMap.get(String(songId))
   // https://github.com/Binaryify/NeteaseCloudMusicApi/issues/718#issuecomment-610137558
   return (privilege?.st ?? -1) >= 0
 }
@@ -63,21 +63,21 @@ export enum SongSourceKind {
   None,
 }
 
-export function getSongSourceKind(song: SongSnapshotIn) {
+export function getSongSourceKind(songId: number) {
   switch (true) {
-    case isSongAvailableOfficially(song):
+    case isSongAvailableOfficially(songId):
       return SongSourceKind.Netease
-    case unofficialSongSourceMap.has(String(song.id)):
+    case unofficialSongSourceMap.has(String(songId)):
       return SongSourceKind.Unofficial
     default:
       return SongSourceKind.None
   }
 }
 
-export function isSongAvailable(song: SongSnapshotIn) {
-  return getSongSourceKind(song) !== SongSourceKind.None
+export function isSongAvailable(songId: number) {
+  return getSongSourceKind(songId) !== SongSourceKind.None
 }
 
-export function getUnofficialSongUrl(song: SongSnapshotIn) {
-  return unofficialSongSourceMap.get(String(song.id))?.url
+export function getUnofficialSongUrl(songId: number) {
+  return unofficialSongSourceMap.get(String(songId))?.url
 }

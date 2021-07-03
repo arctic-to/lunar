@@ -4,7 +4,7 @@ import useSWR from 'swr'
 import { Maybe } from 'yup/lib/types'
 
 import { PlaylistDetail, Privilege } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore } from '@/stores'
+import { getMst, PrivilegeStore, setSongMap } from '@/stores'
 
 import { fetcher } from '../fetcher'
 
@@ -18,6 +18,7 @@ export function usePlaylistDetail(id: Maybe<number | string>) {
 
   useEffect(() => {
     if (data) {
+      setSongMap(data.playlist.tracks)
       privilegeStore.setSongPrivilegeMap(data.playlist.tracks, data.privileges)
     }
   }, [data])

@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from 'react'
 
 import { SongSnapshotOut } from '@/models'
 import { Privilege, Track } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore } from '@/stores'
+import { getMst, PrivilegeStore, setSongMap } from '@/stores'
 
 import { axios } from '../fetcher'
 
@@ -36,6 +36,7 @@ export function useSongDetail(songIds: number[] | undefined) {
             _prevSongChunks[index] = data.songs
             return _prevSongChunks
           })
+          setSongMap(data.songs)
           privilegeStore.setSongPrivilegeMap(data.songs, data.privileges)
         })
         .catch((err) => setError(err))

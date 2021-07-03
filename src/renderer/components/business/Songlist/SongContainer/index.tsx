@@ -22,7 +22,7 @@ export const SongContainer: React.FC<SongContainerProps> = observer(
         if (e.ctrlKey) {
           player.insertOneToQueue(song)
         } else {
-          player.replaceQueue({ songs })
+          player.replaceQueue({ songIds: songs.map((song) => song.id) })
         }
         player.tryReplaceSong(song)
       },

@@ -10,7 +10,7 @@ import {
   SongResult,
   UserResult,
 } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore } from '@/stores'
+import { getMst, PrivilegeStore, setSongMap } from '@/stores'
 
 const privilegeStore = getMst(PrivilegeStore)
 
@@ -54,6 +54,7 @@ export function useCloudSearch({
 
   useEffect(() => {
     if (data && hasSongsProp(data)) {
+      setSongMap(data.result.songs)
       privilegeStore.setSongPrivilegeMap(
         data.result.songs,
         data.result.songs.map((song) => song.privilege),

@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
-import { getSnapshot } from 'mobx-state-tree'
 import { useCallback, useEffect, useRef } from 'react'
 
 import { useNextSongIndex } from '@/hooks'
@@ -29,8 +28,9 @@ export const CentralController: React.VFC = observer(() => {
   }, [order, playNext, replay])
 
   useEffect(() => {
-    if (track.song && queue.size) {
-      setNextSong(getSnapshot(queue.modGet(nextSongIndex)))
+    const song = queue.modGet(nextSongIndex)
+    if (track.song && queue.size && song) {
+      setNextSong(song)
     }
   }, [track.song, nextSongIndex, queue, setNextSong])
 

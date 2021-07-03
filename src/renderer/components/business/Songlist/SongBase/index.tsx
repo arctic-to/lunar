@@ -19,7 +19,7 @@ export type SongBaseProps = {
 }
 export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
   const { isCurrSong } = usePlayer()
-  const songSourceKind = getSongSourceKind(song)
+  const songSourceKind = getSongSourceKind(song.id)
   const unavailable = songSourceKind === SongSourceKind.None
 
   const prefixIconMap = useMemo(
@@ -34,7 +34,7 @@ export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
   return (
     <div
       className={c(styles.container, {
-        [styles.current]: isCurrSong(song),
+        [styles.current]: isCurrSong(song.id),
         [styles.unavailable]: unavailable,
       })}
     >

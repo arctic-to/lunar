@@ -22,7 +22,7 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
     const player = usePlayer()
     const [historySong] = aggregatedSong.songs
     const liked = useLiked(historySong.id)
-    const available = isSongAvailable(historySong)
+    const available = isSongAvailable(historySong.id)
     const count = aggregatedSong.songs.length
 
     const handleDoubleClick = useCallback(() => {

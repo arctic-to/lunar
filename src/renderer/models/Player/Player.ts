@@ -32,11 +32,11 @@ export const Player = types
     ),
   })
   .views((self) => ({
-    isCurrSong(song: SongSnapshotIn) {
-      return self.track.song?.id === song.id
+    isCurrSong(songId: number) {
+      return self.track.song?.id === songId
     },
     get currSongIndex() {
-      return self.queue.songs.findIndex(this.isCurrSong)
+      return self.queue.songIds.findIndex(this.isCurrSong)
     },
   }))
   // base actions
@@ -44,28 +44,30 @@ export const Player = types
     replaceQueue(queueSnapshot: QueueSnapshotIn) {
       applySnapshot(self.queue, {
         ...queueSnapshot,
-        songs: queueSnapshot.songs?.filter(isSongAvailable),
+        songIds: queueSnapshot.songIds?.filter(isSongAvailable),
       })
     },
     insertOneToQueue(song: SongSnapshotIn) {
-      const songIndex = self.queue.songs.findIndex(({ id }) => id === song.id)
+      const songIndex = self.queue.songIds.findIndex((id) => id === song.id)
       if (songIndex >= 0) {
-        self.queue.songs.splice(songIndex, 1)
+        self.queue.songIds.splice(songIndex, 1)
       }
-      if (isSongAvailable(song)) {
-        self.queue.songs.splice(self.currSongIndex + 1, 0, song)
+      if (isSongAvailable(song.id)) {
+        self.queue.songIds.splice(self.currSongIndex + 1, 0, song.id)
       }
     },
     insertManyToQueue(songs: SongSnapshotIn[]) {
       songs.forEach((song) => {
-        const songIndex = self.queue.songs.findIndex(({ id }) => id === song.id)
+        const songIndex = self.queue.songIds.findIndex((id) => id === song.id)
         if (songIndex >= 0) {
-          self.queue.songs.splice(songIndex, 1)
+          self.queue.songIds.splice(songIndex, 1)
         }
       })
-      songs.filter(isSongAvailable).forEach((song, index) => {
-        self.queue.songs.splice(self.currSongIndex + index + 1, 0, song)
-      })
+      songs
+        .filter((song) => isSongAvailable(song.id))
+        .forEach((song, index) => {
+          self.queue.songIds.splice(self.currSongIndex + index + 1, 0, song.id)
+        })
     },
   }))
   .actions((self) => ({
@@ -76,8 +78,8 @@ export const Player = types
       self.history.push(songSnapshot)
     },
     tryReplaceSong(songSnapshot: SongSnapshotIn) {
-      const isCurrSong = self.isCurrSong(songSnapshot)
-      const available = isSongAvailable(songSnapshot)
+      const isCurrSong = self.isCurrSong(songSnapshot.id)
+      const available = isSongAvailable(songSnapshot.id)
       const canReplace = !isCurrSong && available
       if (canReplace) this.replaceSong(songSnapshot)
     },
@@ -89,7 +91,10 @@ export const Player = types
   }))
   .actions((self) => ({
     playNth(nth: number) {
-      self.replaceSong(getSnapshot(self.queue.modGet(nth)))
+      const song = self.queue.modGet(nth)
+      if (song) {
+        self.replaceSong(song)
+      }
     },
   }))
   .actions((self) => ({
