@@ -2,17 +2,17 @@ import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import React, { useCallback } from 'react'
 
-import { TagBase } from '@/components'
+import { TagBase } from '@/components/business/Tag'
 import { getMst } from '@/stores'
 
-import { useId } from '../../hooks'
-import { PlaylistStore } from '../../playlist.store'
+import { SonglistStore } from '../songlist.store'
+import { usePlaylistId } from '../utils'
 
 import styles from './TagSelect.module.scss'
 
 export const TagSelect: React.FC = observer(() => {
-  const id = useId()
-  const { uniqTags, selectedTagIds, toggleTag } = getMst(PlaylistStore, {
+  const id = usePlaylistId()
+  const { uniqTags, selectedTagIds, toggleTag } = getMst(SonglistStore, {
     scope: id,
   })
 

@@ -1,5 +1,45 @@
-@use '../common.scss';
+@use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
 
 .container {
-  @include common.layout;
+  height: 46px;
+  display: flex;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background-color: color.$grey3;
+  z-index: 1;
+  margin-bottom: 8px;
+  padding: 8px;
+  .left {
+    @include typography.h2;
+    color: color.$grey8;
+  }
+  .right {
+    display: flex;
+    position: relative;
+    gap: 16px;
+
+    .search_input {
+      border-radius: 4px;
+    }
+    .button {
+      color: color.$grey8;
+      background-color: color.$grey4;
+      &:hover,
+      &.active {
+        color: color.$green2;
+      }
+    }
+    .dropdown {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      top: 38px;
+      &.hidden {
+        display: none;
+      }
+    }
+  }
 }
