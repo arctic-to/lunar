@@ -15,7 +15,7 @@ import { SonglistContext } from '../context'
 
 import styles from './Header.module.scss'
 import TagSelect from './TagSelect'
-import { SonglistStore } from './songlist.store'
+import { PlaylistHeaderStore } from './store'
 import {
   filterTracksByKeyword,
   filterTracksByTags,
@@ -36,7 +36,7 @@ export const PlaylistHeader: React.FC = observer(() => {
     uniqTags,
     selectedTagIds,
   } = getMst(
-    SonglistStore,
+    PlaylistHeaderStore,
     {
       scope: id,
     },

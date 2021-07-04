@@ -5,14 +5,14 @@ import React, { useCallback } from 'react'
 import { TagBase } from '@/components/business/Tag'
 import { getMst } from '@/stores'
 
-import { SonglistStore } from '../songlist.store'
+import { PlaylistHeaderStore } from '../store'
 import { usePlaylistId } from '../utils'
 
 import styles from './TagSelect.module.scss'
 
 export const TagSelect: React.FC = observer(() => {
   const id = usePlaylistId()
-  const { uniqTags, selectedTagIds, toggleTag } = getMst(SonglistStore, {
+  const { uniqTags, selectedTagIds, toggleTag } = getMst(PlaylistHeaderStore, {
     scope: id,
   })
 
