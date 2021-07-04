@@ -38,6 +38,12 @@ export const PlaylistTagStore = types
     get uniqTags() {
       return uniqBy(this.flatTags, 'id')
     },
+    hasTag(songId: number) {
+      return Boolean(this._songTagMap.get(songId)?.length)
+    },
+    get songIdsWithoutTags() {
+      return this.songIds.filter((songId) => !this.hasTag(songId))
+    },
   }))
   .actions((self) => ({
     toggleTag(tagId: number) {

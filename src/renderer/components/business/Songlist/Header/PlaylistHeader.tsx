@@ -28,7 +28,14 @@ export const PlaylistHeader: React.FC = observer(() => {
   const { initialSongs, setSongs } = useNonNullableContext(SonglistContext)
   const id = usePlaylistId()
 
-  const { keyword, handleInputChange, tags, selectedTagIds } = getMst(
+  const {
+    keyword,
+    handleInputChange,
+    songIdsWithoutTags,
+    tags,
+    uniqTags,
+    selectedTagIds,
+  } = getMst(
     SonglistStore,
     {
       scope: id,
@@ -69,8 +76,8 @@ export const PlaylistHeader: React.FC = observer(() => {
   }, [filteredTracks, setSongs])
 
   const tagify = useCallback(() => {
-    if (userId) generateTags({ userId, playlistId: id })
-  }, [id, userId])
+    if (userId) generateTags({ userId, songIds: songIdsWithoutTags })
+  }, [songIdsWithoutTags, userId])
 
   return (
     <header className={styles.container}>
@@ -84,23 +91,28 @@ export const PlaylistHeader: React.FC = observer(() => {
         <Button className={styles.button} Icon={FaTags} onClick={tagify}>
           Tagify
         </Button>
-        <Button
-          className={c(styles.button, {
-            [styles.active]: selectedTagIds.length || !isDropdownHidden,
-          })}
-          ref={filterButtonRef}
-          onClick={toggleDropdown}
-        >
-          Filter
-        </Button>
-        <div
-          className={c(styles.dropdown, {
-            [styles.hidden]: isDropdownHidden,
-          })}
-          ref={dropdownRef}
-        >
-          <TagSelect />
-        </div>
+
+        {Boolean(uniqTags.length) && (
+          <>
+            <Button
+              className={c(styles.button, {
+                [styles.active]: selectedTagIds.length || !isDropdownHidden,
+              })}
+              ref={filterButtonRef}
+              onClick={toggleDropdown}
+            >
+              Filter
+            </Button>
+            <div
+              className={c(styles.dropdown, {
+                [styles.hidden]: isDropdownHidden,
+              })}
+              ref={dropdownRef}
+            >
+              <TagSelect />
+            </div>
+          </>
+        )}
       </div>
     </header>
   )
