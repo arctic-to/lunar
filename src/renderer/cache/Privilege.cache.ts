@@ -30,10 +30,7 @@ export function setPrivilegeMap(
   songs.forEach((song, index) => {
     privilegeMap.set(song.id, privileges[index])
 
-    if (
-      !isSongAvailableOfficially(song.id) &&
-      !unofficialSongSourceMap.has(song.id)
-    ) {
+    if (!isSongAvailableOfficially(song.id)) {
       promises.push(
         match(song.id, ['qq', 'kuwo', 'migu'], {
           ...song,
