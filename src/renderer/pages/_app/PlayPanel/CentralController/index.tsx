@@ -25,6 +25,8 @@ export const CentralController: React.VFC = observer(() => {
         replay()
       }
     }
+    // audio will pause when it ends
+    ref.current?.play()
   }, [order, playNext, replay])
 
   useEffect(() => {

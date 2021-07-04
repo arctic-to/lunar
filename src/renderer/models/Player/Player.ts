@@ -116,7 +116,11 @@ export const Player = types
       }
     },
     replay() {
-      self.playNth(self.currSongIndex)
+      if (self.track.song) {
+        // let mst reconcile it and keep properties
+        // assigned in `afterCreate` hook
+        self.replaceSong(getSnapshot(self.track.song)!)
+      }
     },
   }))
   .actions((self) => ({
