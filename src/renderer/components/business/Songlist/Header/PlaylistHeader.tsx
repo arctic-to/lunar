@@ -8,7 +8,7 @@ import { Button } from '@/components/common'
 import { generateTags, useSongTags } from '@/data'
 import { useBoolean, useNonNullableContext } from '@/hooks'
 import { usePlatform } from '@/models'
-import { getMst } from '@/stores'
+import { getMst, GlobalTagStore } from '@/stores'
 
 import SearchInput from '../../SearchInput'
 import { SonglistContext } from '../context'
@@ -22,14 +22,19 @@ import {
   usePlaylistId,
 } from './utils'
 
+const globalTagStore = getMst(GlobalTagStore)
+
 export const PlaylistHeader: React.FC = observer(() => {
   const { initialSongs, setSongs } = useNonNullableContext(SonglistContext)
   const id = usePlaylistId()
 
-  const { keyword, handleInputChange, tags, setSongTagMap, selectedTagIds } =
-    getMst(SonglistStore, {
+  const { keyword, handleInputChange, tags, selectedTagIds } = getMst(
+    SonglistStore,
+    {
       scope: id,
-    })
+    },
+    { id },
+  )
 
   const { userId } = usePlatform().netease.profile ?? {}
 
@@ -45,8 +50,10 @@ export const PlaylistHeader: React.FC = observer(() => {
   const { data: songTagPairs } = useSongTags(userId, id)
 
   useEffect(() => {
-    if (songTagPairs) setSongTagMap(songTagPairs)
-  }, [setSongTagMap, songTagPairs])
+    if (songTagPairs) {
+      globalTagStore.setSongTagMap(songTagPairs)
+    }
+  }, [songTagPairs])
 
   const filteredTracks = useMemo(() => {
     const _tracks = filterTracksByKeyword(initialSongs, keyword)

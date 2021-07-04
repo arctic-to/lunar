@@ -26,12 +26,14 @@ export const Privilege = types.model('Privilege', {
       userConsumable: types.boolean,
     }),
   ),
-  chargeInfoList: types.array(
-    types.model({
-      rate: types.number,
-      chargeUrl: types.null,
-      chargeMessage: types.null,
-      chargeType: types.number,
-    }),
+  chargeInfoList: types.maybeNull(
+    types.array(
+      types.model({
+        rate: types.number,
+        chargeUrl: types.null,
+        chargeMessage: types.null,
+        chargeType: types.number,
+      }),
+    ),
   ),
 })

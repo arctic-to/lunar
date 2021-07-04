@@ -1,8 +1,8 @@
 import { types, flow, cast, isAlive, SnapshotOut } from 'mobx-state-tree'
 import { AsyncReturnType } from 'type-fest'
 
+import { getUnofficialSongUrl } from '@/cache'
 import { fetcher } from '@/data/netease/fetcher'
-import { getUnofficialSongUrl } from '@/stores/Privilege.store'
 import { parseLyric } from '@/utils'
 
 import { Song } from '../Song'

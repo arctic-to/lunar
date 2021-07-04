@@ -1,50 +1,84 @@
+import _axios from 'axios'
 import { chunk } from 'lodash'
 import { SnapshotOut, types } from 'mobx-state-tree'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
+import { getCachedSongs, setPrivilegeMap, setSongMap } from '@/cache'
 import { SongSnapshotOut } from '@/models'
 import { Privilege, Track } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore, setSongMap } from '@/stores'
 
 import { axios } from '../fetcher'
 
 const CHUNK_SIZE = 500
-const privilegeStore = getMst(PrivilegeStore)
 
 export function useSongDetail(songIds: number[] | undefined) {
+  const cancelSourceRef = useRef(_axios.CancelToken.source())
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (loading) {
+      // cancel previous requests and update token
+      cancelSourceRef.current.cancel()
+      cancelSourceRef.current = _axios.CancelToken.source()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [songIds])
+
+  const [data, setData] = useState<SongSnapshotOut[]>([])
+
+  useEffect(() => {
+    if (songIds) {
+      setData(getCachedSongs(songIds))
+    }
+  }, [songIds])
+
   const idStr = songIds?.join()
   const [error, setError] = useState()
   const [isLoaded, setIsLoaded] = useState(false)
-  const [songChunks, setSongChunks] = useState<SongSnapshotOut[][]>([])
-  const data = useMemo(() => songChunks.flat(), [songChunks])
 
   useEffect(() => {
-    if (!idStr) return
+    if (!songIds) return
+    data.sort((song1, song2) => {
+      const song1Index = songIds.findIndex((id) => id === song1.id)
+      const song2Index = songIds.findIndex((id) => id === song2.id)
+      return song1Index - song2Index
+    })
+  }, [data, songIds])
+
+  useEffect(() => {
+    if (!idStr) {
+      setIsLoaded(true)
+      return
+    }
+
     const ids = idStr.split(',')
     const idChunks = chunk(ids, CHUNK_SIZE)
+    let _data: SongSnapshotOut[] = []
 
-    const promises = idChunks.map((idChunk, index) => {
+    setLoading(true)
+    const promises = idChunks.map((idChunk) => {
       return axios
         .post<SongDetailResponseSnapshot>(
           `/song/detail?timestamp=${Date.now()}`,
           { ids: idChunk.join() },
-          { withCredentials: true },
+          { withCredentials: true, cancelToken: cancelSourceRef.current.token },
         )
         .then(({ data }) => {
-          setSongChunks((prevSongChunks) => {
-            const _prevSongChunks = [...prevSongChunks]
-            _prevSongChunks[index] = data.songs
-            return _prevSongChunks
-          })
+          _data = [..._data, ...data.songs]
           setSongMap(data.songs)
-          privilegeStore.setSongPrivilegeMap(data.songs, data.privileges)
+          setPrivilegeMap(data.songs, data.privileges)
         })
-        .catch((err) => setError(err))
     })
 
-    Promise.all(promises).then(() => {
-      setIsLoaded(true)
-    })
+    Promise.all(promises)
+      .then(() => {
+        setData(_data)
+        setLoading(false)
+        setIsLoaded(true)
+      })
+      .catch((err) => {
+        setError(err)
+      })
   }, [idStr])
 
   return {

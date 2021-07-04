@@ -3,6 +3,7 @@ import qs from 'qs'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 
+import { setPrivilegeMap, setSongMap } from '@/cache'
 import {
   ArtistResult,
   LyricResult,
@@ -10,9 +11,6 @@ import {
   SongResult,
   UserResult,
 } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore, setSongMap } from '@/stores'
-
-const privilegeStore = getMst(PrivilegeStore)
 
 import { fetcher } from '../fetcher'
 
@@ -55,7 +53,7 @@ export function useCloudSearch({
   useEffect(() => {
     if (data && hasSongsProp(data)) {
       setSongMap(data.result.songs)
-      privilegeStore.setSongPrivilegeMap(
+      setPrivilegeMap(
         data.result.songs,
         data.result.songs.map((song) => song.privilege),
       )

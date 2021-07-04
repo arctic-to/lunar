@@ -2,10 +2,10 @@ import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { MouseEventHandler, useCallback } from 'react'
 
+import { isSongAvailable } from '@/cache'
 import { Artists } from '@/components'
 import { useLiked } from '@/hooks'
 import { SongSnapshotIn, usePlayer } from '@/models'
-import { isSongAvailable } from '@/stores'
 
 import styles from './Song.module.scss'
 

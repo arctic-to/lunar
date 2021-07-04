@@ -3,12 +3,10 @@ import { useEffect } from 'react'
 import useSWR from 'swr'
 import { Maybe } from 'yup/lib/types'
 
+import { setPlaylistMap, setPrivilegeMap, setSongMap } from '@/cache'
 import { PlaylistDetail, Privilege } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore, setSongMap } from '@/stores'
 
 import { fetcher } from '../fetcher'
-
-const privilegeStore = getMst(PrivilegeStore)
 
 export function usePlaylistDetail(id: Maybe<number | string>) {
   const { data, error } = useSWR<PlaylistDetailResponseSnapshotOut>(
@@ -19,7 +17,8 @@ export function usePlaylistDetail(id: Maybe<number | string>) {
   useEffect(() => {
     if (data) {
       setSongMap(data.playlist.tracks)
-      privilegeStore.setSongPrivilegeMap(data.playlist.tracks, data.privileges)
+      setPlaylistMap(data.playlist)
+      setPrivilegeMap(data.playlist.tracks, data.privileges)
     }
   }, [data])
 

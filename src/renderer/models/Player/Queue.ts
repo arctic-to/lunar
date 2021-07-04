@@ -1,6 +1,6 @@
 import { SnapshotIn, types } from 'mobx-state-tree'
 
-import { isSongSnapshotIn, songMap } from '@/stores'
+import { getCachedSongs } from '@/cache'
 import { mod } from '@/utils'
 
 import { SongSnapshotIn } from './Song'
@@ -12,9 +12,7 @@ export const Queue = types
   .views((self) => ({
     // https://github.com/mobxjs/mobx-state-tree/issues/409#issue-261406018
     get songs() {
-      return self.songIds
-        .map((songId) => songMap.get(songId))
-        .filter(isSongSnapshotIn)
+      return getCachedSongs(self.songIds)
     },
     get size() {
       return self.songIds.length

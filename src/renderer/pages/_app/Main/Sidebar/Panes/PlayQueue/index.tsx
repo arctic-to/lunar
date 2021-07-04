@@ -24,7 +24,7 @@ export const PlayQueue: React.VFC = observer(() => {
       return songIds
     }
   }, [songIds])
-  const { isLoaded } = useSongDetail(_songIds)
+  useSongDetail(_songIds)
 
   const renderRow = useCallback(
     (index: number) => {
@@ -41,8 +41,6 @@ export const PlayQueue: React.VFC = observer(() => {
     },
     [queue, activeSongIndexes, resetActiveSongIndexes],
   )
-
-  if (!isLoaded) return null
 
   return (
     <div className={styles.container}>

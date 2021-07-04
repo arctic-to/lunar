@@ -2,12 +2,10 @@ import { SnapshotOut, types } from 'mobx-state-tree'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 
+import { setPrivilegeMap, setSongMap } from '@/cache'
 import { Privilege, Track } from '@/models/Platform/Netease'
-import { getMst, PrivilegeStore, setSongMap } from '@/stores'
 
 import { fetcher } from '../fetcher'
-
-const privilegeStore = getMst(PrivilegeStore)
 
 export function useRecommedSongs() {
   const { data, error } = useSWR<RecommedSongsResponseSnapshot>(
@@ -18,7 +16,7 @@ export function useRecommedSongs() {
   useEffect(() => {
     if (data) {
       setSongMap(data.data.dailySongs)
-      privilegeStore.setSongPrivilegeMap(
+      setPrivilegeMap(
         data.data.dailySongs,
         data.data.dailySongs.map((dailySong) => dailySong.privilege),
       )
