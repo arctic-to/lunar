@@ -1,9 +1,38 @@
 @use '~@/style/color';
+@use '~@/style/mixin';
+@use '~@/style/typography';
 
 .container {
-  flex: 1;
+  @include mixin.center-container;
+  height: 100%;
+}
+
+.shortcuts {
   display: flex;
+  width: 400px;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 16px;
+}
+
+.shortcut {
+  @include mixin.center-container(v);
+  gap: 16px;
+}
+
+.desc {
+  flex: 1;
+  color: color.$grey7;
+  @include typography.l1;
+  text-align: right;
+}
+
+.keys {
+  flex: 1;
+  color: color.$grey8;
+  @include typography.l2;
+  .key {
+    padding: 1px 4px;
+    background-color: color.$grey5;
+    border-radius: 2px;
+  }
 }

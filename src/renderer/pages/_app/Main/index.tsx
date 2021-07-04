@@ -27,7 +27,7 @@ export const Main: React.VFC<AppProps> = ({ Component, pageProps }) => {
         <Sash
           pane1={pane1}
           pane2={pane2}
-          min={[400, view.sidebar.minWidth]}
+          min={[600, view.sidebar.minWidth]}
           onMouseMove={handleMouseMove}
         />
       </SashContainer>

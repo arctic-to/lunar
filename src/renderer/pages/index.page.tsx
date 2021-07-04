@@ -9,7 +9,7 @@ export const Index: React.FC = observer(() => {
   const { track } = usePlayer()
 
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <Head>
         <title>{track.song?.title || 'Lunar'}</title>
         {/* https://www.electronjs.org/docs/tutorial/security#csp-meta-tag */}

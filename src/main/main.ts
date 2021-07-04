@@ -3,7 +3,7 @@ import debug from 'electron-debug'
 import isDev from 'electron-is-dev'
 import serve from 'electron-serve'
 
-import { acceleratorMap, Renderer } from '../common'
+import { shortcutKeyMap, Renderer } from '../common'
 
 import { store } from './store'
 import { createMainWindow, createLyricWindow } from './windows'
@@ -39,10 +39,10 @@ app.on('ready', () => {
   lyricWin.on('resized', updateLyricWindowBounds)
 
   // register global shortcuts
-  Object.entries(acceleratorMap).map(([key, accelerator]) => {
-    globalShortcut.register(accelerator, () => {
-      mainWin.webContents.send('shortcut:global', key)
-      lyricWin.webContents.send('shortcut:global', key)
+  Object.entries(shortcutKeyMap).map(([shortcut, keys]) => {
+    globalShortcut.register(keys.join('+'), () => {
+      mainWin.webContents.send('shortcut:global', shortcut)
+      lyricWin.webContents.send('shortcut:global', shortcut)
     })
   })
 })
