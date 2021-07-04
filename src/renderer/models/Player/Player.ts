@@ -6,7 +6,7 @@ import {
   cast,
 } from 'mobx-state-tree'
 
-import { isSongAvailable } from '@/cache'
+import { isSongAvailable } from '@/stores'
 
 import { History, history } from './History'
 import { OsdLyric, osdLyric } from './OsdLyric'

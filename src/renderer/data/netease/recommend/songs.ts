@@ -2,8 +2,9 @@ import { SnapshotOut, types } from 'mobx-state-tree'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 
-import { setPrivilegeMap, setSongMap } from '@/cache'
+import { setSongMap } from '@/cache'
 import { Privilege, Track } from '@/models/Platform/Netease'
+import { setPrivilegeMap } from '@/stores'
 
 import { fetcher } from '../fetcher'
 
