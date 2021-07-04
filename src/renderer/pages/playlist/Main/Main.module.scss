@@ -1,39 +1,4 @@
 @use '~@/style/color';
 
 .container {
-  header {
-    height: 46px;
-    display: flex;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background-color: color.$grey3;
-    z-index: 1;
-  }
-  .right {
-    display: flex;
-    position: relative;
-    gap: 16px;
-
-    .search_input {
-      border-radius: 4px;
-    }
-    .button {
-      color: color.$grey8;
-      background-color: color.$grey4;
-      &:hover,
-      &.active {
-        color: color.$green2;
-      }
-    }
-    .dropdown {
-      position: absolute;
-      z-index: 1;
-      right: 0;
-      top: 38px;
-      &.hidden {
-        display: none;
-      }
-    }
-  }
 }

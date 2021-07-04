@@ -1,10 +1,9 @@
 import { types } from 'mobx-state-tree'
 
-import { InputStore, ScrollStore, PlaylistTagStore } from '@/stores'
+import { ScrollStore } from '@/stores'
 
 export const PlaylistStore = types.compose(
   'PlaylistStore',
-  InputStore,
   ScrollStore,
-  PlaylistTagStore,
+  types.model({}),
 )

@@ -4,12 +4,12 @@ import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 import { HiLockClosed, HiLockOpen } from 'react-icons/hi'
 
+import { getSongSourceKind, SongSourceKind } from '@/cache'
 import Album from '@/components/business/Album'
 import Artists from '@/components/business/Artists'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
 import { SongSnapshotIn, usePlayer } from '@/models'
-import { getSongSourceKind, SongSourceKind } from '@/stores'
 
 import styles from './SongBase.module.scss'
 
@@ -19,7 +19,7 @@ export type SongBaseProps = {
 }
 export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
   const { isCurrSong } = usePlayer()
-  const songSourceKind = getSongSourceKind(song)
+  const songSourceKind = getSongSourceKind(song.id)
   const unavailable = songSourceKind === SongSourceKind.None
 
   const prefixIconMap = useMemo(
@@ -34,7 +34,7 @@ export const SongBase: React.FC<SongBaseProps> = observer(({ index, song }) => {
   return (
     <div
       className={c(styles.container, {
-        [styles.current]: isCurrSong(song),
+        [styles.current]: isCurrSong(song.id),
         [styles.unavailable]: unavailable,
       })}
     >

@@ -2,10 +2,10 @@ import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { MouseEventHandler, useCallback } from 'react'
 
+import { isSongAvailable } from '@/cache'
 import { Artists } from '@/components'
 import { useLiked } from '@/hooks'
 import { usePlayer, AggregatedSong as AggregatedSongType } from '@/models'
-import { isSongAvailable } from '@/stores'
 
 import prefixStyles from './AggregatedSong.module.scss'
 import styles from './Song.module.scss'
@@ -22,7 +22,7 @@ export const AggregatedSong: React.VFC<AggregatedSongProps> = observer(
     const player = usePlayer()
     const [historySong] = aggregatedSong.songs
     const liked = useLiked(historySong.id)
-    const available = isSongAvailable(historySong)
+    const available = isSongAvailable(historySong.id)
     const count = aggregatedSong.songs.length
 
     const handleDoubleClick = useCallback(() => {

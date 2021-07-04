@@ -2,10 +2,10 @@ import c from 'classnames'
 import { observer } from 'mobx-react-lite'
 import { MouseEventHandler, useCallback } from 'react'
 
+import { isSongAvailable } from '@/cache'
 import { Artists } from '@/components'
 import { useLiked } from '@/hooks'
 import { SongSnapshotIn, usePlayer } from '@/models'
-import { isSongAvailable } from '@/stores'
 
 import styles from './Song.module.scss'
 
@@ -20,7 +20,7 @@ export const Song: React.VFC<SongProps> = observer(
   ({ song, active, onClick, onDoubleClick }) => {
     const { isCurrSong, tryReplaceSong } = usePlayer()
     const liked = useLiked(song.id)
-    const available = isSongAvailable(song)
+    const available = isSongAvailable(song.id)
 
     const handleDoubleClick = useCallback(() => {
       tryReplaceSong(song)
@@ -30,7 +30,7 @@ export const Song: React.VFC<SongProps> = observer(
     return (
       <div
         className={c(styles.container, {
-          [styles.current]: isCurrSong(song),
+          [styles.current]: isCurrSong(song.id),
           [styles.active]: active,
           [styles.liked]: liked,
           [styles.unavailable]: !available,

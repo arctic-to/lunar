@@ -42,7 +42,7 @@ export const Daily: React.VFC = observer(() => {
 
   const updatePlayQueue = useCallback(() => {
     player.replaceQueue({
-      songs: dailySongs,
+      songIds: dailySongs?.map((song) => song.id),
     })
   }, [dailySongs, player])
 

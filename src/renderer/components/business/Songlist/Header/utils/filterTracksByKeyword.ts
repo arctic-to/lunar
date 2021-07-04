@@ -2,7 +2,7 @@ import { toLower } from 'lodash'
 
 import { SongSnapshotIn } from '@/models'
 
-export default function filterTracksByKeyword(
+export function filterTracksByKeyword(
   tracks: SongSnapshotIn[],
   keyword: string,
 ) {

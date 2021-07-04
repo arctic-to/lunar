@@ -37,6 +37,8 @@ function narrowScope(rawScope: Options['scope']) {
 export function getMst<S extends M>(
   Model: S,
   options: Options = defaultOptions,
+  // TODO: fix type
+  args?: any,
 ): S['Type'] {
   let storeMap = modelMap.get(Model)
   if (!storeMap) {
@@ -48,7 +50,7 @@ export function getMst<S extends M>(
 
   let store = storeMap.get(scope)
   if (!store) {
-    store = Model.create()
+    store = Model.create(args)
     storeMap.set(scope, store)
   }
 

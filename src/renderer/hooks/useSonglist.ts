@@ -41,7 +41,9 @@ export function useSonglist<T extends SongSnapshotIn>(songs?: T[]) {
           if (e.ctrlKey) {
             player.insertManyToQueue(selectedSongs)
           } else {
-            player.replaceQueue({ songs: selectedSongs })
+            player.replaceQueue({
+              songIds: selectedSongs.map((song) => song.id),
+            })
           }
 
           player.tryReplaceSong(selectedSongs[0])

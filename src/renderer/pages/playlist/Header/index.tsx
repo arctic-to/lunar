@@ -3,20 +3,20 @@ import React from 'react'
 import { VscFile } from 'react-icons/vsc'
 
 import { Link } from '@/components'
-import { PlaylistDetailResponseSnapshotOut } from '@/data'
+import { PlaylistDetailSnapshotOut } from '@/models'
 import { path } from '@/path'
 
 import styles from './Header.module.scss'
 
-export type HeaderProps = { data: PlaylistDetailResponseSnapshotOut }
-export const Header: React.FC<HeaderProps> = ({ data }) => {
-  const { creator, createTime, trackCount, name } = data.playlist
+export type HeaderProps = { playlist: PlaylistDetailSnapshotOut }
+export const Header: React.FC<HeaderProps> = ({ playlist }) => {
+  const { creator, createTime, trackCount, name, coverImgUrl } = playlist
 
   return (
     <div className={styles.container}>
       <div className={styles.img_container}>
         <img
-          src={data.playlist.coverImgUrl}
+          src={coverImgUrl}
           alt="Cover of the playlist"
           width={200}
           height={200}

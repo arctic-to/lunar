@@ -3,7 +3,7 @@ import { getMst, GlobalTagStore } from '@/stores'
 
 const { songTagMap } = getMst(GlobalTagStore)
 
-export default function filterTracksByTags(
+export function filterTracksByTags(
   tracks: SongSnapshotIn[],
   selectedTagIds: number[],
 ) {

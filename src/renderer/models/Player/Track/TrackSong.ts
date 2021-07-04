@@ -1,8 +1,8 @@
 import { types, flow, cast, isAlive, SnapshotOut } from 'mobx-state-tree'
 import { AsyncReturnType } from 'type-fest'
 
+import { getUnofficialSongUrl } from '@/cache'
 import { fetcher } from '@/data/netease/fetcher'
-import { getUnofficialSongUrl } from '@/stores/Privilege.store'
 import { parseLyric } from '@/utils'
 
 import { Song } from '../Song'
@@ -53,7 +53,7 @@ export const TrackSong = types
       self.title = `${self.name} - ${self.ar.map((ar) => ar.name).join(' & ')}`
 
       if (!self.url) {
-        const unofficialSongUrl = getUnofficialSongUrl(self)
+        const unofficialSongUrl = getUnofficialSongUrl(self.id)
         if (unofficialSongUrl) {
           self.url = unofficialSongUrl
         } else {

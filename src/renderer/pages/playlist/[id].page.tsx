@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
+import { playlistMap } from '@/cache'
 import { usePlaylistDetail } from '@/data'
 import { getMst } from '@/stores'
 import { getScrollableAncestor } from '@/utils'
@@ -21,6 +22,11 @@ export const Playlist: React.FC = () => {
   })
 
   const { data } = usePlaylistDetail(id)
+  const playlist = useMemo(() => {
+    const _playlist = data?.playlist
+    const cache = playlistMap.get(id)
+    return _playlist || cache
+  }, [data?.playlist, id])
 
   // TODO: Remove scroll restoration logic after Next.js fix it
   // https://github.com/vercel/next.js/issues/20951#issuecomment-758785612
@@ -40,12 +46,12 @@ export const Playlist: React.FC = () => {
     return () => scrollableAncestor.removeEventListener('scroll', handleScroll)
   }, [handleScroll, scrollableAncestor])
 
-  if (!data) return null
+  if (!playlist) return null
 
   return (
     <div className={styles.container} ref={setNode}>
-      <Header data={data} />
-      <Main data={data} />
+      <Header playlist={playlist} />
+      <Main playlist={playlist} />
     </div>
   )
 }
