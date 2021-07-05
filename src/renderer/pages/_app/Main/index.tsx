@@ -2,6 +2,7 @@ import type { AppProps /*, AppContext */ } from 'next/app'
 import React, { useState, useCallback } from 'react'
 
 import { Sash, SashContainer } from '@/components'
+import { ScrollableAncestorContext } from '@/hooks'
 import { useView } from '@/models'
 
 import styles from './Main.module.scss'
@@ -32,9 +33,11 @@ export const Main: React.VFC<AppProps> = ({ Component, pageProps }) => {
         />
       </SashContainer>
       <div className={styles.view_container}>
-        <div className={styles.component} ref={setPane1}>
-          <Component {...pageProps} />
-        </div>
+        <ScrollableAncestorContext.Provider value={pane1}>
+          <div className={styles.component} ref={setPane1}>
+            <Component {...pageProps} />
+          </div>
+        </ScrollableAncestorContext.Provider>
         <Sidebar ref={setPane2} />
         <Shortcutbar />
       </div>

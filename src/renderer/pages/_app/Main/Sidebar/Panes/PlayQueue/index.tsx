@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useRef } from 'react'
 
 import { VirtualList } from '@/components'
 import { useSongDetail } from '@/data'
-import { useSonglist } from '@/hooks'
+import { ScrollableAncestorContext, useSonglist } from '@/hooks'
 import { usePlayer } from '@/models'
 
 import { Song } from '../../components'
@@ -13,6 +13,7 @@ import styles from './PlayQueue.module.scss'
 let inited = false
 
 export const PlayQueue: React.VFC = observer(() => {
+  const ref = useRef<HTMLDivElement>(null)
   const { queue } = usePlayer()
   const { songIds } = queue
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
@@ -50,11 +51,13 @@ export const PlayQueue: React.VFC = observer(() => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>正在播放 ({queue.size})</div>
-      <div className={styles.songlist}>
-        <VirtualList rowCount={queue.size} rowHeight={30}>
-          {renderRow}
-        </VirtualList>
-      </div>
+      <ScrollableAncestorContext.Provider value={ref.current}>
+        <div className={styles.songlist} ref={ref}>
+          <VirtualList rowCount={queue.size} rowHeight={30}>
+            {renderRow}
+          </VirtualList>
+        </div>
+      </ScrollableAncestorContext.Provider>
     </div>
   )
 })

@@ -25,14 +25,16 @@ export default function Home() {
     <main className={styles.container}>
       <div className={styles.shortcuts}>
         {Object.entries(shortcutKeyMap).map(([shortcut, keys]) => (
-          <div className={styles.shortcut}>
+          <div key={shortcut} className={styles.shortcut}>
             <span className={styles.desc}>
               {shortcutDescriptionMap[shortcut as unknown as GlobalShortcut]}
             </span>
             <span className={styles.keys}>
               {withDivider(
                 keys.map((key) => (
-                  <span className={styles.key}>{makeReadableKey(key)}</span>
+                  <span key={key} className={styles.key}>
+                    {makeReadableKey(key)}
+                  </span>
                 )),
                 '+',
               )}

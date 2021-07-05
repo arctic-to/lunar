@@ -1,14 +1,16 @@
 import { range } from 'lodash'
-import { useEffect, useMemo, useState } from 'react'
+import { useLayoutEffect, useMemo, useState } from 'react'
 import { useRef } from 'react'
 import { useCallback } from 'react'
 
-import { calcDistanceToAncestor, getScrollableAncestor } from '@/utils'
+import { useScrollableAncestor } from '@/hooks'
+import { calcDistanceToAncestor } from '@/utils'
 
 import styles from './VirtualList.module.scss'
 import { EMPTY_RANGE, intersect, Range } from './range'
 
-export type VirtualListProps = {
+// https://stackoverflow.com/a/51835761/13151903
+export interface VirtualListProps extends React.HTMLAttributes<HTMLDivElement> {
   rowCount: number
   rowHeight: number
   children(index: number): React.ReactElement | null
@@ -17,10 +19,12 @@ export const VirtualList: React.FC<VirtualListProps> = ({
   rowCount,
   rowHeight,
   children,
+  ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null)
   const [visibleRange, setVisibleRange] = useState(EMPTY_RANGE)
   const distanceToScrollableAncestorRef = useRef<number>()
+  const scrollableAncestor = useScrollableAncestor()
 
   const visibleIndexRange = useMemo<Range>(() => {
     const start = Math.floor(visibleRange.start / rowHeight)
@@ -28,10 +32,12 @@ export const VirtualList: React.FC<VirtualListProps> = ({
     return intersect(new Range(start, end), new Range(0, rowCount))
   }, [rowCount, rowHeight, visibleRange.end, visibleRange.start])
 
-  const update = useCallback((scrollableAncestor: HTMLElement) => {
+  const update = useCallback(() => {
+    if (!ref.current || !scrollableAncestor) return
+
     const { scrollTop, clientHeight: viewHeight } = scrollableAncestor
 
-    const { clientHeight: listHeight } = ref.current!
+    const { clientHeight: listHeight } = ref.current
     const distanceToScrollableAncestor =
       distanceToScrollableAncestorRef.current ?? 0
     const viewRange = new Range(scrollTop, scrollTop + viewHeight)
@@ -42,33 +48,29 @@ export const VirtualList: React.FC<VirtualListProps> = ({
     setVisibleRange(
       intersect(viewRange, listRange).translate(-distanceToScrollableAncestor),
     )
-  }, [])
+  }, [scrollableAncestor])
 
-  const handleScroll = useCallback(
-    (e: Event) => {
-      update(e.currentTarget as HTMLDivElement)
-    },
-    [update],
-  )
+  const handleScroll = useCallback(() => {
+    update()
+  }, [update])
 
-  useEffect(() => {
-    if (!ref.current) return
-    const scrollableAncestor = getScrollableAncestor(ref.current)
-    if (!scrollableAncestor) return
+  useLayoutEffect(() => {
+    if (!ref.current || !scrollableAncestor) return
 
     scrollableAncestor.addEventListener('scroll', handleScroll)
     distanceToScrollableAncestorRef.current =
       distanceToScrollableAncestorRef.current ??
       calcDistanceToAncestor(ref.current, scrollableAncestor)
-    update(scrollableAncestor)
+    update()
     return () => scrollableAncestor.removeEventListener('scroll', handleScroll)
-  }, [handleScroll, update, rowCount])
+  }, [handleScroll, update, rowCount, scrollableAncestor])
 
   return (
     <div
       className={styles.container}
       ref={ref}
       style={{ height: rowCount * rowHeight }}
+      {...props}
     >
       <div
         className={styles.content}
