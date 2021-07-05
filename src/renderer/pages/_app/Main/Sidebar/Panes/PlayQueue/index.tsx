@@ -17,7 +17,8 @@ export const PlayQueue: React.VFC = observer(() => {
   const { songIds } = queue
   const { activeSongIndexes, resetActiveSongIndexes } = useSonglist()
 
-  // Load privileges when app starts
+  // ensure song and privilege data is available
+  // in memory for no cache case
   const _songIds = useMemo(() => {
     if (!inited) {
       inited = true
@@ -28,7 +29,11 @@ export const PlayQueue: React.VFC = observer(() => {
 
   const renderRow = useCallback(
     (index: number) => {
-      const song = queue.modGet(index)!
+      const song = queue.modGet(index)
+
+      // Maybe `songMap` have not been initialized with cache,
+      // and `PlayQueue` will be rerendered when the request ends.
+      if (!song) return null
 
       return (
         <Song

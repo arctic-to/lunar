@@ -11,7 +11,7 @@ import { EMPTY_RANGE, intersect, Range } from './range'
 export type VirtualListProps = {
   rowCount: number
   rowHeight: number
-  children(index: number): React.ReactElement
+  children(index: number): React.ReactElement | null
 }
 export const VirtualList: React.FC<VirtualListProps> = ({
   rowCount,
