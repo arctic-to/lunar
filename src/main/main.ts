@@ -53,6 +53,10 @@ app.on('window-all-closed', () => {
   }
 })
 
+// fix transparent windows flicker on toggling visibility
+// https://github.com/electron/electron/issues/12130#issuecomment-627198990
+app.commandLine.appendSwitch('wm-window-animations-disabled')
+
 ipcMain.on('window:lyric:show', () => {
   store.set('lyric.show', true)
   lyricWin.show()

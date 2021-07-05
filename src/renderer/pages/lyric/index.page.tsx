@@ -1,7 +1,6 @@
 import c from 'classnames'
 import { remote } from 'electron'
 import { inRange } from 'lodash'
-import { observer } from 'mobx-react-lite'
 import React, { useEffect, useState } from 'react'
 
 import Header from './Header'
@@ -12,7 +11,7 @@ import { useDependencyIpc } from './ipc'
 import { useGlobalShortcut } from './shortcut'
 import { LyricStoreContext, useCreateLyricStore } from './store'
 
-export const OsdLyric: React.VFC = observer(() => {
+export const OsdLyric: React.VFC = () => {
   const [hovering, setHovering] = useState(false)
   const store = useCreateLyricStore()
 
@@ -36,6 +35,7 @@ export const OsdLyric: React.VFC = observer(() => {
   const canRenderLyric = parsedLyrics && !noTimestamp
   const displayOverlay = store.overlay || hovering
 
+  // fix: Prop `className` did not match.
   if (!initialized) return null
 
   return (
@@ -57,6 +57,6 @@ export const OsdLyric: React.VFC = observer(() => {
       </div>
     </LyricStoreContext.Provider>
   )
-})
+}
 
 export default OsdLyric

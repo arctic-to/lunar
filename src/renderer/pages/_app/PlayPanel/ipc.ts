@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron'
 import { getSnapshot } from 'mobx-state-tree'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { Renderer } from '@/../common'
 import { globals } from '@/globals'
@@ -36,16 +36,21 @@ function tryGetSnapshot(instance: any) {
 function useDependencyIpc() {
   const player = usePlayer()
 
-  useEffect(() => {
-    ipcRenderer.on('lunar:initLyricState', () => {
-      sendToLyricWindow('lunar:initLyricState', {
-        song: tryGetSnapshot(player.track.song),
-        currentTime: player.track.currentTime,
-        playing: player.track.playing,
-        order: player.order,
-      })
+  const syncLyricState = useCallback(() => {
+    sendToLyricWindow('lunar:initLyricState', {
+      song: tryGetSnapshot(player.track.song),
+      currentTime: player.track.currentTime,
+      playing: player.track.playing,
+      order: player.order,
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
+  useEffect(() => {
+    // active (lyric window is availble before main window)
+    syncLyricState()
+    // passive (main window is availble before lyric window)
+    ipcRenderer.on('lunar:initLyricState', syncLyricState)
     return () => {
       ipcRenderer.removeAllListeners('lunar:initLyricState')
     }

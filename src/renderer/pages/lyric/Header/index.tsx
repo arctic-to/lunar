@@ -1,5 +1,4 @@
 import c from 'classnames'
-import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 import { IoClose } from 'react-icons/io5'
 import {
@@ -25,7 +24,7 @@ import styles from './Header.module.scss'
 interface HeaderProps {
   hovering: boolean
 }
-export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
+export const Header: React.FC<HeaderProps> = ({ hovering }) => {
   const {
     translation,
     toggleTranslation,
@@ -131,6 +130,6 @@ export const Header: React.FC<HeaderProps> = observer(({ hovering }) => {
       )}
     </div>
   )
-})
+}
 
 export default Header
