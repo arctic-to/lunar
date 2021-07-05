@@ -1,34 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![Lunar Logo](docs/images/Logo.png/)
 
-## Getting Started
+![Screenshot](docs/images/Screenshot.png)
 
-First, run the development server:
+> 为了更好地听音乐。
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## 特性
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 权重（WIP）
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+由于用户对于不同歌曲的喜爱程度不同，虽然它们都出现在「我喜欢的音乐」中，但明显应该占有不同的权重，而这些权重是可以通过用户反馈不断修正的（比如切换到单曲循环，增大音量等）。
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+对于大歌单，引入权重的优势是明显的，用户将更容易听到自己想听到的。
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### 标签
 
-## Learn More
+标签比歌单更加灵活，在标签系统下，你可以通过组合标签进行自定义地筛选你想要听的歌曲。
 
-To learn more about Next.js, take a look at the following resources:
+不止如此，Lunar 还支持自动为歌单中的歌曲生成标签（目前仅支持常见语种）。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 桌面歌词
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+当听到那些让你共情的歌曲，难免会想跟着哼几句，而这个时候忘记歌词是尴尬的。
 
-## Deploy on Vercel
+庆幸的是，Lunar 提供了体验良好的桌面歌词。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 注音
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+为了帮助那些想了解，或掌握歌词正确发音的用户，Lunar 将歌词注音提供为附加功能（目前仅支持日语）。
+
+## 感谢
+
+- [网易云音乐](https://music.163.com)
+- [microsoft/vscode](https://github.com/microsoft/vscode)
+- [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
+- [nondanee/UnblockNeteaseMusic](https://github.com/nondanee/UnblockNeteaseMusic)
+- [hexenq/kuroshiro](https://github.com/hexenq/kuroshiro)
+
+## License
+
+MIT

@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite'
 import React, { useRef } from 'react'
 
 import { useLyricAnimation } from '@/hooks'
@@ -12,7 +11,7 @@ interface LyricProps {
   parsedLyrics: ParsedLyric[]
 }
 
-export const Lyric: React.FC<LyricProps> = observer(({ parsedLyrics }) => {
+export const Lyric: React.FC<LyricProps> = ({ parsedLyrics }) => {
   const ref = useRef<HTMLDivElement>(null)
   const { currentTime, phonetic, translation } = useLyricStore()
 
@@ -45,6 +44,6 @@ export const Lyric: React.FC<LyricProps> = observer(({ parsedLyrics }) => {
       ))}
     </div>
   )
-})
+}
 
 export default Lyric

@@ -1,4 +1,4 @@
 export interface GenerateTagsDto {
   userId: number
-  playlistId: number
+  songIds: number[]
 }

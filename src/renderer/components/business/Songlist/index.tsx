@@ -66,13 +66,15 @@ export function Songlist<T extends SongSnapshotIn>({
 
   return (
     <SonglistContext.Provider value={{ initialSongs, setSongs }}>
-      <div className={styles.container} tabIndex={0} onKeyDown={handleKeyDown}>
+      <div className={styles.container}>
         {!hideHeader && <Header />}
         {!hideListHeader && <ListHeader />}
         {virtual ? (
           <VirtualList
             rowCount={songs.length}
             rowHeight={displayTags ? 64 : 36}
+            tabIndex={0}
+            onKeyDown={handleKeyDown}
           >
             {renderRow}
           </VirtualList>

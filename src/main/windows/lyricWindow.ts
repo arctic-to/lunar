@@ -11,11 +11,12 @@ export function createLyricWindow() {
     frame: false,
     acceptFirstMouse: true,
     fullscreenable: false,
-    minimizable: false,
+    minimizable: false, // hide DisplayFusion icon
     maximizable: false,
     transparent: true,
     alwaysOnTop: true,
     skipTaskbar: true,
+    focusable: false, // hide in alt+tab
     show: lyric?.show,
     webPreferences: {
       nodeIntegration: true,

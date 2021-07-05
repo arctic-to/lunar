@@ -3,9 +3,10 @@ import { chunk } from 'lodash'
 import { SnapshotOut, types } from 'mobx-state-tree'
 import { useEffect, useRef, useState } from 'react'
 
-import { getCachedSongs, setPrivilegeMap, setSongMap } from '@/cache'
+import { getCachedSongs, setSongMap } from '@/cache'
 import { SongSnapshotOut } from '@/models'
 import { Privilege, Track } from '@/models/Platform/Netease'
+import { setPrivilegeMap } from '@/stores'
 
 import { axios } from '../fetcher'
 

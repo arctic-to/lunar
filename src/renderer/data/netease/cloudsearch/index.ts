@@ -3,7 +3,7 @@ import qs from 'qs'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 
-import { setPrivilegeMap, setSongMap } from '@/cache'
+import { setSongMap } from '@/cache'
 import {
   ArtistResult,
   LyricResult,
@@ -11,6 +11,7 @@ import {
   SongResult,
   UserResult,
 } from '@/models/Platform/Netease'
+import { setPrivilegeMap } from '@/stores'
 
 import { fetcher } from '../fetcher'
 

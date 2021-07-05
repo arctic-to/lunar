@@ -1,18 +1,17 @@
 import c from 'classnames'
 import { remote } from 'electron'
 import { inRange } from 'lodash'
-import { observer } from 'mobx-react-lite'
 import React, { useEffect, useState } from 'react'
 
-import Fallback from './Fallback'
 import Header from './Header'
 import Lyric from './Lyric'
+import lyricStyles from './Lyric/Lyric.module.scss'
 import styles from './OsdLyric.module.scss'
 import { useDependencyIpc } from './ipc'
 import { useGlobalShortcut } from './shortcut'
 import { LyricStoreContext, useCreateLyricStore } from './store'
 
-export const OsdLyric: React.VFC = observer(() => {
+export const OsdLyric: React.VFC = () => {
   const [hovering, setHovering] = useState(false)
   const store = useCreateLyricStore()
 
@@ -36,6 +35,7 @@ export const OsdLyric: React.VFC = observer(() => {
   const canRenderLyric = parsedLyrics && !noTimestamp
   const displayOverlay = store.overlay || hovering
 
+  // fix: Prop `className` did not match.
   if (!initialized) return null
 
   return (
@@ -47,15 +47,16 @@ export const OsdLyric: React.VFC = observer(() => {
       >
         <Header hovering={hovering} />
         <div className={styles.main}>
-          {canRenderLyric ? (
-            <Lyric parsedLyrics={parsedLyrics!} />
-          ) : (
-            <Fallback />
-          )}
+          <div className={lyricStyles.lyric_container}>
+            <span className={lyricStyles.lyric}>
+              {store.song?.title || 'No songs in the track.'}
+            </span>
+          </div>
+          {canRenderLyric && <Lyric parsedLyrics={parsedLyrics!} />}
         </div>
       </div>
     </LyricStoreContext.Provider>
   )
-})
+}
 
 export default OsdLyric

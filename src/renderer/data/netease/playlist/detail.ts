@@ -3,8 +3,9 @@ import { useEffect } from 'react'
 import useSWR from 'swr'
 import { Maybe } from 'yup/lib/types'
 
-import { setPlaylistMap, setPrivilegeMap, setSongMap } from '@/cache'
+import { setPlaylistMap, setSongMap } from '@/cache'
 import { PlaylistDetail, Privilege } from '@/models/Platform/Netease'
+import { setPrivilegeMap } from '@/stores'
 
 import { fetcher } from '../fetcher'
 

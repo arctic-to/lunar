@@ -6,7 +6,7 @@ import {
   cast,
 } from 'mobx-state-tree'
 
-import { isSongAvailable } from '@/cache'
+import { isSongAvailable } from '@/stores'
 
 import { History, history } from './History'
 import { OsdLyric, osdLyric } from './OsdLyric'
@@ -116,7 +116,11 @@ export const Player = types
       }
     },
     replay() {
-      self.playNth(self.currSongIndex)
+      if (self.track.song) {
+        // let mst reconcile it and keep properties
+        // assigned in `afterCreate` hook
+        self.replaceSong(getSnapshot(self.track.song)!)
+      }
     },
   }))
   .actions((self) => ({

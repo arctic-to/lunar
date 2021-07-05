@@ -4,12 +4,12 @@ import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 import { HiLockClosed, HiLockOpen } from 'react-icons/hi'
 
-import { getSongSourceKind, SongSourceKind } from '@/cache'
 import Album from '@/components/business/Album'
 import Artists from '@/components/business/Artists'
 import Like from '@/components/business/Like'
 import { ProgressBar } from '@/components/common'
 import { SongSnapshotIn, usePlayer } from '@/models'
+import { getSongSourceKind, SongSourceKind } from '@/stores'
 
 import styles from './SongBase.module.scss'
 

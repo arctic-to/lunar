@@ -9,7 +9,9 @@ import { AddTagDto, GenerateTagsDto } from './dto'
 const PATH = '/song/tags'
 
 export function generateTags(data: GenerateTagsDto) {
-  return axios.post<void>(`${PATH}/generate`, data).then((res) => res.data)
+  if (data.songIds.length) {
+    return axios.post<void>(`${PATH}/generate`, data).then((res) => res.data)
+  }
 }
 
 type SongWithTags = NeteaseCloudMusicSong & {

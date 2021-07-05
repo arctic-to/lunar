@@ -10,13 +10,13 @@ import SearchInput from '../../SearchInput'
 import { SonglistContext } from '../context'
 
 import styles from './Header.module.scss'
-import { SonglistStore } from './songlist.store'
+import { NormalHeaderStore } from './store'
 import { filterTracksByKeyword } from './utils'
 
 export const NormalHeader: React.FC = observer(() => {
   const { initialSongs, setSongs } = useNonNullableContext(SonglistContext)
   const { pathname } = useRouter()
-  const { keyword, handleInputChange } = getMst(SonglistStore, {
+  const { keyword, handleInputChange } = getMst(NormalHeaderStore, {
     scope: pathname,
   })
   const filteredTracks = useMemo(() => {
