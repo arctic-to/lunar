@@ -64,7 +64,7 @@ export const Track = types
     setTimeoutID(timeoutID: NodeJS.Timeout) {
       self.timeoutID = timeoutID
     },
-    currentTimeObserver(e?: Event) {
+    observeCurrentTime(e?: Event) {
       if (self.timeoutID) return
       const INTERVAL = SECOND
 

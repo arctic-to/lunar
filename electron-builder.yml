@@ -5,3 +5,7 @@ files:
   - package.json
   - build
 publish: null
+win:
+  target:
+    - nsis
+    - portable

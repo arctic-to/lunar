@@ -1,12 +1,17 @@
 {
   "name": "lunar",
   "version": "0.1.0",
+  "author": "pacexy",
+  "description": "Lunar is an opinionated player for Netease Cloud Music.",
   "private": true,
   "main": "build/main/main.js",
   "files": [
     "/build/src",
     "!/build/src/**/*.map"
   ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "--------------------------Dev Scripts------------------------": "",
     "dev:renderer": "next dev src/renderer",

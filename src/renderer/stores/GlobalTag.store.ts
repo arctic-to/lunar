@@ -19,11 +19,14 @@ export const GlobalTagStore = types
     songTagMap: types.map(types.array(Tag)),
   })
   .actions((self) => ({
-    setSongTagMap(songTagPairs: SongTagPairs) {
+    _setSongTagMap(songTagPairs: SongTagPairs) {
       songTagPairs.forEach(([songId, tags]) => {
         self.songTagMap.set(String(songId), tags)
       })
-      store.set('tagMap', songTagPairs)
+    },
+    setSongTagMap(songTagPairs: SongTagPairs) {
+      this._setSongTagMap(songTagPairs)
+      store.set('tagMap', [...self.songTagMap])
     },
     replaceSongTag(songId: number, tags: TagInstance[]) {
       self.songTagMap.set(String(songId), tags)
@@ -36,7 +39,7 @@ export const GlobalTagStore = types
   }))
   .actions((self) => ({
     afterCreate() {
-      self.setSongTagMap(store.get('tagMap'))
+      self._setSongTagMap(store.get('tagMap'))
     },
   }))
 

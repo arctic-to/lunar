@@ -40,22 +40,19 @@ export const CentralController: React.VFC = observer(() => {
     if (track && ref.current) {
       // Should replace previous event handler
       ref.current.onended = handleEnded
-      ref.current.onplay = track.currentTimeObserver
+      ref.current.onplay = track.observeCurrentTime
       ref.current.onpause = track.unobserveCurrentTime
     }
   }, [track, handleEnded])
 
   useEffect(() => {
-    /** `currentTime` can be set when <audio> has non-empty `src`(track.song.url). */
+    // `currentTime` can be set when <audio> has non-empty `src`(track.song.url).
     if (track.song?.url && ref.current) {
       ref.current.currentTime = track.currentTimeInSecond
     }
-    /**
-     * Ignore the updates of `currentTimeInSecond`, cause it is
-     * updated continually if audio is playing.
-     */
+    // set `currentTime` of <audio> manually
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [track.song?.url, track.currentTimeSetTimes])
+  }, [track.currentTimeSetTimes])
 
   useEffect(() => {
     if (track && ref.current) {
@@ -64,14 +61,21 @@ export const CentralController: React.VFC = observer(() => {
   }, [track, track.volume])
 
   useEffect(() => {
-    if (!(track.song?.url && ref.current)) return
+    if (track.song?.url === undefined || !ref.current) return
+
+    if (track.song.url === '') {
+      playNext()
+      return
+    }
 
     if (track.playing) {
-      ref.current.play()
+      ref.current.play().catch(() => {
+        track.song?.fetchSongUrl()
+      })
     } else {
       ref.current.pause()
     }
-  }, [track.playing, track.song?.url])
+  }, [playNext, track.playing, track.song, track.song?.url])
 
   return (
     <div className={styles.container}>

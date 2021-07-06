@@ -1,13 +1,16 @@
-import match from '@revincx/unblockneteasemusic'
 import Store from 'electron-store'
-import { SnapshotOut, types } from 'mobx-state-tree'
+import { types } from 'mobx-state-tree'
 
+import {
+  matchUnofficialSong,
+  UnofficialSongSource,
+  UnofficialSongSourceSnapshot,
+} from '@/data/unofficial'
 import { Privilege, PrivilegeSnapshotIn } from '@/models/Player/Privilege'
 import { SongSnapshotIn } from '@/models/Player/Song'
 
 import { getMst } from './getMst'
 
-type UnofficialSongSourceSnapshot = SnapshotOut<typeof UnofficialSongSource>
 type PrivilegeMapEntry = [number, PrivilegeSnapshotIn]
 type UnofficialSongSourceMapMapEntry = [number, UnofficialSongSourceSnapshot]
 
@@ -19,23 +22,21 @@ const store = new Store<{
   defaults: { privilegeMap: [], unofficialSongSourceMap: [] },
 })
 
-const UnofficialSongSource = types.model('UnofficialSongSource', {
-  size: types.number,
-  br: types.number,
-  url: types.string,
-})
-
 export const PrivilegeStore = types
   .model('PrivilegeStore', {
     privilegeMap: types.map(Privilege),
     unofficialSongSourceMap: types.map(UnofficialSongSource),
   })
   .actions((self) => ({
-    setunofficialSongSourceMapItem(
+    setUnofficialSongSourceMapItem(
       songId: number,
       source: UnofficialSongSourceSnapshot,
     ) {
       self.unofficialSongSourceMap.set(String(songId), source)
+    },
+    deleteUnofficialSongSourceMapItem(songId: number) {
+      self.unofficialSongSourceMap.delete(String(songId))
+      store.set('unofficialSongSourceMap', [...self.unofficialSongSourceMap])
     },
   }))
   .actions((self) => ({
@@ -53,26 +54,28 @@ export const PrivilegeStore = types
       songs: SongSnapshotIn[],
       privileges: PrivilegeSnapshotIn[],
     ) {
-      const promises: Promise<UnofficialSongSourceSnapshot>[] = []
+      const promises: Promise<void>[] = []
       songs.forEach((song, index) => {
-        self.privilegeMap.set(String(song.id), privileges[index])
+        const privilege = privileges[index]
+        self.privilegeMap.set(String(song.id), privilege)
 
-        if (!isSongAvailableOfficially(song.id)) {
+        if (
+          !_isSongAvailableOfficially(privilege) &&
+          !self.unofficialSongSourceMap.has(String(song.id))
+        ) {
           promises.push(
-            match(song.id, ['qq', 'kuwo', 'migu'], {
-              ...song,
-              album: song.al,
-              artists: song.ar,
-            }).then((result: UnofficialSongSourceSnapshot) => {
-              self.setunofficialSongSourceMapItem(song.id, result)
+            matchUnofficialSong(song).then((source) => {
+              if (source) {
+                self.setUnofficialSongSourceMapItem(song.id, source)
+              }
             }),
           )
         }
       })
 
-      store.set('privilegeMap', [...privilegeMap])
-      Promise.all(promises).then(() => {
-        store.set('unofficialSongSourceMap', [...unofficialSongSourceMap])
+      store.set('privilegeMap', [...self.privilegeMap])
+      Promise.allSettled(promises).then(() => {
+        store.set('unofficialSongSourceMap', [...self.unofficialSongSourceMap])
       })
     },
   }))
@@ -83,18 +86,23 @@ export const PrivilegeStore = types
     },
   }))
 
-const {
-  privilegeMap,
-  unofficialSongSourceMap,
-  setPrivilegeMap: _setPrivilegeMap,
-} = getMst(PrivilegeStore)
+const privilegeStore = getMst(PrivilegeStore)
+const { privilegeMap, unofficialSongSourceMap } = privilegeStore
 
-export const setPrivilegeMap = _setPrivilegeMap
+export const setPrivilegeMap = privilegeStore.setPrivilegeMap
+export const deleteUnofficialSongSourceMapItem =
+  privilegeStore.deleteUnofficialSongSourceMapItem
+
+function _isSongAvailableOfficially(
+  privilege: PrivilegeSnapshotIn | undefined,
+) {
+  // https://github.com/Binaryify/NeteaseCloudMusicApi/issues/718#issuecomment-610137558
+  return privilege ? privilege.st >= 0 : false
+}
 
 function isSongAvailableOfficially(songId: number) {
   const privilege = privilegeMap.get(String(songId))
-  // https://github.com/Binaryify/NeteaseCloudMusicApi/issues/718#issuecomment-610137558
-  return (privilege?.st ?? -1) >= 0
+  return _isSongAvailableOfficially(privilege)
 }
 
 export enum SongSourceKind {
