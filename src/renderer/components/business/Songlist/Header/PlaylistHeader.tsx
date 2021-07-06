@@ -54,7 +54,7 @@ export const PlaylistHeader: React.FC = observer(() => {
     }
   })
 
-  const { data: songTagPairs } = useSongTags(userId, id)
+  const { data: songTagPairs, loading } = useSongTags(userId, id)
 
   useEffect(() => {
     if (songTagPairs) {
@@ -83,14 +83,11 @@ export const PlaylistHeader: React.FC = observer(() => {
     <header className={styles.container}>
       <div className={styles.left}>歌曲列表 ({filteredTracks.length})</div>
       <div className={styles.right}>
-        <SearchInput
-          className={styles.search_input}
-          value={keyword}
-          onChange={handleInputChange}
-        />
-        <Button className={styles.button} Icon={FaTags} onClick={tagify}>
-          Tagify
-        </Button>
+        {!loading && (
+          <Button className={styles.button} Icon={FaTags} onClick={tagify}>
+            Tagify
+          </Button>
+        )}
 
         {Boolean(uniqTags.length) && (
           <>
@@ -113,6 +110,12 @@ export const PlaylistHeader: React.FC = observer(() => {
             </div>
           </>
         )}
+
+        <SearchInput
+          className={styles.search_input}
+          value={keyword}
+          onChange={handleInputChange}
+        />
       </div>
     </header>
   )
