@@ -2,7 +2,12 @@ import { types, flow, cast, isAlive, SnapshotOut } from 'mobx-state-tree'
 import { AsyncReturnType } from 'type-fest'
 
 import { fetcher } from '@/data/netease/fetcher'
-import { getUnofficialSongUrl } from '@/stores'
+import { matchUnofficialSong } from '@/data/unofficial'
+import {
+  deleteUnofficialSongSourceMapItem,
+  getSongSourceKind,
+  SongSourceKind,
+} from '@/stores'
 import { parseLyric } from '@/utils'
 
 import { Song } from '../Song'
@@ -16,18 +21,41 @@ export const TrackSong = types
     Song,
     types.model({
       title: '',
-      url: '',
+      /**
+       * - undefined: initial value
+       * - empty string: no available url
+       */
+      url: types.maybe(types.string),
       lyric: types.maybeNull(Lyric),
     }),
   )
   .actions((self) => ({
-    fetchSongUrl: flow(function* () {
-      const {
-        data: [song],
-      } = yield fetcher(`/song/url?id=${self.id}`)
-
+    trySetUrl(url: string) {
       if (isAlive(self)) {
-        self.url = song.url || ''
+        self.url = url
+      }
+    },
+  }))
+  .actions((self) => ({
+    fetchSongUrl: flow(function* () {
+      switch (getSongSourceKind(self.id)) {
+        case SongSourceKind.Netease: {
+          const {
+            data: [song],
+          } = yield fetcher(`/song/url?id=${self.id}`)
+          self.trySetUrl(song.url || '')
+          break
+        }
+        case SongSourceKind.Unofficial: {
+          const source: AsyncReturnType<typeof matchUnofficialSong> =
+            yield matchUnofficialSong(self)
+          if (source) {
+            self.trySetUrl(source.url)
+          } else {
+            deleteUnofficialSongSourceMapItem(self.id)
+            self.trySetUrl('')
+          }
+        }
       }
     }),
     fetchLyrics: flow(function* () {
@@ -52,13 +80,8 @@ export const TrackSong = types
     afterCreate() {
       self.title = `${self.name} - ${self.ar.map((ar) => ar.name).join(' & ')}`
 
-      if (!self.url) {
-        const unofficialSongUrl = getUnofficialSongUrl(self.id)
-        if (unofficialSongUrl) {
-          self.url = unofficialSongUrl
-        } else {
-          self.fetchSongUrl()
-        }
+      if (self.url === undefined) {
+        self.fetchSongUrl()
       }
       if (!self.lyric) {
         self.fetchLyrics()

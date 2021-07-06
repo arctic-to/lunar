@@ -7,6 +7,9 @@
     "/build/src",
     "!/build/src/**/*.map"
   ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "scripts": {
     "--------------------------Dev Scripts------------------------": "",
     "dev:renderer": "next dev src/renderer",

@@ -74,6 +74,14 @@ export const Player = types
     replaceSong(songSnapshot: SongSnapshotIn) {
       self.track.song = cast(songSnapshot)
       self.track.play()
+      // unobserving is necessary, otherwise `currentTime`
+      // may be overrided by observer after we reset it.
+      self.track.unobserveCurrentTime()
+      // Authough <audio> will reset `currentTime` to 0
+      // when its `src` changes to be available, it is
+      // after we have gotten the song url.
+      // Therefore it is needed to set it manually
+      // to maintain UI consistency(e.g. progress bar).
       self.track.setCurrentTime(0)
       self.history.push(songSnapshot)
     },
